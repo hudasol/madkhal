@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Any
 from xml.sax.saxutils import escape
 
-from madkhal.contract import SIMULATION_NOTICE, Mission
+from madkhal.contract import ADVISORY_SCOPE, SIMULATION_NOTICE, Mission
 from madkhal.core.jsonio import dumps
 
 MAV_CMD_NAV_TAKEOFF = 22
@@ -24,7 +24,12 @@ def geojson(m: Mission) -> dict[str, Any]:
     home = m.waypoints[0]
     survey = m.waypoints[1:-1]
     ring = [[w.lon, w.lat] for w in survey] + ([[survey[0].lon, survey[0].lat]] if survey else [])
-    props = {"notice": SIMULATION_NOTICE, "mission_id": m.id, "site": m.site}
+    props = {
+        "notice": SIMULATION_NOTICE,
+        "scope": ADVISORY_SCOPE,
+        "mission_id": m.id,
+        "site": m.site,
+    }
     return {
         "type": "FeatureCollection",
         "properties": props,
@@ -51,7 +56,7 @@ def geojson(m: Mission) -> dict[str, Any]:
 def kml(m: Mission) -> str:
     coords = " ".join(f"{w.lon:.6f},{w.lat:.6f},{w.alt_m:.0f}" for w in m.waypoints)
     home = m.waypoints[0]
-    note = escape(SIMULATION_NOTICE)
+    note = escape(f"{SIMULATION_NOTICE} {ADVISORY_SCOPE}")
     return (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<kml xmlns="http://www.opengis.net/kml/2.2">\n'
@@ -107,7 +112,12 @@ def qgc_plan(m: Mission) -> dict[str, Any]:
         },
         "geoFence": {"version": 2, "circles": [], "polygons": []},
         "rallyPoints": {"version": 2, "points": []},
-        "madkhal": {"notice": SIMULATION_NOTICE, "mission_id": m.id, "feasible": m.feasible},
+        "madkhal": {
+            "notice": SIMULATION_NOTICE,
+            "scope": ADVISORY_SCOPE,
+            "mission_id": m.id,
+            "feasible": m.feasible,
+        },
     }
 
 
@@ -159,6 +169,8 @@ def validate_plan(plan: dict[str, Any]) -> list[str]:
             errs.append(f"{key} missing")
     if plan.get("madkhal", {}).get("notice") != SIMULATION_NOTICE:
         errs.append("simulation only notice missing")
+    if plan.get("madkhal", {}).get("scope") != ADVISORY_SCOPE:
+        errs.append("advisory scope statement missing")
     return errs
 
 
