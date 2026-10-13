@@ -8,3 +8,12 @@ __pycache__/
 .ruff_cache/
 dist/
 .env
+*.egg-info/
+.coverage
+coverage.xml
+htmlcov/
+.hypothesis/
+.import_linter_cache/
+web/test-results/
+web/playwright-report/
+web/blob-report/
