@@ -1090,6 +1090,13 @@
         "type": "number",
         "unit": "1"
       },
+      "role": {
+        "ar": "فيزيائي: سلوك غير معروف للمحطة وغير مؤكد في القرار. تشغيلي: كمية يعرفها المشغّل وقت القرار (التدفق والطلب وحجم الخزان) وتُستخدم بقيمتها.",
+        "en": "physics: unknown plant behaviour, uncertain in the decision. operating: a quantity the operator knows at decision time (flow, demand, storage size), used at its value.",
+        "required": false,
+        "type": "\"physics\" | \"operating\"",
+        "unit": null
+      },
       "source": {
         "ar": "مصدر القيمة.",
         "en": "Where the value comes from.",

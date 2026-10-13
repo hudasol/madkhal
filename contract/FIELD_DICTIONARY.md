@@ -200,6 +200,7 @@ A model parameter with provenance. The evidence level is required.
 | `provenance` | `string` |  | Reasoning or citation behind the value. | المنطق أو المرجع وراء القيمة. |
 | `rel_spread` | `number` | 1 | Relative spread (one standard deviation on the log scale). | الانتشار النسبي (انحراف معياري واحد على المقياس اللوغاريتمي). |
 | `adverse` | `"up" \| "down"` |  | Direction in which the parameter makes outcomes worse. | الاتجاه الذي يجعل فيه المعامل النتائج أسوأ. |
+| `role` | `"physics" \| "operating"` |  | physics: unknown plant behaviour, uncertain in the decision. operating: a quantity the operator knows at decision time (flow, demand, storage size), used at its value. | فيزيائي: سلوك غير معروف للمحطة وغير مؤكد في القرار. تشغيلي: كمية يعرفها المشغّل وقت القرار (التدفق والطلب وحجم الخزان) وتُستخدم بقيمتها. |
 
 ## PlantProfile
 

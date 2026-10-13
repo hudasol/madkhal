@@ -394,6 +394,8 @@ export interface Parameter {
   rel_spread: number;
   /** Direction in which the parameter makes outcomes worse. */
   adverse: "up" | "down";
+  /** physics: unknown plant behaviour, uncertain in the decision. operating: a quantity the operator knows at decision time (flow, demand, storage size), used at its value. */
+  role?: "physics" | "operating";
 }
 
 /** Three sentences rendered from the explanation. */

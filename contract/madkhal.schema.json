@@ -1433,6 +1433,17 @@
           "x-ar": "الانتشار النسبي (انحراف معياري واحد على المقياس اللوغاريتمي).",
           "x-unit": "1"
         },
+        "role": {
+          "default": "physics",
+          "description": "physics: unknown plant behaviour, uncertain in the decision. operating: a quantity the operator knows at decision time (flow, demand, storage size), used at its value.",
+          "enum": [
+            "physics",
+            "operating"
+          ],
+          "title": "Role",
+          "type": "string",
+          "x-ar": "فيزيائي: سلوك غير معروف للمحطة وغير مؤكد في القرار. تشغيلي: كمية يعرفها المشغّل وقت القرار (التدفق والطلب وحجم الخزان) وتُستخدم بقيمتها."
+        },
         "source": {
           "$ref": "#/$defs/ParamSource",
           "description": "Where the value comes from.",
@@ -1584,7 +1595,7 @@
           "x-unit": "h"
         },
         "storage_hours": {
-          "default": 18.0,
+          "default": 24.0,
           "description": "Product water in storage, in hours of demand.",
           "minimum": 0.0,
           "title": "Storage Hours",

@@ -469,6 +469,13 @@ class Parameter(Model):
         "Direction in which the parameter makes outcomes worse.",
         "الاتجاه الذي يجعل فيه المعامل النتائج أسوأ.",
     )
+    role: Literal["physics", "operating"] = fd(
+        "physics: unknown plant behaviour, uncertain in the decision. operating: a quantity the "
+        "operator knows at decision time (flow, demand, storage size), used at its value.",
+        "فيزيائي: سلوك غير معروف للمحطة وغير مؤكد في القرار. تشغيلي: كمية يعرفها المشغّل وقت "
+        "القرار (التدفق والطلب وحجم الخزان) وتُستخدم بقيمتها.",
+        default="physics",
+    )
 
     @model_validator(mode="after")
     def _spread_follows_provenance(self) -> Parameter:
@@ -565,7 +572,7 @@ class PlantState(Model):
         "Product water in storage, in hours of demand.",
         "المياه المنتجة في الخزان بساعات من الطلب.",
         "h",
-        default=18.0,
+        default=24.0,
     )
     current_action: ActionKind = fd("Action in force.", "الإجراء الساري.", default=ActionKind.GO)
     current_scale: Fraction = fd("Flow scale in force.", "مقياس التدفق الساري.", "1", default=1.0)
