@@ -18,6 +18,7 @@ from madkhal.contract import export as contract_export
 from madkhal.core import claims as claimslib
 from madkhal.core import paths
 from madkhal.core import traceability as tr
+from madkhal.evidence import NadhirSnapshot
 
 app = typer.Typer(add_completion=False, no_args_is_help=True, help=__doc__)
 docs_app = typer.Typer(add_completion=False, no_args_is_help=True, help="Documentation build.")
@@ -99,8 +100,9 @@ def check_traceability(root: Path) -> list[str]:
 def check_claims(root: Path) -> list[str]:
     problems: list[str] = []
     opened = claimslib.load_opened_sources(root / "docs" / "sources_opened.yaml")
+    snap = NadhirSnapshot()
     for c in claimslib.load_claims(root / "docs" / "claims.yaml"):
-        reason = claimslib.resolve(c, root, opened, parameter_exists)
+        reason = claimslib.resolve(c, root, opened, parameter_exists, snap.has_reference)
         if reason:
             problems.append(f"{c.id}: {reason}")
     return problems
