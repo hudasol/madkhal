@@ -42,3 +42,13 @@ claims:
     type: SUPPORTED_BY_RESULT
     where: [UI, docs/METHOD.md]
     pointer: {kind: parameter, ref: "estimator.hit_rate"}
+  - id: CL-009
+    text: "A public results release states that over 40 percent of one utility's desalination capacity uses reverse osmosis (secondary source, docs/CONTEXT.md only)."
+    type: SOURCED
+    where: [docs/CONTEXT.md]
+    pointer: {kind: url, ref: "https://apigateway.adx.ae/adx/cdn/1.0/content/download/4698142"}
+  - id: CL-010
+    text: "A press article reports that the same utility applies AI to, among other uses, improving water efficiency (secondary source, docs/CONTEXT.md only)."
+    type: SOURCED
+    where: [docs/CONTEXT.md]
+    pointer: {kind: url, ref: "https://en.aletihad.ae/news/business/4567209/taqa-spotlights-how-ai-boosts-efficiency--slash-emissions-ac"}
