@@ -161,6 +161,77 @@ _LINT_IMPORTS = (
 )
 
 
+def _print_json(obj: object) -> None:
+    from madkhal.core.jsonio import dumps
+
+    sys.stdout.buffer.write(dumps(obj).encode("utf-8"))
+
+
+@app.command()
+def evidence(site: str = typer.Option("kalba", help="OLCI site: kalba, barka or alraha.")) -> None:
+    """Print the coverage counts per year and the detector track record."""
+    from madkhal.evidence import yearly_counts
+    from madkhal.lab.inputs import snapshot
+
+    snap = snapshot()
+    tr_ = snap.track_record()
+    _print_json(
+        {
+            "site": site,
+            "years": yearly_counts(snap.evidence_days(site)),
+            "track_record": {
+                "n_dated": tr_.n_dated,
+                "n_observable": tr_.n_observable,
+                "n_detected": tr_.n_detected,
+                "rows": [r.model_dump(mode="json") for r in tr_.rows],
+            },
+        }
+    )
+
+
+@app.command()
+def belief(
+    site: str = typer.Option("kalba"),
+    date: str = typer.Option("2018-09-08", help="ISO date within the evidence range."),
+    draws: int = typer.Option(400, min=1, max=4000),
+    seed: int = typer.Option(7, min=0),
+) -> None:
+    """Print the belief for one site and day (real evidence)."""
+    import datetime as dt
+
+    from madkhal.lab.replay import belief_replay
+
+    bs = belief_replay(site, draws, seed)
+    _print_json(bs.to_belief(bs.index_of(dt.date.fromisoformat(date))).model_dump(mode="json"))
+
+
+@app.command()
+def replay(
+    site: str = typer.Option("kalba"),
+    draws: int = typer.Option(400, min=1, max=4000),
+    seed: int = typer.Option(7, min=0),
+) -> None:
+    """REPLAY: real satellite evidence, hypothetical plant. Belief before each event."""
+    from madkhal.lab.replay import belief_at_events
+
+    _print_json(belief_at_events(site, draws, seed))
+
+
+@app.command("eval")
+def eval_(
+    smoke: bool = typer.Option(False, help="Run the quick E1 smoke check only."),
+    seed: int = typer.Option(1, min=0),
+) -> None:
+    """Run the experiments (E1 to E7). With --smoke, one synthetic year of E1 only."""
+    from madkhal.lab.smoke import e1_smoke
+
+    if smoke:
+        _print_json(e1_smoke(seed))
+        return
+    _echo("The full experiment suite is built in phase P6 and P7.")
+    raise typer.Exit(code=2)
+
+
 def main() -> None:
     app()
 
