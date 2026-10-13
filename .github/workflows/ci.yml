@@ -43,6 +43,12 @@ jobs:
       - name: Install
         run: npm ci --no-audit --no-fund
         if: hashFiles('web/package-lock.json') != ''
+      - name: Lint
+        run: npm run lint
+        if: hashFiles('web/package-lock.json') != ''
+      - name: Unit tests
+        run: npm test
+        if: hashFiles('web/package-lock.json') != ''
       - name: Build
         run: npm run build
         if: hashFiles('web/package-lock.json') != ''
