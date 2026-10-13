@@ -145,7 +145,7 @@ export function BandChart({ title, description, dates, band, clear, alert }: Pro
         {showTable ? t("common.hideTable") : t("common.showTable")}
       </button>
       {showTable ? (
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex={0}>
           <table>
             <caption className="muted">{title}</caption>
             <thead>

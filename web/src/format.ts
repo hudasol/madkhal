@@ -50,3 +50,11 @@ export function formatInstant(iso: string, o: FormatOptions): { local: string; u
   const utc = `${d.toISOString().slice(0, 16).replace("T", " ")} UTC`;
   return { local, utc };
 }
+
+/** A measured quantity: more decimals for small magnitudes, and never a negative zero. */
+export function formatValue(x: number, o: FormatOptions): string {
+  const a = Math.abs(x);
+  const digits = a === 0 ? 0 : a < 10 ? 2 : a < 1000 ? 1 : 0;
+  const v = Math.abs(x) < 0.5 * 10 ** -digits ? 0 : x;
+  return formatNumber(v, o, digits);
+}
