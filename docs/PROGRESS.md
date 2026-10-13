@@ -29,9 +29,9 @@ Reference clones are present at the pinned commits: Nadhir `ca484e2`, Dhill `b75
 | P4 walking skeleton | done | v0.5.0 | API tests pass (19); web unit tests pass (11); the same 5 Playwright checks pass against the static build (no backend) and against the live build with `madkhal serve`, with no request outside the app's own origin; screenshots of Console, Evidence and Arabic Console were reviewed and four layout defects fixed (legend sizing, right to left chart labels, untranslated "to", raw site ids) |
 | P5 plant and decision | done | v0.6.0 | 25 plant and decision tests pass, including hypothesis property tests for all four safety monotonicity properties, dwell, reproducibility from stored inputs, and water and load balance; advisory, timeline, scenario and plant endpoints tested |
 | P6 policy lab | done | v0.7.0 | `docs/PREREGISTRATION.md` committed (`b831025`) before any results file; generators G1 and G2, policies P0 to P5 and the experiment runner exist; the oracle sanity test passes on development seeds; 16 lab tests pass (value of information never negative, perfect free sensor inspects exactly when the action could change) |
-| P7 evaluation | in progress | | |
-| P8 tasking | | | |
-| P9 full console | | | |
+| P7 evaluation | done | v0.8.0 | `madkhal eval` wrote `results/e1.json` to `e7.json` on 30 evaluation seeds (E4 20, E5 10, as preregistered); `docs/EVALUATION.md` is rendered from them and a test fails on any difference; 21 of 24 predictions hit, 3 misses kept and explained. The first run took 1,122 s; after making the risk table memo persistent per worker, a second run produced byte identical results in 871 s, inside the 15 minute budget |
+| P8 tasking | done | v0.9.0 | Survey missions with refusal over endurance, wind availability, GeoJSON, KML and a QGroundControl plan that passes the validator, all with the simulation only notice; value of information never negative (property test); missions endpoint tested; E4 in the results |
+| P9 full console | in progress | | |
 | P10 hardening | | | |
 
 ## Blockers
