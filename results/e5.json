@@ -1,0 +1,177 @@
+{
+  "experiment": "E5",
+  "generator": "G1",
+  "label": "SYNTHETIC",
+  "measure_first": [
+    "plant.fouling_after_clean",
+    "detector.visible_share",
+    "plant.k_fouling"
+  ],
+  "oat_seeds": [
+    1000,
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009
+  ],
+  "one_at_a_time": [
+    {
+      "key": "plant.bloom_load_min",
+      "regret_minus_cu": 38895.34245361817,
+      "regret_plus_cu": 526637.864026372,
+      "swing_cu": 487742.5215727538
+    },
+    {
+      "key": "plant.bloom_tail_alpha",
+      "regret_minus_cu": 426319.29702803044,
+      "regret_plus_cu": 45453.06017741901,
+      "swing_cu": 380866.23685061146
+    },
+    {
+      "key": "plant.pretreat_capacity",
+      "regret_minus_cu": 412429.1100210269,
+      "regret_plus_cu": 85407.45941972356,
+      "swing_cu": 327021.6506013034
+    },
+    {
+      "key": "plant.k_fouling",
+      "regret_minus_cu": 130922.26827725803,
+      "regret_plus_cu": 400643.5484737056,
+      "swing_cu": 269721.28019644757
+    },
+    {
+      "key": "detector.visible_share",
+      "regret_minus_cu": 251955.40169850588,
+      "regret_plus_cu": 60677.66852970551,
+      "swing_cu": 191277.73316880036
+    },
+    {
+      "key": "plant.clean_hours",
+      "regret_minus_cu": 254526.47912731575,
+      "regret_plus_cu": 337460.2097131493,
+      "swing_cu": 82933.73058583355
+    },
+    {
+      "key": "plant.background_load",
+      "regret_minus_cu": 224976.77908949764,
+      "regret_plus_cu": 296366.8662379266,
+      "swing_cu": 71390.08714842895
+    },
+    {
+      "key": "plant.planned_clean_hours",
+      "regret_minus_cu": 216802.59224626882,
+      "regret_plus_cu": 252001.9966887001,
+      "swing_cu": 35199.40444243129
+    },
+    {
+      "key": "plant.fouling_after_clean",
+      "regret_minus_cu": 236894.61785943006,
+      "regret_plus_cu": 269355.583929574,
+      "swing_cu": 32460.966070143942
+    },
+    {
+      "key": "plant.wear_per_breakthrough",
+      "regret_minus_cu": 246674.52878405084,
+      "regret_plus_cu": 259053.52730624788,
+      "swing_cu": 12378.998522197042
+    },
+    {
+      "key": "plant.wear_per_clean",
+      "regret_minus_cu": 248672.3828310411,
+      "regret_plus_cu": 258501.88655900984,
+      "swing_cu": 9829.503727968753
+    },
+    {
+      "key": "plant.restart_hours",
+      "regret_minus_cu": 258908.87883327348,
+      "regret_plus_cu": 268361.00800234836,
+      "swing_cu": 9452.129169074877
+    },
+    {
+      "key": "detector.alpha",
+      "regret_minus_cu": 251655.40169850588,
+      "regret_plus_cu": 254655.40169850588,
+      "swing_cu": 3000.0
+    },
+    {
+      "key": "detector.beta_at",
+      "regret_minus_cu": 251755.40169850588,
+      "regret_plus_cu": 253505.40169850588,
+      "swing_cu": 1750.0
+    },
+    {
+      "key": "plant.coagulant_boost",
+      "regret_minus_cu": 252855.40169850588,
+      "regret_plus_cu": 252855.40169850588,
+      "swing_cu": 0.0
+    }
+  ],
+  "random_design_samples": 40,
+  "rank_correlation": [
+    {
+      "key": "plant.fouling_after_clean",
+      "spearman": 0.503189493433396
+    },
+    {
+      "key": "detector.visible_share",
+      "spearman": -0.2724202626641651
+    },
+    {
+      "key": "plant.k_fouling",
+      "spearman": 0.27129455909943717
+    },
+    {
+      "key": "plant.pretreat_capacity",
+      "spearman": -0.23151969981238277
+    },
+    {
+      "key": "detector.beta_at",
+      "spearman": -0.13639774859287057
+    },
+    {
+      "key": "plant.bloom_load_min",
+      "spearman": 0.12682926829268296
+    },
+    {
+      "key": "plant.coagulant_boost",
+      "spearman": -0.11257035647279551
+    },
+    {
+      "key": "plant.wear_per_clean",
+      "spearman": 0.10075046904315198
+    },
+    {
+      "key": "detector.alpha",
+      "spearman": -0.08742964352720452
+    },
+    {
+      "key": "plant.clean_hours",
+      "spearman": -0.06791744840525328
+    },
+    {
+      "key": "plant.planned_clean_hours",
+      "spearman": 0.052720450281425905
+    },
+    {
+      "key": "plant.restart_hours",
+      "spearman": -0.033208255159474676
+    },
+    {
+      "key": "plant.background_load",
+      "spearman": -0.017260787992495315
+    },
+    {
+      "key": "plant.wear_per_breakthrough",
+      "spearman": 0.013508442776735461
+    },
+    {
+      "key": "plant.bloom_tail_alpha",
+      "spearman": -0.002439024390243903
+    }
+  ]
+}

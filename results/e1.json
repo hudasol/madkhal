@@ -1,0 +1,618 @@
+{
+  "brier": {
+    "alert_means_bloom": {
+      "hi": 0.06263443943244623,
+      "lo": 0.043575606229654215,
+      "mean": 0.05310502283105022,
+      "n": 30,
+      "unit": ""
+    },
+    "madkhal": {
+      "hi": 0.03521613143252193,
+      "lo": 0.01841434768324265,
+      "mean": 0.026815239557882294,
+      "n": 30,
+      "unit": ""
+    },
+    "persistence": {
+      "hi": 0.20283450252693683,
+      "lo": 0.17433444724475258,
+      "mean": 0.1885844748858447,
+      "n": 30,
+      "unit": ""
+    }
+  },
+  "coverage90": {
+    "hi": 1.0,
+    "lo": 1.0,
+    "mean": 1.0,
+    "n": 30,
+    "unit": "share"
+  },
+  "experiment": "E1",
+  "generator": "G1",
+  "label": "SYNTHETIC",
+  "log_score": {
+    "alert_means_bloom": {
+      "hi": 0.2978630917915878,
+      "lo": 0.210285469021034,
+      "mean": 0.2540742804063109,
+      "n": 30,
+      "unit": ""
+    },
+    "madkhal": {
+      "hi": 0.15423821995962142,
+      "lo": 0.09069701925254314,
+      "mean": 0.12246761960608228,
+      "n": 30,
+      "unit": ""
+    },
+    "persistence": {
+      "hi": 0.9420991847072033,
+      "lo": 0.8111380149501055,
+      "mean": 0.8766185998286544,
+      "n": 30,
+      "unit": ""
+    }
+  },
+  "per_seed": [
+    {
+      "bloom_days": 31,
+      "brier": {
+        "alert_means_bloom": 0.06027397260273973,
+        "madkhal": 0.03940707965582075,
+        "persistence": 0.18493150684931506
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.2870164638068191,
+        "madkhal": 0.15924634979676128,
+        "persistence": 0.85983277389209
+      },
+      "seed": 1000
+    },
+    {
+      "bloom_days": 27,
+      "brier": {
+        "alert_means_bloom": 0.056164383561643834,
+        "madkhal": 0.031937728005608915,
+        "persistence": 0.18767123287671234
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.2681324096281838,
+        "madkhal": 0.14415818586051626,
+        "persistence": 0.8724221433445134
+      },
+      "seed": 1001
+    },
+    {
+      "bloom_days": 5,
+      "brier": {
+        "alert_means_bloom": 0.028767123287671233,
+        "madkhal": 0.005032636291914605,
+        "persistence": 0.17123287671232876
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.14223871510394848,
+        "madkhal": 0.037136358393673824,
+        "persistence": 0.7968859266299723
+      },
+      "seed": 1002
+    },
+    {
+      "bloom_days": 19,
+      "brier": {
+        "alert_means_bloom": 0.045205479452054796,
+        "madkhal": 0.02475230773292801,
+        "persistence": 0.14794520547945206
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.21777493181848973,
+        "madkhal": 0.10856560664913402,
+        "persistence": 0.6898762862843721
+      },
+      "seed": 1003
+    },
+    {
+      "bloom_days": 4,
+      "brier": {
+        "alert_means_bloom": 0.031506849315068496,
+        "madkhal": 0.005776678086571676,
+        "persistence": 0.1821917808219178
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.15482808455637204,
+        "madkhal": 0.042805382334214256,
+        "persistence": 0.8472434044396663
+      },
+      "seed": 1004
+    },
+    {
+      "bloom_days": 72,
+      "brier": {
+        "alert_means_bloom": 0.12191780821917808,
+        "madkhal": 0.09245871620311513,
+        "persistence": 0.28904109589041094
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.5702772764863485,
+        "madkhal": 0.369491422810249,
+        "persistence": 1.3382288130841842
+      },
+      "seed": 1005
+    },
+    {
+      "bloom_days": 21,
+      "brier": {
+        "alert_means_bloom": 0.0410958904109589,
+        "madkhal": 0.011093097708370015,
+        "persistence": 0.1643835616438356
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.19889087763985439,
+        "madkhal": 0.05896750612549244,
+        "persistence": 0.7654125029989132
+      },
+      "seed": 1006
+    },
+    {
+      "bloom_days": 0,
+      "brier": {
+        "alert_means_bloom": 0.0273972602739726,
+        "madkhal": 0.0008670849616504073,
+        "persistence": 0.17123287671232876
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.13594403037773672,
+        "madkhal": 0.026147473603096206,
+        "persistence": 0.7968859266299723
+      },
+      "seed": 1007
+    },
+    {
+      "bloom_days": 53,
+      "brier": {
+        "alert_means_bloom": 0.10547945205479452,
+        "madkhal": 0.06971939613936838,
+        "persistence": 0.2726027397260274
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.4947410597718075,
+        "madkhal": 0.29712331842815404,
+        "persistence": 1.262692596369643
+      },
+      "seed": 1008
+    },
+    {
+      "bloom_days": 17,
+      "brier": {
+        "alert_means_bloom": 0.0273972602739726,
+        "madkhal": 0.007640472904827995,
+        "persistence": 0.10821917808219178
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.13594403037773672,
+        "madkhal": 0.04698566823774853,
+        "persistence": 0.5073304292242309
+      },
+      "seed": 1009
+    },
+    {
+      "bloom_days": 41,
+      "brier": {
+        "alert_means_bloom": 0.07945205479452055,
+        "madkhal": 0.054446266703428114,
+        "persistence": 0.20273972602739726
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.3751420499737838,
+        "madkhal": 0.2465371815295226,
+        "persistence": 0.9416636753328429
+      },
+      "seed": 1010
+    },
+    {
+      "bloom_days": 4,
+      "brier": {
+        "alert_means_bloom": 0.03972602739726028,
+        "madkhal": 0.008249127449644199,
+        "persistence": 0.2136986301369863
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.1925961929136426,
+        "madkhal": 0.05630174710985474,
+        "persistence": 0.9920211531425369
+      },
+      "seed": 1011
+    },
+    {
+      "bloom_days": 45,
+      "brier": {
+        "alert_means_bloom": 0.08767123287671233,
+        "madkhal": 0.04432240219241745,
+        "persistence": 0.2671232876712329
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.41291015833105443,
+        "madkhal": 0.17699379717799038,
+        "persistence": 1.2375138574647957
+      },
+      "seed": 1012
+    },
+    {
+      "bloom_days": 11,
+      "brier": {
+        "alert_means_bloom": 0.0410958904109589,
+        "madkhal": 0.015145313820222273,
+        "persistence": 0.18082191780821918
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.19889087763985436,
+        "madkhal": 0.08147685086103114,
+        "persistence": 0.8409487197134545
+      },
+      "seed": 1013
+    },
+    {
+      "bloom_days": 26,
+      "brier": {
+        "alert_means_bloom": 0.06027397260273973,
+        "madkhal": 0.03426497122739068,
+        "persistence": 0.2
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.2870164638068191,
+        "madkhal": 0.15056908926752471,
+        "persistence": 0.9290743058804192
+      },
+      "seed": 1014
+    },
+    {
+      "bloom_days": 17,
+      "brier": {
+        "alert_means_bloom": 0.036986301369863014,
+        "madkhal": 0.022381185156277655,
+        "persistence": 0.13287671232876713
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.18000682346121907,
+        "madkhal": 0.10276804640570432,
+        "persistence": 0.6206347542960426
+      },
+      "seed": 1015
+    },
+    {
+      "bloom_days": 65,
+      "brier": {
+        "alert_means_bloom": 0.10684931506849316,
+        "madkhal": 0.05376511077831503,
+        "persistence": 0.2219178082191781
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.5010357444980191,
+        "madkhal": 0.210414023458453,
+        "persistence": 1.0297892614998074
+      },
+      "seed": 1016
+    },
+    {
+      "bloom_days": 11,
+      "brier": {
+        "alert_means_bloom": 0.045205479452054796,
+        "madkhal": 0.026973817291729926,
+        "persistence": 0.1684931506849315
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.21777493181848964,
+        "madkhal": 0.1230096714635859,
+        "persistence": 0.7842965571775484
+      },
+      "seed": 1017
+    },
+    {
+      "bloom_days": 49,
+      "brier": {
+        "alert_means_bloom": 0.08767123287671233,
+        "madkhal": 0.06242771110623547,
+        "persistence": 0.20273972602739726
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.4129101583310544,
+        "madkhal": 0.23812674170249037,
+        "persistence": 0.9416636753328429
+      },
+      "seed": 1018
+    },
+    {
+      "bloom_days": 6,
+      "brier": {
+        "alert_means_bloom": 0.03561643835616438,
+        "madkhal": 0.008690483097529171,
+        "persistence": 0.18767123287671234
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.17371213873500732,
+        "madkhal": 0.058424286902127635,
+        "persistence": 0.8724221433445133
+      },
+      "seed": 1019
+    },
+    {
+      "bloom_days": 46,
+      "brier": {
+        "alert_means_bloom": 0.07534246575342465,
+        "madkhal": 0.05754758816971479,
+        "persistence": 0.17945205479452056
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.35625799579514855,
+        "madkhal": 0.24478271112593042,
+        "persistence": 0.8346540349872428
+      },
+      "seed": 1020
+    },
+    {
+      "bloom_days": 5,
+      "brier": {
+        "alert_means_bloom": 0.030136986301369864,
+        "madkhal": 0.0073648202883289755,
+        "persistence": 0.18082191780821918
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.14853339983016026,
+        "madkhal": 0.05283837459115908,
+        "persistence": 0.8409487197134545
+      },
+      "seed": 1021
+    },
+    {
+      "bloom_days": 9,
+      "brier": {
+        "alert_means_bloom": 0.04246575342465753,
+        "madkhal": 0.012476014795083864,
+        "persistence": 0.19452054794520549
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.20518556236606614,
+        "madkhal": 0.06817252529362255,
+        "persistence": 0.9038955669755722
+      },
+      "seed": 1022
+    },
+    {
+      "bloom_days": 24,
+      "brier": {
+        "alert_means_bloom": 0.06301369863013699,
+        "madkhal": 0.032333048560970495,
+        "persistence": 0.24383561643835616
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.2996058332592426,
+        "madkhal": 0.15789011475156692,
+        "persistence": 1.1305042171191957
+      },
+      "seed": 1023
+    },
+    {
+      "bloom_days": 0,
+      "brier": {
+        "alert_means_bloom": 0.024657534246575342,
+        "madkhal": 0.0007550205720964827,
+        "persistence": 0.1726027397260274
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.12335466092531319,
+        "madkhal": 0.02537155917840489,
+        "persistence": 0.8031806113561839
+      },
+      "seed": 1024
+    },
+    {
+      "bloom_days": 24,
+      "brier": {
+        "alert_means_bloom": 0.049315068493150684,
+        "madkhal": 0.03191007754987707,
+        "persistence": 0.14794520547945206
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.236658985997125,
+        "madkhal": 0.14694142578642497,
+        "persistence": 0.6898762862843721
+      },
+      "seed": 1025
+    },
+    {
+      "bloom_days": 7,
+      "brier": {
+        "alert_means_bloom": 0.031506849315068496,
+        "madkhal": 0.009711436730490361,
+        "persistence": 0.1506849315068493
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.15482808455637204,
+        "madkhal": 0.05698785288634867,
+        "persistence": 0.7024656557367958
+      },
+      "seed": 1026
+    },
+    {
+      "bloom_days": 9,
+      "brier": {
+        "alert_means_bloom": 0.03561643835616438,
+        "madkhal": 0.012374719370744667,
+        "persistence": 0.1589041095890411
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.1737121387350073,
+        "madkhal": 0.06722827278156122,
+        "persistence": 0.7402337640940662
+      },
+      "seed": 1027
+    },
+    {
+      "bloom_days": 15,
+      "brier": {
+        "alert_means_bloom": 0.04657534246575343,
+        "madkhal": 0.019811194445441417,
+        "persistence": 0.18493150684931506
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.22406961654470145,
+        "madkhal": 0.09272012870253067,
+        "persistence": 0.8598327738920898
+      },
+      "seed": 1028
+    },
+    {
+      "bloom_days": 0,
+      "brier": {
+        "alert_means_bloom": 0.028767123287671233,
+        "madkhal": 0.0008216797403547549,
+        "persistence": 0.1863013698630137
+      },
+      "coverage90": 1.0,
+      "log_score": {
+        "alert_means_bloom": 0.14223871510394848,
+        "madkhal": 0.025846914967594625,
+        "persistence": 0.8661274586183015
+      },
+      "seed": 1029
+    }
+  ],
+  "reliability": [
+    {
+      "bin_hi": 0.1,
+      "bin_lo": 0.0,
+      "mean_forecast": 0.024858283836493942,
+      "n": 21661.0,
+      "observed": 0.02599141313882092
+    },
+    {
+      "bin_hi": 0.2,
+      "bin_lo": 0.1,
+      "mean_forecast": 0.1323856011136923,
+      "n": 91.0,
+      "observed": 0.16483516483516483
+    },
+    {
+      "bin_hi": 0.30000000000000004,
+      "bin_lo": 0.2,
+      "mean_forecast": 0.23174034876543712,
+      "n": 21.0,
+      "observed": 0.19047619047619047
+    },
+    {
+      "bin_hi": 0.4,
+      "bin_lo": 0.30000000000000004,
+      "mean_forecast": 0.3490439258434415,
+      "n": 14.0,
+      "observed": 0.2857142857142857
+    },
+    {
+      "bin_hi": 0.5,
+      "bin_lo": 0.4,
+      "mean_forecast": 0.4469047749400607,
+      "n": 10.0,
+      "observed": 0.6
+    },
+    {
+      "bin_hi": 0.6000000000000001,
+      "bin_lo": 0.5,
+      "mean_forecast": 0.5493186840758176,
+      "n": 29.0,
+      "observed": 0.4482758620689655
+    },
+    {
+      "bin_hi": 0.7000000000000001,
+      "bin_lo": 0.6000000000000001,
+      "mean_forecast": 0.6555781404920156,
+      "n": 14.0,
+      "observed": 0.7857142857142857
+    },
+    {
+      "bin_hi": 0.8,
+      "bin_lo": 0.7000000000000001,
+      "mean_forecast": 0.7388208931987301,
+      "n": 10.0,
+      "observed": 0.7
+    },
+    {
+      "bin_hi": 0.9,
+      "bin_lo": 0.8,
+      "mean_forecast": 0.8569399843389626,
+      "n": 19.0,
+      "observed": 0.7894736842105263
+    },
+    {
+      "bin_hi": 1.0,
+      "bin_lo": 0.9,
+      "mean_forecast": 0.9457941101052687,
+      "n": 31.0,
+      "observed": 0.8064516129032258
+    }
+  ],
+  "reliability_bins_ok": {
+    "bins_with_50_days": 2,
+    "bins_within_0_1": 2
+  },
+  "seeds": [
+    1000,
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010,
+    1011,
+    1012,
+    1013,
+    1014,
+    1015,
+    1016,
+    1017,
+    1018,
+    1019,
+    1020,
+    1021,
+    1022,
+    1023,
+    1024,
+    1025,
+    1026,
+    1027,
+    1028,
+    1029
+  ]
+}

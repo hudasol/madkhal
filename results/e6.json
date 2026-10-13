@@ -1,0 +1,40 @@
+{
+  "experiment": "E6",
+  "generator": "G1",
+  "label": "SYNTHETIC",
+  "note": "Daily decisions: the 12 hour dwell cannot bind; the hysteresis margin does the work (ADR 0008).",
+  "policies": {
+    "P3": {
+      "changes_per_30_days": {
+        "hi": 0.2862811640843262,
+        "lo": 0.13289691810745474,
+        "mean": 0.20958904109589047,
+        "n": 30,
+        "unit": "changes per 30 days"
+      },
+      "dwell_compliance": {
+        "hi": 1.0,
+        "lo": 1.0,
+        "mean": 1.0,
+        "n": 30,
+        "unit": "share"
+      }
+    },
+    "P4": {
+      "changes_per_30_days": {
+        "hi": 0.28865412833576776,
+        "lo": 0.1332636798834104,
+        "mean": 0.21095890410958906,
+        "n": 30,
+        "unit": "changes per 30 days"
+      },
+      "dwell_compliance": {
+        "hi": 1.0,
+        "lo": 1.0,
+        "mean": 1.0,
+        "n": 30,
+        "unit": "share"
+      }
+    }
+  }
+}

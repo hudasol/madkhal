@@ -1,0 +1,42 @@
+# Notes on individual predictions, written after the results were seen. They explain misses
+# and qualify weak hits; they never change a result. No number appears here: every number
+# lives in results/*.json and is rendered into docs/EVALUATION.md.
+notes:
+  PR-E1-3: >-
+    A hit, but a weak one: coverage equal to one means the intervals are wider than they need
+    to be on G1. That is expected, because G1's truth sits at the posterior mean, the centre of
+    the draws. Coverage on a world whose parameters are far from the posterior mean is not
+    measured here.
+  PR-E1-4: >-
+    A hit on very little evidence: only the two lowest forecast bins held enough days to
+    qualify under the preregistered rule.
+    The sparse upper bins suggest overconfidence at the top end (the highest bin's observed
+    frequency is below its mean forecast), which this prediction did not test.
+  PR-E2-1: >-
+    Miss. Madkhal reduced forced shutdowns relative to always going, but by less than half.
+    Most blooms in G1 are invisible to the broadband detector (the visible share follows the
+    hit rate posterior, roughly one in three blooms), and a decision cannot react to a bloom it
+    cannot see. This is the central limitation of a satellite only advisory, not a tuning issue.
+  PR-E2-4: >-
+    Miss. Madkhal derated on fewer days per year than predicted. Because most blooms raise no
+    alert, the belief rarely leaves the seasonal prior, and the prediction overestimated how
+    often it would cross the feasibility threshold.
+  PR-E3-1: >-
+    Miss. The alert_park rule did better on G2 than on G1, not worse. Its cost is dominated by
+    unserved water while parked after alerts, and G2's longer blind season leaves fewer alerts
+    to react to, so it parks less. The prediction assumed every policy would suffer from the
+    stress world; a rule that mostly harms itself on alerts gains when alerts are rarer.
+  PR-E2-3: >-
+    A hit on the means only. The paired regret intervals of Madkhal against always going and
+    against the seasonal rule both include zero on G1, so the ordering among those three
+    policies is not established; only the large gap to alert_park is.
+  PR-E3-3: >-
+    A hit that counts against Madkhal: on the stress world the fixed seasonal rule had lower
+    mean regret than Madkhal without inspection. The paired interval of that difference
+    includes zero, so the ordering is not established either way.
+  PR-E4-1: >-
+    A hit on the mean only: the interval of the difference includes zero, so the evidence that
+    surveys pay at this cost is weak.
+  PR-E7-2: >-
+    Not blind: the Kalba replay window around the one detected event was seen during
+    development before the preregistration (disclosed there).

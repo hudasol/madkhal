@@ -1,0 +1,692 @@
+{
+  "draws": 400,
+  "experiment": "E7",
+  "label": "REPLAY: real satellite evidence, hypothetical plant",
+  "seed": 7,
+  "sites": {
+    "alraha": {
+      "by_year": {
+        "2018": {
+          "days": 365,
+          "non_go": 18,
+          "outside_non_go": 18,
+          "outside_windows": 365,
+          "quiet_days": 365,
+          "quiet_non_go": 18
+        },
+        "2019": {
+          "days": 365,
+          "non_go": 0,
+          "outside_non_go": 0,
+          "outside_windows": 365,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        },
+        "2020": {
+          "days": 366,
+          "non_go": 3,
+          "outside_non_go": 3,
+          "outside_windows": 366,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        },
+        "2021": {
+          "days": 365,
+          "non_go": 1,
+          "outside_non_go": 1,
+          "outside_windows": 365,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        },
+        "2022": {
+          "days": 365,
+          "non_go": 3,
+          "outside_non_go": 3,
+          "outside_windows": 349,
+          "quiet_days": 349,
+          "quiet_non_go": 3
+        },
+        "2023": {
+          "days": 311,
+          "non_go": 3,
+          "outside_non_go": 0,
+          "outside_windows": 0,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        }
+      },
+      "outside_windows_days": 1810,
+      "outside_windows_non_go_days": 25,
+      "outside_windows_non_go_per_year": 5.041436464088398,
+      "points": [
+        {
+          "action": "GO",
+          "anchor": "t_ref",
+          "anchor_date": "2023-04-15",
+          "date": "2023-04-01",
+          "days_before": 14,
+          "event_id": "E2023-ALRAHA",
+          "label": "Al Raha 2023, documented diatom bloom (not an intake; known miss case)",
+          "p_any_bloom": [
+            0.007342651210748353,
+            0.02311255814445784,
+            0.06751609060079099
+          ],
+          "scale": 1.0,
+          "status_badge": "VERIFIED-PRIMARY",
+          "within_3": [
+            0.006009478300441221,
+            0.020831207136327093,
+            0.06192236809697707
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref",
+          "anchor_date": "2023-04-15",
+          "date": "2023-04-08",
+          "days_before": 7,
+          "event_id": "E2023-ALRAHA",
+          "label": "Al Raha 2023, documented diatom bloom (not an intake; known miss case)",
+          "p_any_bloom": [
+            0.0064990052861178885,
+            0.020473146270479914,
+            0.060364039219647225
+          ],
+          "scale": 1.0,
+          "status_badge": "VERIFIED-PRIMARY",
+          "within_3": [
+            0.005295698769816699,
+            0.01835167429414939,
+            0.055071143008249696
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref",
+          "anchor_date": "2023-04-15",
+          "date": "2023-04-12",
+          "days_before": 3,
+          "event_id": "E2023-ALRAHA",
+          "label": "Al Raha 2023, documented diatom bloom (not an intake; known miss case)",
+          "p_any_bloom": [
+            0.0060860785277174045,
+            0.019143575292035475,
+            0.05701035474642931
+          ],
+          "scale": 1.0,
+          "status_badge": "VERIFIED-PRIMARY",
+          "within_3": [
+            0.004933184933920115,
+            0.017154085158109303,
+            0.051556308615607845
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2023-04-01",
+          "date": "2023-03-18",
+          "days_before": 14,
+          "event_id": "E2023-ALRAHA",
+          "label": "Al Raha 2023, documented diatom bloom (not an intake; known miss case)",
+          "p_any_bloom": [
+            0.009150575636084863,
+            0.02905974484726903,
+            0.07938890525396905
+          ],
+          "scale": 1.0,
+          "status_badge": "VERIFIED-PRIMARY",
+          "within_3": [
+            0.0076452297732061145,
+            0.026186585376921204,
+            0.07374185234074336
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2023-04-01",
+          "date": "2023-03-25",
+          "days_before": 7,
+          "event_id": "E2023-ALRAHA",
+          "label": "Al Raha 2023, documented diatom bloom (not an intake; known miss case)",
+          "p_any_bloom": [
+            0.008584469818045799,
+            0.026368348411971387,
+            0.07353756978732871
+          ],
+          "scale": 1.0,
+          "status_badge": "VERIFIED-PRIMARY",
+          "within_3": [
+            0.007008591779956085,
+            0.023832741125129793,
+            0.06790330047567615
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2023-04-01",
+          "date": "2023-03-29",
+          "days_before": 3,
+          "event_id": "E2023-ALRAHA",
+          "label": "Al Raha 2023, documented diatom bloom (not an intake; known miss case)",
+          "p_any_bloom": [
+            0.008160824975538767,
+            0.024836601697021454,
+            0.07063445078743247
+          ],
+          "scale": 1.0,
+          "status_badge": "VERIFIED-PRIMARY",
+          "within_3": [
+            0.006600567245455114,
+            0.022343317433913858,
+            0.06481264428862225
+          ]
+        }
+      ],
+      "quiet_days": 714,
+      "quiet_non_go_days": 21,
+      "quiet_non_go_per_year": 10.735294117647058
+    },
+    "barka": {
+      "by_year": {
+        "2018": {
+          "days": 365,
+          "non_go": 35,
+          "outside_non_go": 0,
+          "outside_windows": 0,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        },
+        "2019": {
+          "days": 365,
+          "non_go": 10,
+          "outside_non_go": 10,
+          "outside_windows": 365,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        },
+        "2020": {
+          "days": 366,
+          "non_go": 0,
+          "outside_non_go": 0,
+          "outside_windows": 366,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        },
+        "2021": {
+          "days": 365,
+          "non_go": 1,
+          "outside_non_go": 1,
+          "outside_windows": 365,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        },
+        "2022": {
+          "days": 365,
+          "non_go": 7,
+          "outside_non_go": 7,
+          "outside_windows": 365,
+          "quiet_days": 365,
+          "quiet_non_go": 7
+        },
+        "2023": {
+          "days": 311,
+          "non_go": 12,
+          "outside_non_go": 12,
+          "outside_windows": 100,
+          "quiet_days": 100,
+          "quiet_non_go": 12
+        }
+      },
+      "outside_windows_days": 1561,
+      "outside_windows_non_go_days": 30,
+      "outside_windows_non_go_per_year": 7.014734144778988,
+      "points": [
+        {
+          "action": "GO",
+          "anchor": "t_ref",
+          "anchor_date": "2018-02-25",
+          "date": "2018-02-11",
+          "days_before": 14,
+          "event_id": "E2018-BARKA",
+          "label": "Barka 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.014933156933657649,
+            0.03941545237003008,
+            0.10365698447575258
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.013501677945109626,
+            0.03446855938661173,
+            0.09374879979710765
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref",
+          "anchor_date": "2018-02-25",
+          "date": "2018-02-18",
+          "days_before": 7,
+          "event_id": "E2018-BARKA",
+          "label": "Barka 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.014575223210738248,
+            0.039076661091084985,
+            0.10321889126460836
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.013484238826620459,
+            0.033960163134589466,
+            0.09328638486067928
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref",
+          "anchor_date": "2018-02-25",
+          "date": "2018-02-22",
+          "days_before": 3,
+          "event_id": "E2018-BARKA",
+          "label": "Barka 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.016578577430022487,
+            0.0410843429377708,
+            0.10500068832262094
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.013592192386636434,
+            0.03535242698720742,
+            0.09407761423976413
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2018-02-01",
+          "date": "2018-01-18",
+          "days_before": 14,
+          "event_id": "E2018-BARKA",
+          "label": "Barka 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.015749637850779753,
+            0.03715719005566992,
+            0.09348159839459702
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.012118938809386885,
+            0.03171607379068827,
+            0.08489846002346803
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2018-02-01",
+          "date": "2018-01-25",
+          "days_before": 7,
+          "event_id": "E2018-BARKA",
+          "label": "Barka 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.015786842719906644,
+            0.03811383504512306,
+            0.09750728075385812
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.012659765297710466,
+            0.03272207967507762,
+            0.08800470853209709
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2018-02-01",
+          "date": "2018-01-29",
+          "days_before": 3,
+          "event_id": "E2018-BARKA",
+          "label": "Barka 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.016130769873333447,
+            0.03922884519348069,
+            0.1009031397817815
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.013034867092597718,
+            0.033920362778034896,
+            0.09078267196101043
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref",
+          "anchor_date": "2023-07-24",
+          "date": "2023-07-10",
+          "days_before": 14,
+          "event_id": "E2023-BARKA",
+          "label": "Barka 2023, desalination disruption report",
+          "p_any_bloom": [
+            0.00444121694761998,
+            0.012070641756889045,
+            0.03328398754718752
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.004096130938015663,
+            0.01060654846694245,
+            0.02965287525156927
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref",
+          "anchor_date": "2023-07-24",
+          "date": "2023-07-17",
+          "days_before": 7,
+          "event_id": "E2023-BARKA",
+          "label": "Barka 2023, desalination disruption report",
+          "p_any_bloom": [
+            0.006003008486895451,
+            0.014066200815405772,
+            0.037473110143763505
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.004526856569014519,
+            0.012345163338495644,
+            0.033238562694118526
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref",
+          "anchor_date": "2023-07-24",
+          "date": "2023-07-21",
+          "days_before": 3,
+          "event_id": "E2023-BARKA",
+          "label": "Barka 2023, desalination disruption report",
+          "p_any_bloom": [
+            0.00536886337476652,
+            0.013793019345539004,
+            0.03712681063597716
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.004550776134261141,
+            0.011853068904380861,
+            0.03287897589888972
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2023-07-01",
+          "date": "2023-06-17",
+          "days_before": 14,
+          "event_id": "E2023-BARKA",
+          "label": "Barka 2023, desalination disruption report",
+          "p_any_bloom": [
+            0.004221941728396894,
+            0.011574637112195252,
+            0.0326909767680071
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.003920882361843836,
+            0.010356184787395363,
+            0.029412198393888856
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2023-07-01",
+          "date": "2023-06-24",
+          "days_before": 7,
+          "event_id": "E2023-BARKA",
+          "label": "Barka 2023, desalination disruption report",
+          "p_any_bloom": [
+            0.004467679245906142,
+            0.011899107324126468,
+            0.03290557304606168
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.003958207263678816,
+            0.010377845496811026,
+            0.02960685656290521
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2023-07-01",
+          "date": "2023-06-28",
+          "days_before": 3,
+          "event_id": "E2023-BARKA",
+          "label": "Barka 2023, desalination disruption report",
+          "p_any_bloom": [
+            0.004587271988680708,
+            0.012161527758041246,
+            0.03305521601832876
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.004014893505434553,
+            0.010440954777980845,
+            0.0296121435355811
+          ]
+        }
+      ],
+      "quiet_days": 465,
+      "quiet_non_go_days": 19,
+      "quiet_non_go_per_year": 14.913978494623656
+    },
+    "kalba": {
+      "by_year": {
+        "2018": {
+          "days": 365,
+          "non_go": 43,
+          "outside_non_go": 13,
+          "outside_windows": 154,
+          "quiet_days": 154,
+          "quiet_non_go": 13
+        },
+        "2019": {
+          "days": 365,
+          "non_go": 0,
+          "outside_non_go": 0,
+          "outside_windows": 365,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        },
+        "2020": {
+          "days": 366,
+          "non_go": 2,
+          "outside_non_go": 2,
+          "outside_windows": 366,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        },
+        "2021": {
+          "days": 365,
+          "non_go": 0,
+          "outside_non_go": 0,
+          "outside_windows": 365,
+          "quiet_days": 0,
+          "quiet_non_go": 0
+        },
+        "2022": {
+          "days": 365,
+          "non_go": 9,
+          "outside_non_go": 9,
+          "outside_windows": 365,
+          "quiet_days": 365,
+          "quiet_non_go": 9
+        },
+        "2023": {
+          "days": 311,
+          "non_go": 11,
+          "outside_non_go": 11,
+          "outside_windows": 311,
+          "quiet_days": 311,
+          "quiet_non_go": 11
+        }
+      },
+      "outside_windows_days": 1926,
+      "outside_windows_non_go_days": 35,
+      "outside_windows_non_go_per_year": 6.632917964693665,
+      "points": [
+        {
+          "action": "GO",
+          "anchor": "t_ref",
+          "anchor_date": "2018-09-15",
+          "date": "2018-09-01",
+          "days_before": 14,
+          "event_id": "E2018-KALBA",
+          "label": "Kalba 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.014190146617231818,
+            0.03376215377019526,
+            0.08618880651697651
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.010756952804351719,
+            0.02927402662180115,
+            0.07684173749585944
+          ]
+        },
+        {
+          "action": "DERATE",
+          "anchor": "t_ref",
+          "anchor_date": "2018-09-15",
+          "date": "2018-09-08",
+          "days_before": 7,
+          "event_id": "E2018-KALBA",
+          "label": "Kalba 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.1343869618717808,
+            0.5495166474729805,
+            0.8658103538977956
+          ],
+          "scale": 0.9,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.10970938703725831,
+            0.4178104312051869,
+            0.7601844686804283
+          ]
+        },
+        {
+          "action": "DERATE",
+          "anchor": "t_ref",
+          "anchor_date": "2018-09-15",
+          "date": "2018-09-12",
+          "days_before": 3,
+          "event_id": "E2018-KALBA",
+          "label": "Kalba 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.43264090743115063,
+            0.8383083476851942,
+            0.9262141231000685
+          ],
+          "scale": 0.7,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.3910108691674997,
+            0.7751570664999408,
+            0.901908977199306
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2018-09-01",
+          "date": "2018-08-18",
+          "days_before": 14,
+          "event_id": "E2018-KALBA",
+          "label": "Kalba 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.01076519943525866,
+            0.026262029645980955,
+            0.06399836640586931
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.008469367389975937,
+            0.02222783862586334,
+            0.0558622028253492
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2018-09-01",
+          "date": "2018-08-25",
+          "days_before": 7,
+          "event_id": "E2018-KALBA",
+          "label": "Kalba 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.013123538806108314,
+            0.03209152873653576,
+            0.07817439829398448
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.010553572363949701,
+            0.02727535154542681,
+            0.06777971677049409
+          ]
+        },
+        {
+          "action": "GO",
+          "anchor": "t_ref_earliest",
+          "anchor_date": "2018-09-01",
+          "date": "2018-08-29",
+          "days_before": 3,
+          "event_id": "E2018-KALBA",
+          "label": "Kalba 2018, desalination disruption report",
+          "p_any_bloom": [
+            0.01371696578160519,
+            0.032827785030553114,
+            0.08289728412345412
+          ],
+          "scale": 1.0,
+          "status_badge": "UNVERIFIED",
+          "within_3": [
+            0.01068771251914646,
+            0.028175917858530464,
+            0.07280591050603431
+          ]
+        }
+      ],
+      "quiet_days": 830,
+      "quiet_non_go_days": 33,
+      "quiet_non_go_per_year": 14.512048192771084
+    }
+  }
+}
