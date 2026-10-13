@@ -1,0 +1,128 @@
+# Madkhal requirements. Source of truth for docs/TRACEABILITY.md.
+# id: MK-<layer>-<nnn>; tier: MUST | SHOULD | MAY; phase: the build phase that delivers it.
+# The fast check fails when a MUST requirement of a phase up to `enforced_through` has no test.
+enforced_through: P0
+
+requirements:
+  # Cross cutting
+  - {id: MK-X-001, tier: MUST, phase: P0, text: "Layers point downward only; import-linter contracts run inside madkhal check and fail on a violation."}
+  - {id: MK-X-002, tier: MUST, phase: P0, text: "Every MUST requirement has at least one test that names its ID; the matrix is rendered to docs/TRACEABILITY.md."}
+  - {id: MK-X-003, tier: MUST, phase: P0, text: "Every claim in docs/claims.yaml has a type and a pointer that resolves; the register is rendered to docs/CLAIMS.md."}
+  - {id: MK-X-004, tier: MUST, phase: P0, text: "Every stochastic step takes an explicit seed; the same seed and label give identical random streams."}
+  - {id: MK-X-005, tier: MUST, phase: P0, text: "JSON is written as UTF-8 with Arabic preserved (ensure_ascii False), sorted keys and LF line endings."}
+  - {id: MK-X-006, tier: MUST, phase: P7, text: "Rendered documents are fresh: every number in a rendered document equals its value in results/."}
+  - {id: MK-X-007, tier: MUST, phase: P0, text: "Published text follows the writing rules: no em dashes, no Arabic characters in file names."}
+  - {id: MK-X-008, tier: MUST, phase: P10, text: "No operator name, logo reference or university affiliation appears outside docs/CONTEXT.md."}
+  - {id: MK-X-009, tier: SHOULD, phase: P10, text: "The performance budget is measured and recorded (belief, advisory, experiment suite, API, web first load)."}
+
+  # L0 Contract
+  - {id: MK-L0-001, tier: MUST, phase: P1, text: "Pydantic models for Site, EvidenceDay, Event, BloomBelief, PlantProfile, Limits, Advisory, Scenario, PolicyResult and Mission round trip through JSON."}
+  - {id: MK-L0-002, tier: MUST, phase: P1, text: "JSON Schema, TypeScript types and the field dictionary are generated from the models; a test fails if any generated artefact is stale."}
+  - {id: MK-L0-003, tier: MUST, phase: P1, text: "A plant parameter without an evidence level is rejected."}
+  - {id: MK-L0-004, tier: MUST, phase: P1, text: "An Advisory without an explanation object is rejected."}
+  - {id: MK-L0-005, tier: MUST, phase: P1, text: "Unit conventions hold: probabilities in [0, 1], percentages in [0, 100], volumes in m3, flow in m3/h, timestamps in UTC."}
+  - {id: MK-L0-006, tier: MUST, phase: P1, text: "Every model field has an English and an Arabic description in the field dictionary."}
+
+  # L1 Evidence
+  - {id: MK-L1-001, tier: MUST, phase: P2, text: "The Nadhir snapshot is pinned to commit ca484e2 with a SHA-256 per file in MANIFEST.json; a test fails on any difference."}
+  - {id: MK-L1-002, tier: MUST, phase: P2, text: "The adapter validates columns and values and fails loudly with a message that names the file and the column."}
+  - {id: MK-L1-003, tier: MUST, phase: P2, text: "The coverage calendar gives, per site and day, clear, nodata or alert."}
+  - {id: MK-L1-004, tier: MUST, phase: P2, text: "The detector track record is copied from Nadhir result files with the source row cited, and carries n_dated = 5, n_observable = 3, n_detected = 1."}
+  - {id: MK-L1-005, tier: MUST, phase: P2, text: "Every event keeps its evidence_status; an UNVERIFIED event is never shown without that label."}
+  - {id: MK-L1-006, tier: MUST, phase: P2, text: "Only the evidence layer reads snapshot files."}
+  - {id: MK-L1-007, tier: SHOULD, phase: P2, text: "MODIS sites (Fujairah, RAK, Dibba) are loaded as a clearly separate dataset."}
+  - {id: MK-L1-008, tier: MUST, phase: P2, text: "Every rate in the track record carries its counts beside it."}
+  - {id: MK-L1-009, tier: MUST, phase: P2, text: "The snapshot stays under 10 MB."}
+  - {id: MK-L1-010, tier: MUST, phase: P2, text: "Event labels exposed by the adapter name places and dates only, never an operator."}
+
+  # L2 Estimator
+  - {id: MK-L2-001, tier: MUST, phase: P3, text: "The filter has three reported latent states (clear, developing, at_intake) and daily steps."}
+  - {id: MK-L2-002, tier: MUST, phase: P3, text: "Seasonal daily transition probabilities are explicit and carry ASSUMPTION provenance."}
+  - {id: MK-L2-003, tier: MUST, phase: P3, text: "A nodata day carries no information: the update equals prior propagation."}
+  - {id: MK-L2-004, tier: MUST, phase: P3, text: "The false alarm rate alpha has a Beta posterior from Nadhir held out counts with a Jeffreys prior."}
+  - {id: MK-L2-005, tier: MUST, phase: P3, text: "The hit rate has a Beta posterior from 1 detected of 3 observable events, with a documented species blind spot widening and a sensitivity run."}
+  - {id: MK-L2-006, tier: MUST, phase: P3, text: "The filter runs over at least 400 parameter draws and reports P(at_intake within 1, 3, 7 days) as median and 90 percent interval, P(any bloom state) and staleness."}
+  - {id: MK-L2-007, tier: MUST, phase: P3, text: "Baselines alert_means_bloom and persistence are implemented."}
+  - {id: MK-L2-008, tier: MUST, phase: P3, text: "With no data the belief equals the seasonal prior."}
+  - {id: MK-L2-009, tier: MUST, phase: P3, text: "A nodata day never gives a narrower interval than the same day observed as quiet."}
+  - {id: MK-L2-010, tier: MUST, phase: P3, text: "More alerts never lower P(any bloom state)."}
+  - {id: MK-L2-011, tier: MUST, phase: P3, text: "A worked example computed by hand matches the filter."}
+  - {id: MK-L2-012, tier: SHOULD, phase: P3, text: "A lead time summary for developing to at_intake uses the Nadhir range (minus 6 to plus 8 days) as its only anchor, labelled n = 1."}
+  - {id: MK-L2-013, tier: SHOULD, phase: P8, text: "A survey observation update merges a drone result into the belief."}
+  - {id: MK-L2-014, tier: MUST, phase: P3, text: "The E1 smoke run works from the CLI."}
+
+  # L3 Plant (hypothetical)
+  - {id: MK-L3-001, tier: MUST, phase: P5, text: "A stylised SWRO unit plant (intake, pretreatment, RO train, product storage) is documented as hypothetical."}
+  - {id: MK-L3-002, tier: MUST, phase: P5, text: "Every plant parameter has value, unit, evidence level, provenance and a spread that follows provenance (assumption at least 25 percent)."}
+  - {id: MK-L3-003, tier: MUST, phase: P5, text: "Water and load balances hold in the simulator."}
+  - {id: MK-L3-004, tier: MUST, phase: P5, text: "Higher load never lowers fouling at the same scale; a lower scale never raises fouling."}
+  - {id: MK-L3-005, tier: MUST, phase: P5, text: "Storage is never negative; unserved water accrues only when storage is empty."}
+  - {id: MK-L3-006, tier: MUST, phase: P5, text: "The same seed gives identical plant output."}
+  - {id: MK-L3-007, tier: MUST, phase: P5, text: "A zero bloom scenario never forces a shutdown."}
+  - {id: MK-L3-008, tier: MUST, phase: P5, text: "The assumption share of the plant profile is reported."}
+  - {id: MK-L3-009, tier: MUST, phase: P5, text: "Fouling index at or above 1 forces a shutdown and a cleaning event with a restart penalty."}
+  - {id: MK-L3-010, tier: SHOULD, phase: P5, text: "A sensitivity ranking says which plant parameter to measure first."}
+
+  # L4 Decision
+  - {id: MK-L4-001, tier: MUST, phase: P5, text: "Candidates are GO (q = 1), DERATE (q from 0.9 to 0.2 with coagulant boost) and PARK (q = 0)."}
+  - {id: MK-L4-002, tier: MUST, phase: P5, text: "A candidate is feasible when P(fouling breach) and P(unserved water above allowance) are both within their budgets over the joint posterior."}
+  - {id: MK-L4-003, tier: MUST, phase: P5, text: "The most permissive feasible action is chosen and the binding constraint is named."}
+  - {id: MK-L4-004, tier: MUST, phase: P5, text: "When no candidate is feasible the advisory is NO_SAFE_OPTION_ESCALATE with reasons."}
+  - {id: MK-L4-005, tier: MUST, phase: P5, text: "Each advisory reports P(breach) and time to limit at full scale, evidence level and assumption share."}
+  - {id: MK-L4-006, tier: MUST, phase: P5, text: "A higher bloom probability never gives a more permissive action."}
+  - {id: MK-L4-007, tier: MUST, phase: P5, text: "Wider plant parameter spreads never give a more permissive action."}
+  - {id: MK-L4-008, tier: MUST, phase: P5, text: "A tighter risk budget never gives a more permissive action."}
+  - {id: MK-L4-009, tier: MUST, phase: P5, text: "Lower storage never loosens the water security constraint."}
+  - {id: MK-L4-010, tier: MUST, phase: P5, text: "A less restrictive change waits for a 12 hour dwell; escalation is immediate; the change rate is measured."}
+  - {id: MK-L4-011, tier: MUST, phase: P5, text: "An advisory is reproducible from its stored inputs and seed, and its id is the inputs hash."}
+  - {id: MK-L4-012, tier: MUST, phase: P5, text: "Plain language text (what to do, why, what would change this) is rendered from the structured explanation object."}
+  - {id: MK-L4-013, tier: MUST, phase: P8, text: "INSPECT is set only when the pre posterior value of a survey exceeds its cost; value and break even cost are reported; staleness alone never sets it."}
+
+  # L5 Policy lab
+  - {id: MK-L5-001, tier: MUST, phase: P6, text: "Generator G1 is calibrated to Nadhir numbers and declares that it shares assumptions with the estimator."}
+  - {id: MK-L5-002, tier: MUST, phase: P6, text: "Generator G2 is structurally different: heavier tails, correlated misses, longer blind seasons, invisible species events."}
+  - {id: MK-L5-003, tier: MUST, phase: P6, text: "Policies P0 always_go, P1 alert_park, P2 seasonal_rule, P3 madkhal_no_inspect, P4 madkhal_inspect and P5 oracle exist."}
+  - {id: MK-L5-004, tier: MUST, phase: P6, text: "All metrics are reported separately; a weighted cost is secondary, with weights shown and a weight sensitivity run."}
+  - {id: MK-L5-005, tier: MUST, phase: P6, text: "Policies are pure functions of their inputs."}
+  - {id: MK-L5-006, tier: MUST, phase: P6, text: "The oracle never does worse than any other policy in expectation (sanity test)."}
+  - {id: MK-L5-007, tier: MUST, phase: P6, text: "The replay runs over real 2018 to 2023 OLCI evidence for Kalba, Barka and Al Raha, labelled as a replay with a hypothetical plant."}
+  - {id: MK-L5-008, tier: MUST, phase: P6, text: "The replay is deterministic."}
+  - {id: MK-L5-009, tier: MUST, phase: P6, text: "The replay never uses information from after the replay date."}
+  - {id: MK-L5-010, tier: MUST, phase: P6, text: "docs/PREREGISTRATION.md was committed before any results file."}
+  - {id: MK-L5-011, tier: MUST, phase: P7, text: "madkhal eval writes E1 to E7 to results/*.json with at least 30 seeds (or 20, stated) and 95 percent intervals."}
+  - {id: MK-L5-012, tier: MUST, phase: P7, text: "docs/EVALUATION.md records every preregistered prediction as a hit or a miss."}
+
+  # L6 Tasking
+  - {id: MK-L6-001, tier: MUST, phase: P8, text: "The survey drone observation is an assumption with detection probability by state, weather availability, response time and cost per sortie."}
+  - {id: MK-L6-002, tier: MUST, phase: P8, text: "A survey mission covers the watch zone within a configurable radius at 60 to 120 m altitude and respects the drone profile."}
+  - {id: MK-L6-003, tier: MUST, phase: P8, text: "A mission that exceeds endurance less reserve is refused."}
+  - {id: MK-L6-004, tier: MUST, phase: P8, text: "Hours above the wind limit are marked unavailable."}
+  - {id: MK-L6-005, tier: MUST, phase: P8, text: "Missions export to GeoJSON, KML and a QGroundControl .plan that passes the plan validator."}
+  - {id: MK-L6-006, tier: MUST, phase: P8, text: "Every exported mission carries the simulation only statement."}
+  - {id: MK-L6-007, tier: MUST, phase: P8, text: "The value of information is never negative."}
+  - {id: MK-L6-008, tier: MUST, phase: P8, text: "With a perfect sensor and zero cost, INSPECT is set whenever the decision could change."}
+
+  # L7 API
+  - {id: MK-L7-001, tier: MUST, phase: P4, text: "The API is versioned under /v1 and publishes OpenAPI."}
+  - {id: MK-L7-002, tier: MUST, phase: P4, text: "Errors are application/problem+json."}
+  - {id: MK-L7-003, tier: MUST, phase: P4, text: "Endpoints health, sites, evidence, track-record and belief exist and are tested."}
+  - {id: MK-L7-004, tier: MUST, phase: P5, text: "Endpoints advisory, scenario/advise, timeline, plant/profile and plant/sensitivity exist and are tested."}
+  - {id: MK-L7-005, tier: MUST, phase: P7, text: "Endpoints policies/results, replay, method, claims and provenance exist and are tested."}
+  - {id: MK-L7-006, tier: MUST, phase: P8, text: "Endpoint missions exists and is tested."}
+  - {id: MK-L7-007, tier: MUST, phase: P4, text: "Inputs are bounded (seeds, horizons, request size), responses contain no file paths, ids come from an inputs hash."}
+  - {id: MK-L7-008, tier: MUST, phase: P4, text: "madkhal snapshot writes a static copy of every response so the web app runs without a backend."}
+
+  # L8 Web console
+  - {id: MK-L8-001, tier: MUST, phase: P4, text: "The Console and Evidence screens render from the API or the static snapshot."}
+  - {id: MK-L8-002, tier: MUST, phase: P4, text: "The two part banner is on every screen and cannot be dismissed."}
+  - {id: MK-L8-003, tier: MUST, phase: P9, text: "Timeline, Scenario Lab, Policy comparison, Inspection, Plant model, Replay and Method screens exist."}
+  - {id: MK-L8-004, tier: MUST, phase: P9, text: "Every screen is available in English and Arabic with right to left parity and an Arabic Indic digit toggle."}
+  - {id: MK-L8-005, tier: MUST, phase: P9, text: "Light and dark themes meet WCAG 2.2 AA text contrast and 3:1 for graphical objects, proven by a test."}
+  - {id: MK-L8-006, tier: MUST, phase: P9, text: "GO, DERATE, PARK, INSPECT and NO SAFE OPTION are encoded by shape and pattern as well as colour."}
+  - {id: MK-L8-007, tier: MUST, phase: P9, text: "Every chart shows intervals, has a screen reader label and a table alternative."}
+  - {id: MK-L8-008, tier: MUST, phase: P9, text: "Automated axe checks pass on every screen."}
+  - {id: MK-L8-009, tier: MUST, phase: P4, text: "The web app makes no network call other than to its own API or static files (no tiles, fonts or analytics from elsewhere)."}
+  - {id: MK-L8-010, tier: MUST, phase: P4, text: "Static mode works with no backend."}
+  - {id: MK-L8-011, tier: SHOULD, phase: P9, text: "A printable shift handover summarises the current advisory."}
+  - {id: MK-L8-012, tier: MUST, phase: P9, text: "Screens have loading, empty, error and partial data states."}
+  - {id: MK-L8-013, tier: MUST, phase: P9, text: "Times are shown in Asia/Dubai with UTC available in a tooltip."}

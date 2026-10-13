@@ -1,0 +1,4 @@
+# Public pages that were actually opened, with the date. Claims of kind `url` must point
+# to an entry here. Pages that could not be opened are listed with opened: false and are
+# never cited as SOURCED.
+sources: []

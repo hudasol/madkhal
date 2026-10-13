@@ -1,0 +1,14 @@
+# Claims register source. Rendered to docs/CLAIMS.md by `madkhal docs build`.
+# type: SOURCED | SUPPORTED_BY_RESULT | ASSUMPTION | UNVERIFIED
+# pointer.kind: url | result | parameter | snapshot | file
+claims:
+  - id: CL-001
+    text: "Madkhal is released under the Apache License 2.0."
+    type: SUPPORTED_BY_RESULT
+    where: [README]
+    pointer: {kind: file, ref: LICENSE}
+  - id: CL-002
+    text: "Madkhal is advisory software for planning and learning; it has no connection to any plant system and controls nothing."
+    type: ASSUMPTION
+    where: [README, UI]
+    pointer: {kind: file, ref: docs/adr/0001-licence-and-scope.md}
