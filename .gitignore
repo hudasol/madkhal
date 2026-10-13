@@ -19,3 +19,5 @@ web/playwright-report/
 web/blob-report/
 web/public/api/
 web/dist-live/
+sbom.json
+*.tsbuildinfo

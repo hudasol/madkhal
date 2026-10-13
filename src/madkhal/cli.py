@@ -326,6 +326,73 @@ def snapshot(
     )
 
 
+def _npm(args: list[str], root: Path) -> bool:
+    """Run npm in web/ without prompts (npm.cmd on Windows)."""
+    exe = "npm.cmd" if os.name == "nt" else "npm"
+    env = dict(os.environ, CI="1")
+    proc = subprocess.run([exe, *args], cwd=root / "web", env=env, check=False)
+    return proc.returncode == 0
+
+
+@app.command("static")
+def static_demo() -> None:
+    """Build the static demo in one command: API snapshot, web install, static build (web/dist)."""
+    root = paths.repo_root()
+    from madkhal.api.static import build_static
+
+    files = build_static(root / "web" / "public" / "api")
+    _echo(f"wrote {len(files)} static API files")
+    if not (root / "web" / "node_modules").is_dir() and not _npm(
+        ["ci", "--no-audit", "--no-fund"], root
+    ):
+        raise typer.Exit(code=1)
+    if not _npm(["run", "build:static"], root):
+        raise typer.Exit(code=1)
+    _echo("static demo built in web/dist (serve it with any static file server)")
+
+
+@app.command("all")
+def all_(
+    seeds: int = typer.Option(30, min=1, max=30),
+    skip_eval: bool = typer.Option(False, help="Reuse the committed results/*.json."),
+) -> None:
+    """Everything: fast check, experiments, documents, slow tests, static demo, SBOM and audit."""
+    root = paths.repo_root()
+    py = sys.executable
+    steps: list[tuple[str, list[str]]] = [("check", [py, "-m", "madkhal.cli", "check"])]
+    if not skip_eval:
+        steps.append(("eval", [py, "-m", "madkhal.cli", "eval", "--seeds", str(seeds)]))
+    steps += [
+        ("docs build", [py, "-m", "madkhal.cli", "docs", "build"]),
+        ("slow tests", [py, "-m", "pytest", "-m", "slow", "-q", "-p", "no:cacheprovider"]),
+        ("static demo", [py, "-m", "madkhal.cli", "static"]),
+        (
+            "sbom",
+            [
+                py,
+                "-m",
+                "cyclonedx_py",
+                "environment",
+                "--output-format",
+                "JSON",
+                "--output-file",
+                "sbom.json",
+            ],
+        ),
+    ]
+    for label, cmd in steps:
+        _echo(f"== {label}")
+        if (
+            subprocess.run(
+                cmd, cwd=root, env=dict(os.environ, PYTHONUTF8="1"), check=False
+            ).returncode
+            != 0
+        ):
+            _echo(f"madkhal all: {label} FAILED")
+            raise typer.Exit(code=1)
+    _echo("madkhal all: done")
+
+
 @app.command()
 def serve(
     host: str = typer.Option("127.0.0.1"),

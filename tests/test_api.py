@@ -12,7 +12,15 @@ from madkhal.contract import BloomBelief, Site
 from madkhal.core import paths
 
 client = TestClient(create_app())
-PATH_PATTERN = re.compile(r"([A-Za-z]:\\\\|[A-Za-z]:/|/home/|/Users/|\\\\Users\\\\)")
+# A drive letter not preceded by another letter (so "https://" is not a path), or a home folder.
+PATH_PATTERN = re.compile(r"((?<![A-Za-z])[A-Za-z]:(\\\\|/)|/home/|/Users/|\\\\Users\\\\)")
+
+
+def test_path_pattern_catches_paths_not_urls() -> None:
+    assert PATH_PATTERN.search('"C:/Users/x/madkhal/data"')
+    assert PATH_PATTERN.search('"C:\\\\data"')
+    assert PATH_PATTERN.search("/home/runner/work")
+    assert not PATH_PATTERN.search("https://github.com/hudasol/nadhir")
 
 
 def _no_paths(text: str) -> None:

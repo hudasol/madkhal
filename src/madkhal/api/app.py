@@ -62,7 +62,12 @@ def create_app() -> FastAPI:
     app.add_middleware(BodyLimit)
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:4173"],
+        allow_origins=[
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+            "http://localhost:4317",
+            "http://127.0.0.1:4317",
+        ],
         allow_methods=["GET", "POST"],
         allow_headers=["content-type"],
     )
