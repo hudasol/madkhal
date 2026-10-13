@@ -130,12 +130,14 @@ def test_bounded_inputs_and_idempotent_ids() -> None:
     assert client.get("/v1/belief/kalba", params={"draws": 5000}).status_code == 422
 
 
+@pytest.mark.slow
 @pytest.mark.req("MK-L7-007")
 def test_no_file_paths_in_any_static_route() -> None:
     for route in static_routes():
         _no_paths(client.get(route).text)
 
 
+@pytest.mark.slow
 @pytest.mark.req("MK-L7-008")
 def test_static_snapshot_matches_live_responses(tmp_path) -> None:  # type: ignore[no-untyped-def]
     build_static(tmp_path)
