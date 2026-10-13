@@ -224,16 +224,25 @@ def replay(
 @app.command("eval")
 def eval_(
     smoke: bool = typer.Option(False, help="Run the quick E1 smoke check only."),
-    seed: int = typer.Option(1, min=0),
+    seed: int = typer.Option(1, min=0, help="Seed for the smoke run."),
+    seeds: int = typer.Option(30, min=1, max=30, help="Number of evaluation seeds (1000 upward)."),
+    workers: int = typer.Option(0, min=0, max=64, help="Worker processes (0: automatic)."),
+    out: Path = typer.Option(Path("results"), help="Output folder for results/*.json."),
 ) -> None:
-    """Run the experiments (E1 to E7). With --smoke, one synthetic year of E1 only."""
+    """Run the preregistered experiments E1 to E7 and write results/*.json."""
+    from madkhal.core.jsonio import write_json
+    from madkhal.lab.experiments import EVAL_SEEDS, run_all
     from madkhal.lab.smoke import e1_smoke
 
     if smoke:
         _print_json(e1_smoke(seed))
         return
-    _echo("The full experiment suite is built in phase P6 and P7.")
-    raise typer.Exit(code=2)
+    root = paths.repo_root()
+    target = out if out.is_absolute() else root / out
+    res = run_all(EVAL_SEEDS[:seeds], workers or None, log=_echo)
+    for name, body in res.items():
+        write_json(target / f"{name}.json", body)
+        _echo(f"wrote {name}.json")
 
 
 @app.command()
