@@ -1,14 +1,9 @@
 # Public pages that were actually opened, with the date. Claims of kind `url` must point
 # to an entry here. Pages that could not be opened are listed with opened: false and are
 # never cited as SOURCED.
-sources:
-  - url: https://en.aletihad.ae/news/business/4567209/taqa-spotlights-how-ai-boosts-efficiency--slash-emissions-ac
-    opened: true
-    date_opened: "2026-10-13"
-    published: "2025-04-17"
-    note: "Article on AI use; mentions improving water efficiency; does not mention desalination."
-  - url: https://apigateway.adx.ae/adx/cdn/1.0/content/download/4698142
-    opened: true
-    date_opened: "2026-10-13"
-    published: "2026-02-12"
-    note: "Full year 2025 results release (PDF). States over 40 percent of desalination capacity uses reverse osmosis. No end of life wording for thermal units was found."
+#
+# Pages whose address or text names a real organisation are not listed here: the build rules
+# allow such names only in docs/CONTEXT.md, which records each of those pages with its address,
+# publication date and the date it was opened, and claims about them point to that document
+# (D-013).
+sources: []
