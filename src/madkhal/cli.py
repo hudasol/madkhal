@@ -232,6 +232,32 @@ def eval_(
     raise typer.Exit(code=2)
 
 
+@app.command()
+def snapshot(
+    out: Path = typer.Option(Path("web/public/api"), help="Output folder for the static demo."),
+) -> None:
+    """Write every API response the web app needs as static JSON (static demo mode)."""
+    from madkhal.api.static import build_static
+
+    root = paths.repo_root()
+    target = out if out.is_absolute() else root / out
+    files = build_static(target)
+    _echo(
+        f"wrote {len(files)} files to {target.relative_to(root).as_posix() if target.is_relative_to(root) else target}"
+    )
+
+
+@app.command()
+def serve(
+    host: str = typer.Option("127.0.0.1"),
+    port: int = typer.Option(8000, min=1, max=65535),
+) -> None:
+    """Start the live API (runs until stopped with Ctrl+C)."""
+    import uvicorn
+
+    uvicorn.run("madkhal.api.app:app", host=host, port=port, log_level="info")
+
+
 def main() -> None:
     app()
 
