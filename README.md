@@ -18,7 +18,9 @@ Madkhal loses. It is a proposal seed prepared by a student, not a deployment.
 
 ## Run it
 
-Live demo on Windows (PowerShell), from the repository root:
+Live demo on Windows (PowerShell), from the repository root. Clone into a short path such as
+`C:\src\madkhal`: a deeply nested folder can exceed the Windows path limit during install
+(`docs/KNOWN_ISSUES.md`, K-009).
 
 ```powershell
 py -3.13 -m venv .venv; .venv\Scripts\python -m pip install -r requirements.lock.txt -e . --no-deps
