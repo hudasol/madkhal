@@ -24,8 +24,8 @@ Reference clones are present at the pinned commits: Nadhir `ca484e2`, Dhill `b75
 |---|---|---|---|
 | P0 skeleton, tooling, harness | done | v0.1.0 | `madkhal check` passes on the skeleton (lint, mypy strict, import contracts, traceability, claims, 13 unit tests) |
 | P1 contract | done | v0.2.0 | 27 contract models; JSON Schema, TypeScript types and bilingual field dictionary generated; `test_generated_artefacts_are_fresh` passes |
-| P2 evidence | in progress | | |
-| P3 estimator | | | |
+| P2 evidence | done | v0.3.0 | Snapshot of 41 files hash checked; corruption tests name file, row and column; all 8 event statuses kept verbatim; track record 5 dated, 3 observable, 1 detected; quiet day rule reproduces Nadhir's counts for 7 sites |
+| P3 estimator | in progress | | |
 | P4 walking skeleton | | | |
 | P5 plant and decision | | | |
 | P6 policy lab | | | |
