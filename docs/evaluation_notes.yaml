@@ -37,6 +37,12 @@ notes:
   PR-E4-1: >-
     A hit on the mean only: the interval of the difference includes zero, so the evidence that
     surveys pay at this cost is weak.
+  PR-E6-2: >-
+    A hit that could not have been a miss. In the daily lab every decision follows a full day
+    in the action in force, which is longer than the minimum dwell, so dwell compliance is
+    complete for every policy by construction. It confirms the bookkeeping only; the dwell
+    rule itself is exercised by the hourly property tests of the decision engine, not by this
+    experiment.
   PR-E7-2: >-
     Not blind: the Kalba replay window around the one detected event was seen during
     development before the preregistration (disclosed there).

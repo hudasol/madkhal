@@ -319,7 +319,7 @@ def render(res: dict[str, R], notes: dict[str, str] | None = None) -> str:
     for p in preds:
         L.append(f"| {p['id']} | {p['prediction']} | {p['observed']} | {p['result']} |")
     misses = [p for p in preds if p["result"] == "MISS"]
-    L += ["", "Misses are kept and discussed below; none was hidden or re-scored.", ""]
+    L += ["", "Misses are kept and discussed below; none was hidden or rescored.", ""]
     e1 = res.get("e1")
     if e1:
         L += [

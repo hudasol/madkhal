@@ -8,7 +8,7 @@ in hypothetical cost units (CU). E7 is a REPLAY of real satellite evidence again
 hypothetical plant and makes no claim about any real plant. Every prediction was committed
 in `docs/PREREGISTRATION.md` before these results existed.
 
-Run: 30 evaluation seeds, 15 worker processes, 871 seconds in total; 100 parameter draws in the lab.
+Run: 30 evaluation seeds, 15 worker processes, 833 seconds in total; 100 parameter draws in the lab.
 
 ## Predictions: 21 hits of 24
 
@@ -39,7 +39,7 @@ Run: 30 evaluation seeds, 15 worker processes, 871 seconds in total; 100 paramet
 | PR-E7-3 | Barka 2018 and 2023, 3 days before t_ref: GO | 2018 GO, 2023 GO | HIT |
 | PR-E7-4 | Al Raha 2023: GO at every point before the dates | t_ref minus 14: GO, t_ref minus 7: GO, t_ref minus 3: GO, t_ref_earliest minus 14: GO, t_ref_earliest minus 7: GO, t_ref_earliest minus 3: GO | HIT |
 
-Misses are kept and discussed below; none was hidden or re-scored.
+Misses are kept and discussed below; none was hidden or rescored.
 
 ## E1 Estimator quality (G1)
 
@@ -115,7 +115,7 @@ Means over seeds with 95 percent intervals; every metric reported separately.
 | Membrane life used (index) | 14.4 (6.01 to 22.8) | 11.4 (4.14 to 18.6) | 9.93 (3.08 to 16.8) | 13.4 (5.26 to 21.5) | 12.5 (4.56 to 20.5) | 1.73 (0.403 to 3.05) |
 | PARK days per year | 0 (0 to 0) | 25.7 (19.5 to 31.8) | 0 (0 to 0) | 0 (0 to 0) | 0 (0 to 0) | 0 (0 to 0) |
 | DERATE days per year | 0 (0 to 0) | 0 (0 to 0) | 138 (138 to 138) | 14.7 (9.61 to 19.8) | 15.2 (10.1 to 20.2) | 5.9 (3.14 to 8.66) |
-| Escalation days per year | 0 (0 to 0) | 0 (0 to 0) | 0 (0 to 0) | 4.73 (2.11 to 7.36) | 4.85 (2.17 to 7.53) | 0 (0 to 0) |
+| Escalation days per year | 0 (0 to 0) | 0 (0 to 0) | 0 (0 to 0) | 4.6 (2 to 7.2) | 4.72 (2.07 to 7.37) | 0 (0 to 0) |
 | Advice changes per 30 days | 0 (0 to 0) | 0.363 (0.299 to 0.427) | 0.329 (0.329 to 0.329) | 0.566 (0.406 to 0.726) | 0.581 (0.421 to 0.741) | 0.121 (0.0447 to 0.196) |
 | Survey sorties per year | 0 (0 to 0) | 0 (0 to 0) | 0 (0 to 0) | 0 (0 to 0) | 0.2 (0.04 to 0.36) | 0 (0 to 0) |
 | Regret versus oracle (CU) | 504,849 (50,734 to 958,964) | 15,810,961 (11,820,782 to 19,801,140) | 432,040 (91,267 to 772,813) | 499,961 (47,979 to 951,943) | 444,810 (-16,956 to 906,575) | 0 (0 to 0) |
@@ -301,6 +301,7 @@ Advisory and belief before each documented event (median P(any bloom) and P(at t
 * PR-E2-3: A hit on the means only. The paired regret intervals of Madkhal against always going and against the seasonal rule both include zero on G1, so the ordering among those three policies is not established; only the large gap to alert_park is.
 * PR-E3-3: A hit that counts against Madkhal: on the stress world the fixed seasonal rule had lower mean regret than Madkhal without inspection. The paired interval of that difference includes zero, so the ordering is not established either way.
 * PR-E4-1: A hit on the mean only: the interval of the difference includes zero, so the evidence that surveys pay at this cost is weak.
+* PR-E6-2: A hit that could not have been a miss. In the daily lab every decision follows a full day in the action in force, which is longer than the minimum dwell, so dwell compliance is complete for every policy by construction. It confirms the bookkeeping only; the dwell rule itself is exercised by the hourly property tests of the decision engine, not by this experiment.
 * PR-E7-2: Not blind: the Kalba replay window around the one detected event was seen during development before the preregistration (disclosed there).
 
 ## What these results do not show
