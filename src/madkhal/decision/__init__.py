@@ -4,9 +4,15 @@ from .engine import RELAX_MARGIN, Evaluation, decide, evaluate
 from .explain import render
 from .inputs import DecisionInputs, from_estimator
 from .risk import CANDIDATES, RiskTable, risk_table, time_to_limit
+from .voi import CostWeights, SurveyConfig, assess, loss_table, value_of_information
 
 __all__ = [
     "CANDIDATES",
+    "CostWeights",
+    "SurveyConfig",
+    "assess",
+    "loss_table",
+    "value_of_information",
     "RELAX_MARGIN",
     "DecisionInputs",
     "Evaluation",
