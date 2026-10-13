@@ -1,7 +1,7 @@
 # Madkhal requirements. Source of truth for docs/TRACEABILITY.md.
 # id: MK-<layer>-<nnn>; tier: MUST | SHOULD | MAY; phase: the build phase that delivers it.
 # The fast check fails when a MUST requirement of a phase up to `enforced_through` has no test.
-enforced_through: P2
+enforced_through: P3
 
 requirements:
   # Cross cutting
@@ -44,8 +44,8 @@ requirements:
   - {id: MK-L2-006, tier: MUST, phase: P3, text: "The filter runs over at least 400 parameter draws and reports P(at_intake within 1, 3, 7 days) as median and 90 percent interval, P(any bloom state) and staleness."}
   - {id: MK-L2-007, tier: MUST, phase: P3, text: "Baselines alert_means_bloom and persistence are implemented."}
   - {id: MK-L2-008, tier: MUST, phase: P3, text: "With no data the belief equals the seasonal prior."}
-  - {id: MK-L2-009, tier: MUST, phase: P3, text: "A nodata day never gives a narrower interval than the same day observed as quiet."}
-  - {id: MK-L2-010, tier: MUST, phase: P3, text: "More alerts never lower P(any bloom state)."}
+  - {id: MK-L2-009, tier: MUST, phase: P3, text: "A nodata day carries no information: it never moves the belief further from the seasonal prior (total variation per draw never increases). The literal reading that a nodata day never narrows the interval does not hold for a correct Bayesian filter; see docs/DECISIONS.md D-008."}
+  - {id: MK-L2-010, tier: MUST, phase: P3, text: "More alerts never lower P(any bloom state): on the day of the observation, an alert instead of a quiet clear view never lowers P(any bloom), for every draw and any history. Later days are discussed in docs/DECISIONS.md D-009."}
   - {id: MK-L2-011, tier: MUST, phase: P3, text: "A worked example computed by hand matches the filter."}
   - {id: MK-L2-012, tier: SHOULD, phase: P3, text: "A lead time summary for developing to at_intake uses the Nadhir range (minus 6 to plus 8 days) as its only anchor, labelled n = 1."}
   - {id: MK-L2-013, tier: SHOULD, phase: P8, text: "A survey observation update merges a drone result into the belief."}
