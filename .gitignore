@@ -17,3 +17,5 @@ htmlcov/
 web/test-results/
 web/playwright-report/
 web/blob-report/
+web/public/api/
+web/dist-live/
