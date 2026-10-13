@@ -28,6 +28,7 @@ from .params import (
 )
 from .scoring import brier, interval_coverage, log_score, reliability
 from .simulate import Synthetic, observe, sample_states, simulate
+from .survey import SurveySensor, survey_update
 
 __all__ = [
     "AT_I",
@@ -42,6 +43,7 @@ __all__ = [
     "Draws",
     "FilterResult",
     "PriorSpec",
+    "SurveySensor",
     "Synthetic",
     "alert_likelihood",
     "alert_means_bloom",
@@ -64,5 +66,6 @@ __all__ = [
     "seasonal_prior",
     "simulate",
     "summarise",
+    "survey_update",
     "update",
 ]

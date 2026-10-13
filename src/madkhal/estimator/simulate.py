@@ -42,7 +42,9 @@ class Synthetic:
         return out
 
 
-def sample_states(doy: Sequence[int], dr: Draws, rng: np.random.Generator) -> np.ndarray:
+def sample_states(
+    doy: Sequence[int] | np.ndarray, dr: Draws, rng: np.random.Generator
+) -> np.ndarray:
     """Sample a hidden state path for a single draw (``dr.n`` must be 1)."""
     if dr.n != 1:
         raise ValueError("sample_states needs a single parameter draw")
@@ -69,7 +71,7 @@ def observe(
 
 
 def simulate(
-    doy: Sequence[int], clear_prob: np.ndarray, dr: Draws, rng: np.random.Generator
+    doy: Sequence[int] | np.ndarray, clear_prob: np.ndarray, dr: Draws, rng: np.random.Generator
 ) -> Synthetic:
     state = sample_states(doy, dr, rng)
     clear, alert = observe(state, np.asarray(clear_prob, float), dr, rng)
