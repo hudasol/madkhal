@@ -64,6 +64,20 @@ def test_traceability_matrix_detects_missing_tests(tmp_path) -> None:  # type: i
     assert "MK-L9-001" in m.unknown_refs
 
 
+@pytest.mark.req("MK-X-002")
+def test_web_scanner_reads_plain_and_table_driven_titles(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    src = tmp_path / "web" / "src"
+    src.mkdir(parents=True)
+    (src / "a.test.tsx").write_text(
+        'it("MK-L8-001 plain", () => {});\n'
+        "it.each([\n  ['a', f(1)],\n  ['b', g()],\n])(\n  \"MK-L8-007 %s table\",\n  () => {},\n);\n"
+        'it("no id here", () => {});\n',
+        encoding="utf-8",
+    )
+    found = tr.scan_web_tests(tmp_path / "web")
+    assert set(found) == {"MK-L8-001", "MK-L8-007"}
+
+
 @pytest.mark.req("MK-X-003")
 def test_every_claim_pointer_resolves() -> None:
     assert cli.check_claims(ROOT) == []

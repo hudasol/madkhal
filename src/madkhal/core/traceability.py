@@ -105,6 +105,8 @@ def scan_tests(tests_dir: Path) -> dict[str, list[str]]:
 
 WEB_TEST_SUFFIXES = (".test.ts", ".test.tsx", ".spec.ts")
 WEB_TEST_TITLE = re.compile(r"""\b(?:it|test|describe)\s*\(\s*(["'`])(.*?)\1""")
+# table driven tests: it.each(table)("MK-... title"); the table may span several lines
+WEB_EACH_TITLE = re.compile(r"""\b(?:it|test|describe)\.each\b[\s\S]*?\)\s*\(\s*(["'`])(.*?)\1""")
 
 
 def scan_web_tests(web_dir: Path) -> dict[str, list[str]]:
@@ -120,7 +122,9 @@ def scan_web_tests(web_dir: Path) -> dict[str, list[str]]:
             if not path.name.endswith(WEB_TEST_SUFFIXES) or "node_modules" in path.parts:
                 continue
             rel = path.relative_to(web_dir.parent).as_posix()
-            for m in WEB_TEST_TITLE.finditer(path.read_text(encoding="utf-8")):
+            text = path.read_text(encoding="utf-8")
+            matches = [*WEB_TEST_TITLE.finditer(text), *WEB_EACH_TITLE.finditer(text)]
+            for m in matches:
                 title = m.group(2)
                 for rid in REQ_IN_TEXT.findall(title):
                     found.setdefault(rid, []).append(f"{rel}::{title[:60]}")
