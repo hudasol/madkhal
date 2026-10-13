@@ -23,8 +23,8 @@ Reference clones are present at the pinned commits: Nadhir `ca484e2`, Dhill `b75
 | Phase | Status | Tag | Evidence |
 |---|---|---|---|
 | P0 skeleton, tooling, harness | done | v0.1.0 | `madkhal check` passes on the skeleton (lint, mypy strict, import contracts, traceability, claims, 13 unit tests) |
-| P1 contract | in progress | | |
-| P2 evidence | | | |
+| P1 contract | done | v0.2.0 | 27 contract models; JSON Schema, TypeScript types and bilingual field dictionary generated; `test_generated_artefacts_are_fresh` passes |
+| P2 evidence | in progress | | |
 | P3 estimator | | | |
 | P4 walking skeleton | | | |
 | P5 plant and decision | | | |
