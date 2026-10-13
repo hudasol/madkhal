@@ -22,8 +22,8 @@ Reference clones are present at the pinned commits: Nadhir `ca484e2`, Dhill `b75
 
 | Phase | Status | Tag | Evidence |
 |---|---|---|---|
-| P0 skeleton, tooling, harness | in progress | | |
-| P1 contract | next | | |
+| P0 skeleton, tooling, harness | done | v0.1.0 | `madkhal check` passes on the skeleton (lint, mypy strict, import contracts, traceability, claims, 13 unit tests) |
+| P1 contract | in progress | | |
 | P2 evidence | | | |
 | P3 estimator | | | |
 | P4 walking skeleton | | | |
