@@ -1,0 +1,2173 @@
+{
+  "$defs": {
+    "ActionKind": {
+      "description": "Advisory action, ordered from most to least permissive.",
+      "enum": [
+        "GO",
+        "DERATE",
+        "PARK",
+        "NO_SAFE_OPTION_ESCALATE"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "Advisory": {
+      "additionalProperties": false,
+      "description": "An advisory for one site and time. It is advice, never a control action.",
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/ActionKind",
+          "description": "Advised action.",
+          "x-ar": "الإجراء الموصى به."
+        },
+        "assumption_share": {
+          "description": "Share of plant parameters that are assumptions.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Assumption Share",
+          "type": "number",
+          "x-ar": "نسبة معاملات المحطة التي هي افتراضات.",
+          "x-unit": "1"
+        },
+        "binding_constraint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Binding constraint.",
+          "title": "Binding Constraint",
+          "x-ar": "القيد الحاكم."
+        },
+        "constraints": {
+          "description": "How close each constraint is.",
+          "items": {
+            "$ref": "#/$defs/ConstraintStatus"
+          },
+          "title": "Constraints",
+          "type": "array",
+          "x-ar": "مدى قرب كل قيد من حدّه."
+        },
+        "evidence_level": {
+          "$ref": "#/$defs/EvidenceLevel",
+          "description": "Evidence level of the advisory.",
+          "x-ar": "مستوى أدلة التوصية."
+        },
+        "explanation": {
+          "$ref": "#/$defs/Explanation",
+          "description": "Structured explanation (required).",
+          "x-ar": "شرح منظّم (إلزامي)."
+        },
+        "id": {
+          "description": "Identifier: the inputs hash.",
+          "title": "Id",
+          "type": "string",
+          "x-ar": "المعرّف: بصمة المدخلات."
+        },
+        "inputs_hash": {
+          "description": "SHA-256 of the canonical inputs.",
+          "title": "Inputs Hash",
+          "type": "string",
+          "x-ar": "بصمة SHA-256 للمدخلات المعيارية."
+        },
+        "inspect": {
+          "description": "INSPECT advisory (task a survey drone).",
+          "title": "Inspect",
+          "type": "boolean",
+          "x-ar": "توصية الفحص (تكليف طائرة مسح)."
+        },
+        "inspect_reasons": {
+          "description": "Reasons for or against INSPECT.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Inspect Reasons",
+          "type": "array",
+          "x-ar": "أسباب الفحص أو عدمه."
+        },
+        "issued_for": {
+          "description": "Time the advisory applies to (UTC).",
+          "format": "date-time",
+          "title": "Issued For",
+          "type": "string",
+          "x-ar": "الوقت الذي تنطبق عليه التوصية (بالتوقيت العالمي)."
+        },
+        "label": {
+          "default": "",
+          "description": "Context label, for example the replay label.",
+          "title": "Label",
+          "type": "string",
+          "x-ar": "وصف السياق، مثل وصف الإعادة."
+        },
+        "p_breach_full_scale": {
+          "description": "P(fouling limit reached within the horizon at full scale).",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "P Breach Full Scale",
+          "type": "number",
+          "x-ar": "احتمال بلوغ حد الانسداد خلال الأفق عند التشغيل الكامل.",
+          "x-unit": "1"
+        },
+        "reasons": {
+          "description": "Reasons in plain language.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array",
+          "x-ar": "الأسباب بلغة بسيطة."
+        },
+        "scale": {
+          "description": "Advised flow scale q.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Scale",
+          "type": "number",
+          "x-ar": "مقياس التدفق الموصى به q.",
+          "x-unit": "1"
+        },
+        "seed": {
+          "description": "Seed used.",
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer",
+          "x-ar": "البذرة المستخدمة."
+        },
+        "site": {
+          "description": "Site identifier.",
+          "title": "Site",
+          "type": "string",
+          "x-ar": "معرّف الموقع."
+        },
+        "text": {
+          "$ref": "#/$defs/PlainText",
+          "description": "Plain language rendering.",
+          "x-ar": "صياغة بلغة بسيطة."
+        },
+        "time_to_limit_hours": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Hours until the limit at full scale at the 95 percent risk quantile (absent if beyond the horizon).",
+          "title": "Time To Limit Hours",
+          "x-ar": "الساعات حتى بلوغ الحد عند التشغيل الكامل عند مئين الخطر 95 (يغيب إن تجاوز الأفق).",
+          "x-unit": "h"
+        }
+      },
+      "required": [
+        "id",
+        "site",
+        "issued_for",
+        "action",
+        "scale",
+        "reasons",
+        "p_breach_full_scale",
+        "constraints",
+        "evidence_level",
+        "assumption_share",
+        "inspect",
+        "inspect_reasons",
+        "explanation",
+        "text",
+        "inputs_hash",
+        "seed"
+      ],
+      "title": "Advisory",
+      "type": "object"
+    },
+    "BeliefParameter": {
+      "additionalProperties": false,
+      "description": "A detector or transition parameter used by the estimator, with its posterior.",
+      "properties": {
+        "key": {
+          "description": "Parameter key.",
+          "title": "Key",
+          "type": "string",
+          "x-ar": "مفتاح المعامل."
+        },
+        "label": {
+          "description": "Plain language name.",
+          "title": "Label",
+          "type": "string",
+          "x-ar": "اسم بلغة بسيطة."
+        },
+        "provenance": {
+          "description": "Counts or reasoning behind the value.",
+          "title": "Provenance",
+          "type": "string",
+          "x-ar": "الأعداد أو المنطق وراء القيمة."
+        },
+        "source": {
+          "$ref": "#/$defs/ParamSource",
+          "description": "Where the value comes from.",
+          "x-ar": "مصدر القيمة."
+        },
+        "value": {
+          "$ref": "#/$defs/Interval",
+          "description": "Posterior summary over draws.",
+          "x-ar": "ملخص التوزيع اللاحق عبر السحبات."
+        }
+      },
+      "required": [
+        "key",
+        "label",
+        "value",
+        "source",
+        "provenance"
+      ],
+      "title": "BeliefParameter",
+      "type": "object"
+    },
+    "BloomBelief": {
+      "additionalProperties": false,
+      "description": "The estimator's belief for one site and day.",
+      "properties": {
+        "alert": {
+          "description": "Detector alert on this day.",
+          "title": "Alert",
+          "type": "boolean",
+          "x-ar": "إنذار الكاشف في هذا اليوم."
+        },
+        "date": {
+          "description": "Day of the belief (end of day, UTC).",
+          "format": "date",
+          "title": "Date",
+          "type": "string",
+          "x-ar": "يوم الاعتقاد (نهاية اليوم، بالتوقيت العالمي)."
+        },
+        "n_draws": {
+          "description": "Posterior parameter draws used.",
+          "minimum": 1,
+          "title": "N Draws",
+          "type": "integer",
+          "x-ar": "عدد سحبات المعاملات اللاحقة المستخدمة."
+        },
+        "observation": {
+          "$ref": "#/$defs/CoverageState",
+          "description": "Coverage on this day.",
+          "x-ar": "التغطية في هذا اليوم."
+        },
+        "p_any_bloom": {
+          "$ref": "#/$defs/Interval",
+          "description": "P(developing or at the intake).",
+          "x-ar": "احتمال التطوّر أو الوجود عند المأخذ."
+        },
+        "p_at_intake": {
+          "$ref": "#/$defs/Interval",
+          "description": "P(bloom at the intake).",
+          "x-ar": "احتمال وجود الازدهار عند المأخذ."
+        },
+        "p_clear": {
+          "$ref": "#/$defs/Interval",
+          "description": "P(clear).",
+          "x-ar": "احتمال الحالة الصافية."
+        },
+        "p_developing": {
+          "$ref": "#/$defs/Interval",
+          "description": "P(developing in the watch zone, not at the intake).",
+          "x-ar": "احتمال تطوّر الازدهار في منطقة المراقبة دون بلوغ المأخذ."
+        },
+        "parameters": {
+          "description": "Parameters used, with posteriors.",
+          "items": {
+            "$ref": "#/$defs/BeliefParameter"
+          },
+          "title": "Parameters",
+          "type": "array",
+          "x-ar": "المعاملات المستخدمة مع توزيعاتها اللاحقة."
+        },
+        "seed": {
+          "description": "Seed of the parameter draws.",
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer",
+          "x-ar": "بذرة سحبات المعاملات."
+        },
+        "site": {
+          "description": "Site identifier.",
+          "title": "Site",
+          "type": "string",
+          "x-ar": "معرّف الموقع."
+        },
+        "staleness_days": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Days since the last clear satellite observation (absent if none yet).",
+          "title": "Staleness Days",
+          "x-ar": "الأيام منذ آخر رصد صافٍ بالقمر الصناعي (يغيب إن لم يوجد بعد).",
+          "x-unit": "d"
+        },
+        "within": {
+          "description": "P(at_intake within 1, 3 and 7 days).",
+          "items": {
+            "$ref": "#/$defs/HorizonProbability"
+          },
+          "title": "Within",
+          "type": "array",
+          "x-ar": "احتمال بلوغ المأخذ خلال 1 و3 و7 أيام."
+        }
+      },
+      "required": [
+        "site",
+        "date",
+        "p_clear",
+        "p_developing",
+        "p_at_intake",
+        "p_any_bloom",
+        "within",
+        "observation",
+        "alert",
+        "n_draws",
+        "seed",
+        "parameters"
+      ],
+      "title": "BloomBelief",
+      "type": "object"
+    },
+    "CandidateEvaluation": {
+      "additionalProperties": false,
+      "description": "Risk of one candidate action over the horizon.",
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/ActionKind",
+          "description": "Candidate action.",
+          "x-ar": "الإجراء المرشّح."
+        },
+        "expected_unserved_m3": {
+          "description": "Expected unserved water.",
+          "minimum": 0.0,
+          "title": "Expected Unserved M3",
+          "type": "number",
+          "x-ar": "المياه غير المزوّدة المتوقعة.",
+          "x-unit": "m3"
+        },
+        "feasible": {
+          "description": "Both risks within budget.",
+          "title": "Feasible",
+          "type": "boolean",
+          "x-ar": "كلا الخطرين ضمن الميزانية."
+        },
+        "p_fouling_breach": {
+          "description": "P(fouling index reaches the limit).",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "P Fouling Breach",
+          "type": "number",
+          "x-ar": "احتمال بلوغ مؤشر الانسداد الحد.",
+          "x-unit": "1"
+        },
+        "p_water_breach": {
+          "description": "P(unserved water above the allowance).",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "P Water Breach",
+          "type": "number",
+          "x-ar": "احتمال تجاوز المياه غير المزوّدة الحد المسموح.",
+          "x-unit": "1"
+        },
+        "scale": {
+          "description": "Flow scale q.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Scale",
+          "type": "number",
+          "x-ar": "مقياس التدفق q.",
+          "x-unit": "1"
+        }
+      },
+      "required": [
+        "action",
+        "scale",
+        "p_fouling_breach",
+        "p_water_breach",
+        "expected_unserved_m3",
+        "feasible"
+      ],
+      "title": "CandidateEvaluation",
+      "type": "object"
+    },
+    "ConstraintStatus": {
+      "additionalProperties": false,
+      "description": "How close a constraint is to its budget for the chosen action.",
+      "properties": {
+        "budget": {
+          "description": "Budget or limit.",
+          "title": "Budget",
+          "type": "number",
+          "x-ar": "الميزانية أو الحد."
+        },
+        "name": {
+          "description": "Constraint name.",
+          "enum": [
+            "fouling",
+            "water_security",
+            "dwell"
+          ],
+          "title": "Name",
+          "type": "string",
+          "x-ar": "اسم القيد."
+        },
+        "used_percent": {
+          "description": "Share of the budget used, capped at 100.",
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Used Percent",
+          "type": "number",
+          "x-ar": "نسبة الميزانية المستخدمة، بحد أقصى 100.",
+          "x-unit": "%"
+        },
+        "value": {
+          "description": "Current value (probability or hours).",
+          "title": "Value",
+          "type": "number",
+          "x-ar": "القيمة الحالية (احتمال أو ساعات)."
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "budget",
+        "used_percent"
+      ],
+      "title": "ConstraintStatus",
+      "type": "object"
+    },
+    "CoverageState": {
+      "description": "Whether the satellite saw the watch zone on a day.",
+      "enum": [
+        "clear",
+        "nodata"
+      ],
+      "title": "CoverageState",
+      "type": "string"
+    },
+    "Dataset": {
+      "description": "Which frozen Nadhir detector produced the evidence.",
+      "enum": [
+        "olci_v1",
+        "modis_v1"
+      ],
+      "title": "Dataset",
+      "type": "string"
+    },
+    "DetectorState": {
+      "description": "Daily state reported by the frozen Nadhir detector.",
+      "enum": [
+        "NODATA",
+        "QUIET",
+        "EXCEED",
+        "ALERT"
+      ],
+      "title": "DetectorState",
+      "type": "string"
+    },
+    "DroneProfile": {
+      "additionalProperties": false,
+      "description": "Hypothetical survey drone.",
+      "properties": {
+        "altitude_m": {
+          "default": 90.0,
+          "description": "Survey altitude.",
+          "maximum": 120,
+          "minimum": 60,
+          "title": "Altitude M",
+          "type": "number",
+          "x-ar": "ارتفاع المسح.",
+          "x-unit": "m"
+        },
+        "cruise_speed_ms": {
+          "default": 12.0,
+          "description": "Cruise speed.",
+          "exclusiveMinimum": 0,
+          "title": "Cruise Speed Ms",
+          "type": "number",
+          "x-ar": "سرعة الطيران.",
+          "x-unit": "m/s"
+        },
+        "endurance_min": {
+          "default": 25.0,
+          "description": "Endurance.",
+          "exclusiveMinimum": 0,
+          "title": "Endurance Min",
+          "type": "number",
+          "x-ar": "مدة التحمل."
+        },
+        "reserve_fraction": {
+          "default": 0.2,
+          "description": "Battery reserve kept back.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Reserve Fraction",
+          "type": "number",
+          "x-ar": "احتياطي البطارية المحفوظ.",
+          "x-unit": "1"
+        },
+        "wind_limit_ms": {
+          "default": 10.0,
+          "description": "Wind speed above which the drone does not fly.",
+          "exclusiveMinimum": 0,
+          "title": "Wind Limit Ms",
+          "type": "number",
+          "x-ar": "سرعة الرياح التي لا تطير فوقها الطائرة.",
+          "x-unit": "m/s"
+        }
+      },
+      "title": "DroneProfile",
+      "type": "object"
+    },
+    "Event": {
+      "additionalProperties": false,
+      "description": "A documented bloom related event, with its Nadhir evidence status kept verbatim.",
+      "properties": {
+        "coord_status": {
+          "description": "Coordinate status from Nadhir.",
+          "title": "Coord Status",
+          "type": "string",
+          "x-ar": "حالة الإحداثيات من نذير."
+        },
+        "dataset": {
+          "$ref": "#/$defs/Dataset",
+          "description": "Detector that can score the event.",
+          "x-ar": "الكاشف القادر على تقييم الحدث."
+        },
+        "date_precision": {
+          "description": "Precision of the documented date.",
+          "title": "Date Precision",
+          "type": "string",
+          "x-ar": "دقة التاريخ الموثّق."
+        },
+        "evaluation": {
+          "description": "How Nadhir scored the event.",
+          "title": "Evaluation",
+          "type": "string",
+          "x-ar": "كيف قيّم نذير الحدث."
+        },
+        "evidence_status": {
+          "description": "Evidence status copied verbatim from Nadhir.",
+          "title": "Evidence Status",
+          "type": "string",
+          "x-ar": "حالة الأدلة منقولة حرفيًا من نذير."
+        },
+        "id": {
+          "description": "Nadhir event identifier.",
+          "title": "Id",
+          "type": "string",
+          "x-ar": "معرّف الحدث في نذير."
+        },
+        "label": {
+          "description": "Neutral label: place, year and kind. Names no operator.",
+          "title": "Label",
+          "type": "string",
+          "x-ar": "وصف محايد: المكان والسنة والنوع، دون ذكر أي مشغّل."
+        },
+        "lat": {
+          "description": "Latitude (estimated).",
+          "title": "Lat",
+          "type": "number",
+          "x-ar": "خط العرض (مقدّر).",
+          "x-unit": "deg"
+        },
+        "lon": {
+          "description": "Longitude (estimated).",
+          "title": "Lon",
+          "type": "number",
+          "x-ar": "خط الطول (مقدّر).",
+          "x-unit": "deg"
+        },
+        "period_end": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "End of a documented period, for period events.",
+          "title": "Period End",
+          "x-ar": "نهاية فترة موثّقة لأحداث الفترات."
+        },
+        "period_start": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Start of a documented period, for period events.",
+          "title": "Period Start",
+          "x-ar": "بداية فترة موثّقة لأحداث الفترات."
+        },
+        "site": {
+          "description": "Site identifier of the nearest evidence zone.",
+          "title": "Site",
+          "type": "string",
+          "x-ar": "معرّف موقع أقرب منطقة أدلة."
+        },
+        "source_file": {
+          "description": "Snapshot file the event came from.",
+          "title": "Source File",
+          "type": "string",
+          "x-ar": "ملف اللقطة الذي جاء منه الحدث."
+        },
+        "source_index": {
+          "description": "Position of the event in the source file (1 based).",
+          "minimum": 1,
+          "title": "Source Index",
+          "type": "integer",
+          "x-ar": "ترتيب الحدث في الملف المصدر (يبدأ من 1)."
+        },
+        "species": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Species as stated by Nadhir, if any.",
+          "title": "Species",
+          "x-ar": "النوع كما ذكره نذير، إن وُجد."
+        },
+        "status_class": {
+          "$ref": "#/$defs/StatusClass",
+          "description": "Coarse class of the evidence status.",
+          "x-ar": "الفئة العامة لحالة الأدلة."
+        },
+        "t_ref": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Reference date (usually a report date, an upper bound on onset).",
+          "title": "T Ref",
+          "x-ar": "التاريخ المرجعي (غالبًا تاريخ تقرير، وهو حد أعلى لبداية الأثر)."
+        },
+        "t_ref_earliest": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Earliest date consistent with the sources.",
+          "title": "T Ref Earliest",
+          "x-ar": "أبكر تاريخ يتّسق مع المصادر."
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "site",
+        "dataset",
+        "lat",
+        "lon",
+        "coord_status",
+        "date_precision",
+        "evaluation",
+        "evidence_status",
+        "status_class",
+        "source_file",
+        "source_index"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "EvidenceDay": {
+      "additionalProperties": false,
+      "description": "One day of satellite evidence for one site and watch zone radius.",
+      "properties": {
+        "alert": {
+          "description": "Whether the frozen detector was in alert.",
+          "title": "Alert",
+          "type": "boolean",
+          "x-ar": "هل كان الكاشف المجمّد في حالة إنذار."
+        },
+        "anomaly_fraction": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Share of observed pixels that were anomalous, if observed.",
+          "title": "Anomaly Fraction",
+          "x-ar": "نسبة البكسلات المرصودة التي كانت شاذة، إن وُجد رصد.",
+          "x-unit": "1"
+        },
+        "coverage": {
+          "$ref": "#/$defs/CoverageState",
+          "description": "clear when the satellite had a usable view of the zone, nodata otherwise.",
+          "x-ar": "صافٍ عندما كانت للقمر الصناعي رؤية صالحة للمنطقة، ولا بيانات خلاف ذلك."
+        },
+        "date": {
+          "description": "Calendar day (UTC).",
+          "format": "date",
+          "title": "Date",
+          "type": "string",
+          "x-ar": "اليوم التقويمي (بالتوقيت العالمي)."
+        },
+        "detector_state": {
+          "$ref": "#/$defs/DetectorState",
+          "description": "Detector state as written by Nadhir.",
+          "x-ar": "حالة الكاشف كما كتبها نذير."
+        },
+        "radius_km": {
+          "description": "Watch zone radius.",
+          "title": "Radius Km",
+          "type": "integer",
+          "x-ar": "نصف قطر منطقة المراقبة.",
+          "x-unit": "km"
+        },
+        "site": {
+          "description": "Site identifier.",
+          "title": "Site",
+          "type": "string",
+          "x-ar": "معرّف الموقع."
+        },
+        "source_file": {
+          "description": "Snapshot file the row came from.",
+          "title": "Source File",
+          "type": "string",
+          "x-ar": "ملف اللقطة الذي جاء منه السطر."
+        },
+        "source_row": {
+          "description": "Data row number in the source file (1 based).",
+          "minimum": 1,
+          "title": "Source Row",
+          "type": "integer",
+          "x-ar": "رقم سطر البيانات في الملف المصدر (يبدأ من 1)."
+        }
+      },
+      "required": [
+        "date",
+        "site",
+        "radius_km",
+        "coverage",
+        "alert",
+        "detector_state",
+        "source_file",
+        "source_row"
+      ],
+      "title": "EvidenceDay",
+      "type": "object"
+    },
+    "EvidenceLevel": {
+      "description": "How far a parameter or decision can be trusted (from Dhill).",
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "title": "EvidenceLevel",
+      "type": "string"
+    },
+    "Explanation": {
+      "additionalProperties": false,
+      "description": "Structured explanation; the plain language text is rendered from it.",
+      "properties": {
+        "assumption_share": {
+          "description": "Share of plant parameters that are assumptions.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Assumption Share",
+          "type": "number",
+          "x-ar": "نسبة معاملات المحطة التي هي افتراضات.",
+          "x-unit": "1"
+        },
+        "belief_summary": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "description": "Belief quantities used.",
+          "title": "Belief Summary",
+          "type": "object",
+          "x-ar": "كميات الاعتقاد المستخدمة."
+        },
+        "binding_constraint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Constraint that stops a more permissive action.",
+          "title": "Binding Constraint",
+          "x-ar": "القيد الذي يمنع إجراءً أكثر تساهلًا."
+        },
+        "candidates": {
+          "description": "Every candidate with its risks.",
+          "items": {
+            "$ref": "#/$defs/CandidateEvaluation"
+          },
+          "title": "Candidates",
+          "type": "array",
+          "x-ar": "كل إجراء مرشّح مع مخاطره."
+        },
+        "dwell_held": {
+          "description": "Whether the dwell rule held a more restrictive action.",
+          "title": "Dwell Held",
+          "type": "boolean",
+          "x-ar": "هل أبقت قاعدة مدة البقاء على إجراء أكثر تقييدًا."
+        },
+        "evidence_level": {
+          "$ref": "#/$defs/EvidenceLevel",
+          "description": "Evidence level of the plant profile.",
+          "x-ar": "مستوى أدلة ملف المحطة."
+        },
+        "inspect": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/InspectAssessment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Survey value assessment, if computed.",
+          "x-ar": "تقييم قيمة المسح إن حُسب."
+        },
+        "limits": {
+          "$ref": "#/$defs/Limits",
+          "description": "Limits and budgets used.",
+          "x-ar": "الحدود والميزانيات المستخدمة."
+        },
+        "n_samples": {
+          "description": "Monte Carlo samples (posterior draws).",
+          "minimum": 1,
+          "title": "N Samples",
+          "type": "integer",
+          "x-ar": "عينات مونت كارلو (سحبات لاحقة)."
+        },
+        "plant_state": {
+          "$ref": "#/$defs/PlantState",
+          "description": "Plant state used.",
+          "x-ar": "حالة المحطة المستخدمة."
+        },
+        "unconstrained_action": {
+          "$ref": "#/$defs/ActionKind",
+          "description": "Action before the dwell rule.",
+          "x-ar": "الإجراء قبل قاعدة مدة البقاء."
+        },
+        "unconstrained_scale": {
+          "description": "Scale before the dwell rule.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Unconstrained Scale",
+          "type": "number",
+          "x-ar": "المقياس قبل قاعدة مدة البقاء.",
+          "x-unit": "1"
+        },
+        "what_would_change": {
+          "description": "Conditions that would change the advisory.",
+          "items": {
+            "type": "string"
+          },
+          "title": "What Would Change",
+          "type": "array",
+          "x-ar": "الظروف التي ستغيّر التوصية."
+        }
+      },
+      "required": [
+        "belief_summary",
+        "plant_state",
+        "limits",
+        "candidates",
+        "unconstrained_action",
+        "unconstrained_scale",
+        "dwell_held",
+        "evidence_level",
+        "assumption_share",
+        "n_samples",
+        "what_would_change"
+      ],
+      "title": "Explanation",
+      "type": "object"
+    },
+    "FalseAlarmRow": {
+      "additionalProperties": false,
+      "description": "Held out false alarm counts for one site, copied from Nadhir.",
+      "properties": {
+        "alert_days": {
+          "$ref": "#/$defs/RateWithCounts",
+          "description": "Alert days over clear quiet days in held out years.",
+          "x-ar": "أيام الإنذار من بين الأيام الصافية الهادئة في السنوات المحجوزة."
+        },
+        "dataset": {
+          "$ref": "#/$defs/Dataset",
+          "description": "Detector used.",
+          "x-ar": "الكاشف المستخدم."
+        },
+        "episodes": {
+          "description": "Alert episodes started in held out quiet days.",
+          "minimum": 0,
+          "title": "Episodes",
+          "type": "integer",
+          "x-ar": "نوبات الإنذار التي بدأت في الأيام الهادئة المحجوزة."
+        },
+        "episodes_per_year": {
+          "description": "Alert episodes per 365 days (an upper bound on false alarms).",
+          "minimum": 0,
+          "title": "Episodes Per Year",
+          "type": "number",
+          "x-ar": "نوبات الإنذار لكل 365 يومًا (حد أعلى للإنذارات الكاذبة)."
+        },
+        "quiet_days": {
+          "description": "Calendar days in the held out quiet set.",
+          "minimum": 0,
+          "title": "Quiet Days",
+          "type": "integer",
+          "x-ar": "الأيام التقويمية في المجموعة الهادئة المحجوزة.",
+          "x-unit": "d"
+        },
+        "radius_km": {
+          "description": "Watch zone radius.",
+          "title": "Radius Km",
+          "type": "integer",
+          "x-ar": "نصف قطر منطقة المراقبة.",
+          "x-unit": "km"
+        },
+        "site": {
+          "description": "Site identifier.",
+          "title": "Site",
+          "type": "string",
+          "x-ar": "معرّف الموقع."
+        },
+        "source_file": {
+          "description": "Source file.",
+          "title": "Source File",
+          "type": "string",
+          "x-ar": "الملف المصدر."
+        },
+        "source_row": {
+          "description": "Data row in the source file (1 based).",
+          "minimum": 1,
+          "title": "Source Row",
+          "type": "integer",
+          "x-ar": "سطر البيانات في الملف المصدر (يبدأ من 1)."
+        }
+      },
+      "required": [
+        "site",
+        "dataset",
+        "radius_km",
+        "alert_days",
+        "episodes",
+        "quiet_days",
+        "episodes_per_year",
+        "source_file",
+        "source_row"
+      ],
+      "title": "FalseAlarmRow",
+      "type": "object"
+    },
+    "HorizonProbability": {
+      "additionalProperties": false,
+      "description": "P(at_intake at any time within the horizon).",
+      "properties": {
+        "horizon_days": {
+          "description": "Forecast horizon.",
+          "maximum": 30,
+          "minimum": 0,
+          "title": "Horizon Days",
+          "type": "integer",
+          "x-ar": "أفق التنبؤ.",
+          "x-unit": "d"
+        },
+        "p_at_intake": {
+          "$ref": "#/$defs/Interval",
+          "description": "Probability with interval.",
+          "x-ar": "الاحتمال مع فترة الموثوقية."
+        }
+      },
+      "required": [
+        "horizon_days",
+        "p_at_intake"
+      ],
+      "title": "HorizonProbability",
+      "type": "object"
+    },
+    "InspectAssessment": {
+      "additionalProperties": false,
+      "description": "Pre posterior value of a drone survey against its cost.",
+      "properties": {
+        "availability": {
+          "description": "Probability that weather allows the sortie.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Availability",
+          "type": "number",
+          "x-ar": "احتمال أن يسمح الطقس بالطلعة.",
+          "x-unit": "1"
+        },
+        "break_even_cost_cu": {
+          "description": "Sortie cost at which the survey just pays.",
+          "minimum": 0.0,
+          "title": "Break Even Cost Cu",
+          "type": "number",
+          "x-ar": "تكلفة الطلعة التي يتعادل عندها المسح.",
+          "x-unit": "CU"
+        },
+        "decision_could_change": {
+          "description": "Whether some survey outcome changes the best action.",
+          "title": "Decision Could Change",
+          "type": "boolean",
+          "x-ar": "هل يغيّر أي ناتج للمسح الإجراء الأفضل."
+        },
+        "inspect": {
+          "description": "INSPECT advisory set.",
+          "title": "Inspect",
+          "type": "boolean",
+          "x-ar": "تفعيل توصية الفحص."
+        },
+        "reasons": {
+          "description": "Reasons in plain language.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array",
+          "x-ar": "الأسباب بلغة بسيطة."
+        },
+        "sortie_cost_cu": {
+          "description": "Cost of one sortie (hypothetical).",
+          "minimum": 0.0,
+          "title": "Sortie Cost Cu",
+          "type": "number",
+          "x-ar": "تكلفة طلعة واحدة (افتراضية).",
+          "x-unit": "CU"
+        },
+        "value_cu": {
+          "description": "Expected reduction in loss from one survey, in cost units (hypothetical).",
+          "minimum": 0.0,
+          "title": "Value Cu",
+          "type": "number",
+          "x-ar": "الانخفاض المتوقع في الخسارة من مسح واحد بوحدات تكلفة افتراضية.",
+          "x-unit": "CU"
+        }
+      },
+      "required": [
+        "value_cu",
+        "sortie_cost_cu",
+        "break_even_cost_cu",
+        "availability",
+        "decision_could_change",
+        "inspect",
+        "reasons"
+      ],
+      "title": "InspectAssessment",
+      "type": "object"
+    },
+    "Interval": {
+      "additionalProperties": false,
+      "description": "Posterior median with an equal tailed credible interval.",
+      "properties": {
+        "hi": {
+          "description": "Upper bound of the credible interval.",
+          "title": "Hi",
+          "type": "number",
+          "x-ar": "الحد الأعلى لفترة الموثوقية."
+        },
+        "level": {
+          "description": "Credible level, for example 0.9.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Level",
+          "type": "number",
+          "x-ar": "مستوى الموثوقية، مثل 0.9.",
+          "x-unit": "1"
+        },
+        "lo": {
+          "description": "Lower bound of the credible interval.",
+          "title": "Lo",
+          "type": "number",
+          "x-ar": "الحد الأدنى لفترة الموثوقية."
+        },
+        "median": {
+          "description": "Posterior median.",
+          "title": "Median",
+          "type": "number",
+          "x-ar": "الوسيط اللاحق."
+        }
+      },
+      "required": [
+        "median",
+        "lo",
+        "hi",
+        "level"
+      ],
+      "title": "Interval",
+      "type": "object"
+    },
+    "Limits": {
+      "additionalProperties": false,
+      "description": "Hard limits and risk budgets of the decision.",
+      "properties": {
+        "dwell_hours": {
+          "default": 12.0,
+          "description": "Minimum time before a less restrictive change.",
+          "minimum": 0,
+          "title": "Dwell Hours",
+          "type": "number",
+          "x-ar": "أقل مدة قبل التحول إلى إجراء أقل تقييدًا.",
+          "x-unit": "h"
+        },
+        "fouling_limit": {
+          "default": 1.0,
+          "description": "Fouling index hard limit.",
+          "exclusiveMinimum": 0,
+          "title": "Fouling Limit",
+          "type": "number",
+          "x-ar": "الحد الصارم لمؤشر الانسداد.",
+          "x-unit": "1"
+        },
+        "fouling_risk_budget": {
+          "default": 0.05,
+          "description": "Largest allowed P(fouling breach) over the horizon.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Fouling Risk Budget",
+          "type": "number",
+          "x-ar": "أكبر احتمال مسموح لتجاوز حد الانسداد خلال الأفق.",
+          "x-unit": "1"
+        },
+        "horizon_hours": {
+          "default": 72,
+          "description": "Decision horizon.",
+          "maximum": 168,
+          "minimum": 6,
+          "title": "Horizon Hours",
+          "type": "integer",
+          "x-ar": "أفق القرار.",
+          "x-unit": "h"
+        },
+        "water_allowance_m3": {
+          "default": 0.0,
+          "description": "Unserved water allowed over the horizon before it counts as a breach.",
+          "minimum": 0.0,
+          "title": "Water Allowance M3",
+          "type": "number",
+          "x-ar": "كمية المياه غير المزوّدة المسموح بها خلال الأفق قبل اعتبارها تجاوزًا.",
+          "x-unit": "m3"
+        },
+        "water_risk_budget": {
+          "default": 0.05,
+          "description": "Largest allowed P(unserved water above the allowance).",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Water Risk Budget",
+          "type": "number",
+          "x-ar": "أكبر احتمال مسموح لتجاوز المياه غير المزوّدة الحد المسموح.",
+          "x-unit": "1"
+        }
+      },
+      "title": "Limits",
+      "type": "object"
+    },
+    "MetricSummary": {
+      "additionalProperties": false,
+      "description": "Mean of a metric over seeds with a 95 percent interval.",
+      "properties": {
+        "hi": {
+          "description": "Upper 95 percent bound of the mean.",
+          "title": "Hi",
+          "type": "number",
+          "x-ar": "الحد الأعلى 95 بالمئة للمتوسط."
+        },
+        "lo": {
+          "description": "Lower 95 percent bound of the mean.",
+          "title": "Lo",
+          "type": "number",
+          "x-ar": "الحد الأدنى 95 بالمئة للمتوسط."
+        },
+        "mean": {
+          "description": "Mean over seeds.",
+          "title": "Mean",
+          "type": "number",
+          "x-ar": "المتوسط عبر البذور."
+        },
+        "n": {
+          "description": "Number of seeds.",
+          "minimum": 1,
+          "title": "N",
+          "type": "integer",
+          "x-ar": "عدد البذور."
+        },
+        "unit": {
+          "description": "Unit.",
+          "title": "Unit",
+          "type": "string",
+          "x-ar": "الوحدة."
+        }
+      },
+      "required": [
+        "mean",
+        "lo",
+        "hi",
+        "unit",
+        "n"
+      ],
+      "title": "MetricSummary",
+      "type": "object"
+    },
+    "Mission": {
+      "additionalProperties": false,
+      "description": "A survey mission. For simulation and review only.",
+      "properties": {
+        "distance_m": {
+          "description": "Total path length.",
+          "minimum": 0.0,
+          "title": "Distance M",
+          "type": "number",
+          "x-ar": "الطول الكلي للمسار.",
+          "x-unit": "m"
+        },
+        "drone": {
+          "$ref": "#/$defs/DroneProfile",
+          "description": "Drone profile.",
+          "x-ar": "ملف الطائرة."
+        },
+        "feasible": {
+          "description": "Whether the mission fits the profile.",
+          "title": "Feasible",
+          "type": "boolean",
+          "x-ar": "هل تتسع المهمة ضمن ملف الطائرة."
+        },
+        "flight_time_s": {
+          "description": "Flight time at cruise speed.",
+          "minimum": 0.0,
+          "title": "Flight Time S",
+          "type": "number",
+          "x-ar": "زمن الطيران بسرعة الطيران.",
+          "x-unit": "s"
+        },
+        "id": {
+          "description": "Identifier: the inputs hash.",
+          "title": "Id",
+          "type": "string",
+          "x-ar": "المعرّف: بصمة المدخلات."
+        },
+        "line_spacing_m": {
+          "description": "Spacing of survey lines.",
+          "exclusiveMinimum": 0,
+          "title": "Line Spacing M",
+          "type": "number",
+          "x-ar": "المسافة بين خطوط المسح.",
+          "x-unit": "m"
+        },
+        "notice": {
+          "const": "For simulation and review only. Real flights need the operator's own safety case and the regulator's approval.",
+          "description": "Simulation only statement (always present).",
+          "title": "Notice",
+          "type": "string",
+          "x-ar": "بيان المحاكاة فقط (موجود دائمًا)."
+        },
+        "radius_m": {
+          "description": "Survey radius offshore of the intake.",
+          "exclusiveMinimum": 0,
+          "title": "Radius M",
+          "type": "number",
+          "x-ar": "نصف قطر المسح بعيدًا عن المأخذ.",
+          "x-unit": "m"
+        },
+        "refused_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Why a mission was refused.",
+          "title": "Refused Reason",
+          "x-ar": "سبب رفض المهمة."
+        },
+        "site": {
+          "description": "Site identifier.",
+          "title": "Site",
+          "type": "string",
+          "x-ar": "معرّف الموقع."
+        },
+        "usable_time_s": {
+          "description": "Endurance less reserve.",
+          "minimum": 0.0,
+          "title": "Usable Time S",
+          "type": "number",
+          "x-ar": "التحمل بعد خصم الاحتياطي.",
+          "x-unit": "s"
+        },
+        "waypoints": {
+          "description": "Waypoints in order, starting and ending at home.",
+          "items": {
+            "$ref": "#/$defs/Waypoint"
+          },
+          "title": "Waypoints",
+          "type": "array",
+          "x-ar": "نقاط الطريق بالترتيب، تبدأ وتنتهي عند نقطة الانطلاق."
+        }
+      },
+      "required": [
+        "id",
+        "site",
+        "radius_m",
+        "line_spacing_m",
+        "drone",
+        "waypoints",
+        "distance_m",
+        "flight_time_s",
+        "usable_time_s",
+        "feasible",
+        "notice"
+      ],
+      "title": "Mission",
+      "type": "object"
+    },
+    "ParamSource": {
+      "description": "Where a parameter value comes from.",
+      "enum": [
+        "assumption",
+        "literature",
+        "nadhir",
+        "field_calibrated",
+        "validated"
+      ],
+      "title": "ParamSource",
+      "type": "string"
+    },
+    "Parameter": {
+      "additionalProperties": false,
+      "description": "A model parameter with provenance. The evidence level is required.",
+      "properties": {
+        "adverse": {
+          "description": "Direction in which the parameter makes outcomes worse.",
+          "enum": [
+            "up",
+            "down"
+          ],
+          "title": "Adverse",
+          "type": "string",
+          "x-ar": "الاتجاه الذي يجعل فيه المعامل النتائج أسوأ."
+        },
+        "evidence_level": {
+          "$ref": "#/$defs/EvidenceLevel",
+          "description": "Evidence level of this parameter.",
+          "x-ar": "مستوى الأدلة لهذا المعامل."
+        },
+        "key": {
+          "description": "Parameter key.",
+          "title": "Key",
+          "type": "string",
+          "x-ar": "مفتاح المعامل."
+        },
+        "label": {
+          "description": "Plain language name.",
+          "title": "Label",
+          "type": "string",
+          "x-ar": "اسم بلغة بسيطة."
+        },
+        "provenance": {
+          "description": "Reasoning or citation behind the value.",
+          "title": "Provenance",
+          "type": "string",
+          "x-ar": "المنطق أو المرجع وراء القيمة."
+        },
+        "rel_spread": {
+          "description": "Relative spread (one standard deviation on the log scale).",
+          "minimum": 0.0,
+          "title": "Rel Spread",
+          "type": "number",
+          "x-ar": "الانتشار النسبي (انحراف معياري واحد على المقياس اللوغاريتمي).",
+          "x-unit": "1"
+        },
+        "source": {
+          "$ref": "#/$defs/ParamSource",
+          "description": "Where the value comes from.",
+          "x-ar": "مصدر القيمة."
+        },
+        "unit": {
+          "description": "Unit of the value.",
+          "title": "Unit",
+          "type": "string",
+          "x-ar": "وحدة القيمة."
+        },
+        "value": {
+          "description": "Nominal value.",
+          "title": "Value",
+          "type": "number",
+          "x-ar": "القيمة الاسمية."
+        }
+      },
+      "required": [
+        "key",
+        "label",
+        "value",
+        "unit",
+        "evidence_level",
+        "source",
+        "provenance",
+        "rel_spread",
+        "adverse"
+      ],
+      "title": "Parameter",
+      "type": "object"
+    },
+    "PlainText": {
+      "additionalProperties": false,
+      "description": "Three sentences rendered from the explanation.",
+      "properties": {
+        "change": {
+          "description": "What would change this.",
+          "title": "Change",
+          "type": "string",
+          "x-ar": "ما الذي سيغيّر ذلك."
+        },
+        "what": {
+          "description": "What to do.",
+          "title": "What",
+          "type": "string",
+          "x-ar": "ما يجب فعله."
+        },
+        "why": {
+          "description": "Why.",
+          "title": "Why",
+          "type": "string",
+          "x-ar": "لماذا."
+        }
+      },
+      "required": [
+        "what",
+        "why",
+        "change"
+      ],
+      "title": "PlainText",
+      "type": "object"
+    },
+    "PlantProfile": {
+      "additionalProperties": false,
+      "description": "A hypothetical plant. Every parameter carries an evidence level and provenance.",
+      "properties": {
+        "description": {
+          "description": "What the profile represents.",
+          "title": "Description",
+          "type": "string",
+          "x-ar": "ما يمثّله الملف التعريفي."
+        },
+        "hypothetical": {
+          "const": true,
+          "description": "Always true: no real plant is modelled.",
+          "title": "Hypothetical",
+          "type": "boolean",
+          "x-ar": "صحيح دائمًا: لا تُنمذج أي محطة حقيقية."
+        },
+        "id": {
+          "description": "Profile identifier.",
+          "title": "Id",
+          "type": "string",
+          "x-ar": "معرّف الملف التعريفي."
+        },
+        "name": {
+          "description": "Profile name.",
+          "title": "Name",
+          "type": "string",
+          "x-ar": "اسم الملف التعريفي."
+        },
+        "parameters": {
+          "description": "All parameters.",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          },
+          "title": "Parameters",
+          "type": "array",
+          "x-ar": "جميع المعاملات."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "hypothetical",
+        "description",
+        "parameters"
+      ],
+      "title": "PlantProfile",
+      "type": "object"
+    },
+    "PlantState": {
+      "additionalProperties": false,
+      "description": "Current state of the hypothetical plant.",
+      "properties": {
+        "current_action": {
+          "$ref": "#/$defs/ActionKind",
+          "default": "GO",
+          "description": "Action in force.",
+          "x-ar": "الإجراء الساري."
+        },
+        "current_scale": {
+          "default": 1.0,
+          "description": "Flow scale in force.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Current Scale",
+          "type": "number",
+          "x-ar": "مقياس التدفق الساري.",
+          "x-unit": "1"
+        },
+        "fouling_index": {
+          "default": 0.2,
+          "description": "Current fouling index (1 is the hard limit).",
+          "minimum": 0.0,
+          "title": "Fouling Index",
+          "type": "number",
+          "x-ar": "مؤشر الانسداد الحالي (1 هو الحد الصارم).",
+          "x-unit": "1"
+        },
+        "hours_in_action": {
+          "default": 1000.0,
+          "description": "Hours since the action in force began.",
+          "minimum": 0.0,
+          "title": "Hours In Action",
+          "type": "number",
+          "x-ar": "الساعات منذ بدء الإجراء الساري.",
+          "x-unit": "h"
+        },
+        "storage_hours": {
+          "default": 18.0,
+          "description": "Product water in storage, in hours of demand.",
+          "minimum": 0.0,
+          "title": "Storage Hours",
+          "type": "number",
+          "x-ar": "المياه المنتجة في الخزان بساعات من الطلب.",
+          "x-unit": "h"
+        }
+      },
+      "title": "PlantState",
+      "type": "object"
+    },
+    "PolicyResult": {
+      "additionalProperties": false,
+      "description": "Results of one policy on one generator.",
+      "properties": {
+        "generator": {
+          "description": "Scenario generator.",
+          "enum": [
+            "G1",
+            "G2"
+          ],
+          "title": "Generator",
+          "type": "string",
+          "x-ar": "مولّد السيناريوهات."
+        },
+        "metrics": {
+          "additionalProperties": {
+            "$ref": "#/$defs/MetricSummary"
+          },
+          "description": "Every metric, never collapsed.",
+          "title": "Metrics",
+          "type": "object",
+          "x-ar": "كل مقياس على حدة دون دمج."
+        },
+        "n_seeds": {
+          "description": "Seeds run.",
+          "minimum": 1,
+          "title": "N Seeds",
+          "type": "integer",
+          "x-ar": "البذور المنفّذة."
+        },
+        "policy": {
+          "description": "Policy identifier.",
+          "title": "Policy",
+          "type": "string",
+          "x-ar": "معرّف السياسة."
+        }
+      },
+      "required": [
+        "policy",
+        "generator",
+        "n_seeds",
+        "metrics"
+      ],
+      "title": "PolicyResult",
+      "type": "object"
+    },
+    "RateWithCounts": {
+      "additionalProperties": false,
+      "description": "A rate that always travels with its counts.",
+      "properties": {
+        "k": {
+          "description": "Numerator count.",
+          "minimum": 0,
+          "title": "K",
+          "type": "integer",
+          "x-ar": "العدد في البسط."
+        },
+        "n": {
+          "description": "Denominator count.",
+          "minimum": 0,
+          "title": "N",
+          "type": "integer",
+          "x-ar": "العدد في المقام."
+        },
+        "note": {
+          "default": "",
+          "description": "What the counts mean.",
+          "title": "Note",
+          "type": "string",
+          "x-ar": "معنى الأعداد."
+        },
+        "rate": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "k / n, absent when n is zero.",
+          "title": "Rate",
+          "x-ar": "ناتج k / n، ويغيب عندما يكون n صفرًا.",
+          "x-unit": "1"
+        }
+      },
+      "required": [
+        "k",
+        "n"
+      ],
+      "title": "RateWithCounts",
+      "type": "object"
+    },
+    "Scenario": {
+      "additionalProperties": false,
+      "description": "A user bloom scenario for the Scenario Lab (synthetic).",
+      "properties": {
+        "days": {
+          "description": "Scenario length.",
+          "maximum": 60,
+          "minimum": 3,
+          "title": "Days",
+          "type": "integer",
+          "x-ar": "طول السيناريو.",
+          "x-unit": "d"
+        },
+        "days_to_intake": {
+          "default": 4,
+          "description": "Days from watch zone to intake.",
+          "maximum": 30,
+          "minimum": 0,
+          "title": "Days To Intake",
+          "type": "integer",
+          "x-ar": "الأيام من منطقة المراقبة إلى المأخذ.",
+          "x-unit": "d"
+        },
+        "detector_availability": {
+          "default": 0.5,
+          "description": "Share of days with a clear satellite view.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Detector Availability",
+          "type": "number",
+          "x-ar": "نسبة الأيام ذات الرؤية الصافية.",
+          "x-unit": "1"
+        },
+        "detector_visible": {
+          "default": true,
+          "description": "Whether the bloom is visible to the broadband detector.",
+          "title": "Detector Visible",
+          "type": "boolean",
+          "x-ar": "هل الازدهار مرئي للكاشف عريض النطاق."
+        },
+        "duration_days": {
+          "default": 10,
+          "description": "Days the bloom stays at the intake.",
+          "maximum": 60,
+          "minimum": 1,
+          "title": "Duration Days",
+          "type": "integer",
+          "x-ar": "الأيام التي يبقى فيها الازدهار عند المأخذ.",
+          "x-unit": "d"
+        },
+        "intensity": {
+          "default": 1.0,
+          "description": "Bloom load added at the intake, relative to the design load.",
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Intensity",
+          "type": "number",
+          "x-ar": "حمل الازدهار المضاف عند المأخذ نسبةً إلى حمل التصميم.",
+          "x-unit": "1"
+        },
+        "onset_day": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Day the bloom enters the watch zone (absent for none).",
+          "title": "Onset Day",
+          "x-ar": "اليوم الذي يدخل فيه الازدهار منطقة المراقبة (يغيب إن لم يوجد).",
+          "x-unit": "d"
+        },
+        "seed": {
+          "default": 7,
+          "description": "Seed.",
+          "maximum": 2147483647,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer",
+          "x-ar": "البذرة."
+        },
+        "site": {
+          "description": "Site whose seasonality and coverage are used.",
+          "title": "Site",
+          "type": "string",
+          "x-ar": "الموقع الذي تُستخدم موسميته وتغطيته."
+        },
+        "start_date": {
+          "description": "First day.",
+          "format": "date",
+          "title": "Start Date",
+          "type": "string",
+          "x-ar": "اليوم الأول."
+        }
+      },
+      "required": [
+        "site",
+        "start_date",
+        "days"
+      ],
+      "title": "Scenario",
+      "type": "object"
+    },
+    "Site": {
+      "additionalProperties": false,
+      "description": "A place with satellite evidence. Coordinates are estimated, never surveyed.",
+      "properties": {
+        "coord_status": {
+          "description": "Status of the coordinates (ESTIMATED in every case).",
+          "title": "Coord Status",
+          "type": "string",
+          "x-ar": "حالة الإحداثيات (مقدّرة في كل الحالات)."
+        },
+        "dataset": {
+          "$ref": "#/$defs/Dataset",
+          "description": "Frozen detector that covers this site.",
+          "x-ar": "الكاشف المجمّد الذي يغطي هذا الموقع."
+        },
+        "first_date": {
+          "description": "First day of evidence.",
+          "format": "date",
+          "title": "First Date",
+          "type": "string",
+          "x-ar": "أول يوم في الأدلة."
+        },
+        "id": {
+          "description": "Site identifier used by Nadhir.",
+          "title": "Id",
+          "type": "string",
+          "x-ar": "معرّف الموقع كما في نذير."
+        },
+        "last_date": {
+          "description": "Last day of evidence.",
+          "format": "date",
+          "title": "Last Date",
+          "type": "string",
+          "x-ar": "آخر يوم في الأدلة."
+        },
+        "lat": {
+          "description": "Latitude of the estimated intake position.",
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number",
+          "x-ar": "خط العرض لموقع المأخذ المقدّر.",
+          "x-unit": "deg"
+        },
+        "lon": {
+          "description": "Longitude of the estimated intake position.",
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lon",
+          "type": "number",
+          "x-ar": "خط الطول لموقع المأخذ المقدّر.",
+          "x-unit": "deg"
+        },
+        "name": {
+          "description": "Place name in English.",
+          "title": "Name",
+          "type": "string",
+          "x-ar": "اسم المكان بالإنجليزية."
+        },
+        "name_ar": {
+          "description": "Place name in Arabic.",
+          "title": "Name Ar",
+          "type": "string",
+          "x-ar": "اسم المكان بالعربية."
+        },
+        "offshore_bearing_deg": {
+          "description": "Assumed bearing from the intake towards open water, used only to draw survey missions.",
+          "exclusiveMaximum": 360,
+          "minimum": 0,
+          "title": "Offshore Bearing Deg",
+          "type": "number",
+          "x-ar": "الاتجاه المفترض من المأخذ نحو المياه المفتوحة، يُستخدم فقط لرسم مهام المسح.",
+          "x-unit": "deg"
+        },
+        "primary_radius_km": {
+          "description": "Watch zone radius used by default.",
+          "title": "Primary Radius Km",
+          "type": "integer",
+          "x-ar": "نصف قطر منطقة المراقبة الافتراضي.",
+          "x-unit": "km"
+        },
+        "radii_km": {
+          "description": "Watch zone radii available.",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Radii Km",
+          "type": "array",
+          "x-ar": "أنصاف أقطار مناطق المراقبة المتاحة.",
+          "x-unit": "km"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "name_ar",
+        "dataset",
+        "lat",
+        "lon",
+        "coord_status",
+        "offshore_bearing_deg",
+        "first_date",
+        "last_date",
+        "radii_km",
+        "primary_radius_km"
+      ],
+      "title": "Site",
+      "type": "object"
+    },
+    "StatusClass": {
+      "description": "Coarse class of a Nadhir evidence status, used for labels.",
+      "enum": [
+        "VERIFIED-PRIMARY",
+        "VERIFIED-SECONDARY",
+        "UNVERIFIED"
+      ],
+      "title": "StatusClass",
+      "type": "string"
+    },
+    "TrackRecord": {
+      "additionalProperties": false,
+      "description": "Detector track record, small sample shown as small.",
+      "properties": {
+        "blind_spot_note": {
+          "description": "The documented species level blind spot.",
+          "title": "Blind Spot Note",
+          "type": "string",
+          "x-ar": "النقطة العمياء الموثّقة على مستوى النوع."
+        },
+        "false_alarms": {
+          "description": "Held out false alarm rows.",
+          "items": {
+            "$ref": "#/$defs/FalseAlarmRow"
+          },
+          "title": "False Alarms",
+          "type": "array",
+          "x-ar": "سطور الإنذارات الكاذبة المحجوزة."
+        },
+        "hit_rate": {
+          "$ref": "#/$defs/RateWithCounts",
+          "description": "Detected over observable.",
+          "x-ar": "المكتشف من بين القابل للرصد."
+        },
+        "n_dated": {
+          "description": "Dated disruptions scored by Nadhir.",
+          "minimum": 0,
+          "title": "N Dated",
+          "type": "integer",
+          "x-ar": "الاضطرابات المؤرخة التي قيّمها نذير."
+        },
+        "n_detected": {
+          "description": "Of the observable, how many were detected.",
+          "minimum": 0,
+          "title": "N Detected",
+          "type": "integer",
+          "x-ar": "من القابلة للرصد، كم اكتُشف."
+        },
+        "n_missed": {
+          "description": "Observable but missed.",
+          "minimum": 0,
+          "title": "N Missed",
+          "type": "integer",
+          "x-ar": "قابلة للرصد لكنها فاتت."
+        },
+        "n_not_observable": {
+          "description": "Not observable (satellite blind).",
+          "minimum": 0,
+          "title": "N Not Observable",
+          "type": "integer",
+          "x-ar": "غير قابلة للرصد (القمر الصناعي أعمى)."
+        },
+        "n_observable": {
+          "description": "Of those, how many were observable.",
+          "minimum": 0,
+          "title": "N Observable",
+          "type": "integer",
+          "x-ar": "منها، كم كان قابلًا للرصد."
+        },
+        "observable_rule": {
+          "description": "Rule used to call an event observable.",
+          "title": "Observable Rule",
+          "type": "string",
+          "x-ar": "القاعدة المستخدمة لاعتبار الحدث قابلًا للرصد."
+        },
+        "rows": {
+          "description": "One row per dated event.",
+          "items": {
+            "$ref": "#/$defs/TrackRow"
+          },
+          "title": "Rows",
+          "type": "array",
+          "x-ar": "سطر لكل حدث مؤرخ."
+        }
+      },
+      "required": [
+        "n_dated",
+        "n_observable",
+        "n_detected",
+        "n_missed",
+        "n_not_observable",
+        "hit_rate",
+        "observable_rule",
+        "rows",
+        "false_alarms",
+        "blind_spot_note"
+      ],
+      "title": "TrackRecord",
+      "type": "object"
+    },
+    "TrackRow": {
+      "additionalProperties": false,
+      "description": "Outcome of the detector for one dated event, cited to its source row.",
+      "properties": {
+        "clear_days_in_lookback": {
+          "description": "Clear days in the lookback window.",
+          "minimum": 0,
+          "title": "Clear Days In Lookback",
+          "type": "integer",
+          "x-ar": "الأيام الصافية في نافذة الاسترجاع.",
+          "x-unit": "d"
+        },
+        "dataset": {
+          "$ref": "#/$defs/Dataset",
+          "description": "Detector used.",
+          "x-ar": "الكاشف المستخدم."
+        },
+        "days_in_lookback": {
+          "description": "Days in the lookback window.",
+          "minimum": 0,
+          "title": "Days In Lookback",
+          "type": "integer",
+          "x-ar": "عدد أيام نافذة الاسترجاع.",
+          "x-unit": "d"
+        },
+        "event_id": {
+          "description": "Event identifier.",
+          "title": "Event Id",
+          "type": "string",
+          "x-ar": "معرّف الحدث."
+        },
+        "evidence_status": {
+          "description": "Evidence status (verbatim).",
+          "title": "Evidence Status",
+          "type": "string",
+          "x-ar": "حالة الأدلة (حرفيًا)."
+        },
+        "label": {
+          "description": "Neutral event label.",
+          "title": "Label",
+          "type": "string",
+          "x-ar": "وصف الحدث المحايد."
+        },
+        "lead_alert_days": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Days from first alert to the reference date.",
+          "title": "Lead Alert Days",
+          "x-ar": "الأيام من أول إنذار حتى التاريخ المرجعي.",
+          "x-unit": "d"
+        },
+        "lead_alert_min_days": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Lead time against the earliest date.",
+          "title": "Lead Alert Min Days",
+          "x-ar": "زمن الإنذار المسبق مقابل أبكر تاريخ.",
+          "x-unit": "d"
+        },
+        "nadhir_outcome": {
+          "description": "Outcome string written by Nadhir.",
+          "title": "Nadhir Outcome",
+          "type": "string",
+          "x-ar": "نص النتيجة كما كتبه نذير."
+        },
+        "outcome": {
+          "description": "Detected, missed, or not observable (too few clear days before the reference date).",
+          "enum": [
+            "DETECTED",
+            "MISSED",
+            "NOT_OBSERVABLE"
+          ],
+          "title": "Outcome",
+          "type": "string",
+          "x-ar": "مكتشف، أو فائت، أو غير قابل للرصد (أيام صافية قليلة جدًا قبل التاريخ المرجعي)."
+        },
+        "source_file": {
+          "description": "Source file.",
+          "title": "Source File",
+          "type": "string",
+          "x-ar": "الملف المصدر."
+        },
+        "source_row": {
+          "description": "Data row in the source file (1 based).",
+          "minimum": 1,
+          "title": "Source Row",
+          "type": "integer",
+          "x-ar": "سطر البيانات في الملف المصدر (يبدأ من 1)."
+        },
+        "status_class": {
+          "$ref": "#/$defs/StatusClass",
+          "description": "Coarse class of the evidence status.",
+          "x-ar": "الفئة العامة لحالة الأدلة."
+        }
+      },
+      "required": [
+        "event_id",
+        "label",
+        "dataset",
+        "outcome",
+        "nadhir_outcome",
+        "clear_days_in_lookback",
+        "days_in_lookback",
+        "evidence_status",
+        "status_class",
+        "source_file",
+        "source_row"
+      ],
+      "title": "TrackRow",
+      "type": "object"
+    },
+    "Waypoint": {
+      "additionalProperties": false,
+      "description": "A mission waypoint.",
+      "properties": {
+        "alt_m": {
+          "description": "Altitude above the take off point.",
+          "maximum": 500,
+          "minimum": 0,
+          "title": "Alt M",
+          "type": "number",
+          "x-ar": "الارتفاع فوق نقطة الإقلاع.",
+          "x-unit": "m"
+        },
+        "lat": {
+          "description": "Latitude.",
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number",
+          "x-ar": "خط العرض.",
+          "x-unit": "deg"
+        },
+        "lon": {
+          "description": "Longitude.",
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lon",
+          "type": "number",
+          "x-ar": "خط الطول.",
+          "x-unit": "deg"
+        }
+      },
+      "required": [
+        "lat",
+        "lon",
+        "alt_m"
+      ],
+      "title": "Waypoint",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Generated from madkhal.contract.models. Do not edit by hand. Evidence: real satellite history from the Nadhir hindcast. Plant, drone and consequences: hypothetical, synthetic parameters.",
+  "title": "Madkhal contract"
+}

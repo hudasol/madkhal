@@ -14,6 +14,7 @@ from pathlib import Path
 
 import typer
 
+from madkhal.contract import export as contract_export
 from madkhal.core import claims as claimslib
 from madkhal.core import paths
 from madkhal.core import traceability as tr
@@ -44,6 +45,8 @@ def render_docs(root: Path) -> dict[Path, str]:
     """Return every generated document as {path: text}. Pure apart from reading inputs."""
     docs = root / "docs"
     out: dict[Path, str] = {}
+    for rel, text in contract_export.artefacts().items():
+        out[root / rel] = text
     m = tr.build_matrix(docs / "requirements.yaml", root / "tests", root / "web")
     out[docs / "TRACEABILITY.md"] = tr.render_markdown(m)
     cl = claimslib.load_claims(docs / "claims.yaml")
@@ -56,6 +59,7 @@ def docs_build() -> None:
     """Render generated documents (traceability, claims) from their sources."""
     root = paths.repo_root()
     for path, text in render_docs(root).items():
+        path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(text.encode("utf-8"))
         _echo(f"wrote {path.relative_to(root).as_posix()}")
 
