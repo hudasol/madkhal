@@ -18,6 +18,7 @@ from madkhal.contract import export as contract_export
 from madkhal.core import claims as claimslib
 from madkhal.core import paths
 from madkhal.core import traceability as tr
+from madkhal.core.errors import MadkhalError
 from madkhal.evidence import NadhirSnapshot
 
 app = typer.Typer(add_completion=False, no_args_is_help=True, help=__doc__)
@@ -103,7 +104,7 @@ def docs_build() -> None:
 # ---------------------------------------------------------------- check
 def _run(label: str, cmd: list[str], root: Path) -> bool:
     t0 = time.perf_counter()
-    env = dict(os.environ, PYTHONUTF8="1")
+    env = dict(os.environ, PYTHONUTF8="1", MADKHAL_CHECK="1")  # derandomized Hypothesis
     proc = subprocess.run(
         cmd,
         cwd=root,
@@ -312,6 +313,104 @@ def timeline(
 
 
 @app.command()
+def lab(
+    preset: str = typer.Option(
+        "visible_bloom", help="visible_bloom, invisible_bloom, blind_season or quiet."
+    ),
+    draws: int = typer.Option(200, min=1, max=1000),
+) -> None:
+    """Run one synthetic Scenario Lab preset (synthetic evidence, hypothetical plant)."""
+    from madkhal.lab.advise import run_scenario
+    from madkhal.lab.presets import SCENARIO_PRESETS
+
+    if preset not in SCENARIO_PRESETS:
+        raise typer.BadParameter(f"unknown preset; choose from {', '.join(SCENARIO_PRESETS)}")
+    _print_json(run_scenario(SCENARIO_PRESETS[preset], draws))
+
+
+@app.command()
+def plan(
+    site: str = typer.Option("kalba"),
+    out: Path = typer.Option(Path("missions"), help="Output folder for the three exports."),
+) -> None:
+    """Plan the default survey mission; write GeoJSON, KML and a QGroundControl plan.
+
+    For simulation and review only: every export carries the simulation only statement.
+    """
+    from madkhal.core.jsonio import dumps
+    from madkhal.tasking import geojson, kml, plan_mission, plan_text, qgc_plan, validate_plan
+
+    snap = NadhirSnapshot()
+    try:
+        s = snap.site(site)
+    except MadkhalError:
+        raise typer.BadParameter(f"unknown site {site}") from None
+    mission = plan_mission(s)
+    problems = validate_plan(qgc_plan(mission))
+    if problems:
+        _echo("plan validation failed: " + "; ".join(problems))
+        raise typer.Exit(code=1)
+    root = paths.repo_root()
+    target = out if out.is_absolute() else root / out
+    target.mkdir(parents=True, exist_ok=True)
+    (target / f"{site}.geojson").write_bytes(dumps(geojson(mission)).encode("utf-8"))
+    (target / f"{site}.kml").write_bytes(kml(mission).encode("utf-8"))
+    (target / f"{site}.plan").write_bytes(plan_text(mission).encode("utf-8"))
+    _echo(f"wrote {site}.geojson, {site}.kml and {site}.plan to {target} (simulation only)")
+
+
+@app.command()
+def perf() -> None:
+    """Measure the performance budget and write results/performance.json."""
+    from madkhal.api.performance import measure_all
+    from madkhal.core.jsonio import write_json
+
+    root = paths.repo_root()
+    res = measure_all(root)
+    write_json(root / "results" / "performance.json", res)
+    for key, row in res["budget"].items():
+        _echo(f"{key}: {row['observed_s']} s (budget {row['budget_s']} s, within: {row['within']})")
+
+
+def _audit(label: str, cmd: list[str], cwd: Path, out: Path) -> bool:
+    import datetime as dt
+
+    proc = subprocess.run(
+        cmd, cwd=cwd, capture_output=True, text=True, encoding="utf-8", check=False
+    )
+    body = (proc.stdout + proc.stderr).strip()
+    text = f"{label}, {dt.date.today().isoformat()}\n{body}\nexit={proc.returncode}\n"
+    out.write_bytes(text.encode("utf-8"))
+    _echo(text.strip())
+    return proc.returncode == 0
+
+
+@app.command()
+def audit() -> None:
+    """Audit the locked dependencies: pip-audit (Python) and npm audit (web).
+
+    Writes results/pip_audit.txt and results/npm_audit.txt.
+    """
+    root = paths.repo_root()
+    npm = "npm.cmd" if os.name == "nt" else "npm"
+    ok_py = _audit(
+        "pip-audit on requirements.lock.txt",
+        [sys.executable, "-m", "pip_audit", "-r", "requirements.lock.txt"]
+        + ["--progress-spinner", "off"],
+        root,
+        root / "results" / "pip_audit.txt",
+    )
+    ok_web = _audit(
+        "npm audit on web/package-lock.json",
+        [npm, "audit"],
+        root / "web",
+        root / "results" / "npm_audit.txt",
+    )
+    if not (ok_py and ok_web):
+        raise typer.Exit(code=1)
+
+
+@app.command()
 def snapshot(
     out: Path = typer.Option(Path("web/public/api"), help="Output folder for the static demo."),
 ) -> None:
@@ -356,9 +455,10 @@ def all_(
     seeds: int = typer.Option(30, min=1, max=30),
     skip_eval: bool = typer.Option(False, help="Reuse the committed results/*.json."),
 ) -> None:
-    """Everything: fast check, experiments, documents, slow tests, static demo, SBOM and audit."""
+    """Everything: check, experiments, documents, slow tests, static demo, performance, audit, SBOM."""
     root = paths.repo_root()
     py = sys.executable
+    npx = "npx.cmd" if os.name == "nt" else "npx"
     steps: list[tuple[str, list[str]]] = [("check", [py, "-m", "madkhal.cli", "check"])]
     if not skip_eval:
         steps.append(("eval", [py, "-m", "madkhal.cli", "eval", "--seeds", str(seeds)]))
@@ -366,6 +466,10 @@ def all_(
         ("docs build", [py, "-m", "madkhal.cli", "docs", "build"]),
         ("slow tests", [py, "-m", "pytest", "-m", "slow", "-q", "-p", "no:cacheprovider"]),
         ("static demo", [py, "-m", "madkhal.cli", "static"]),
+        ("browser for the web check", [npx, "playwright", "install", "chromium"]),
+        ("web first load", [npx, "playwright", "test", "e2e/performance.spec.ts"]),
+        ("performance budget", [py, "-m", "madkhal.cli", "perf"]),
+        ("dependency audit", [py, "-m", "madkhal.cli", "audit"]),
         (
             "sbom",
             [
@@ -382,9 +486,13 @@ def all_(
     ]
     for label, cmd in steps:
         _echo(f"== {label}")
+        cwd = root / "web" if cmd[0] == npx else root
         if (
             subprocess.run(
-                cmd, cwd=root, env=dict(os.environ, PYTHONUTF8="1"), check=False
+                cmd,
+                cwd=cwd,
+                env=dict(os.environ, PYTHONUTF8="1", CI="1", MADKHAL_CHECK="1"),
+                check=False,
             ).returncode
             != 0
         ):

@@ -21,3 +21,4 @@ web/public/api/
 web/dist-live/
 sbom.json
 *.tsbuildinfo
+missions/
