@@ -1,0 +1,97 @@
+version: frozen-detector-modis-v1
+profile: modis_v1
+data: MODIS-Aqua L3SMI daily 4 km chlorophyll (NASA OBPG R2018.1), NOAA CoastWatch
+  ERDDAP erdMH1chla1day subsets
+frozen_at_utc: '2026-09-29T05:52:38+00:00'
+code_commit_at_freeze: f0fd457a3710a61b0fddb1702d7b177c4f3a6ea8
+note: Computed from calibration years only; no event-year file was read. Tag this
+  commit frozen-detector-modis-v1 before running nadhir.evaluate.
+calibration_period:
+- '2003-01-01'
+- '2007-12-31'
+config_sha256: ba22ab0dc8076dab329e62d226d577f96bf984a7f46b9eba6803f0baece8a08d
+detector_params:
+  climatology: per-bin, per-calendar-month mean & SD of daily bin log10(chl), calibration
+    period only
+  min_clim_days: 8
+  z_threshold: 2.0
+  min_valid_bins_frac: 0.1
+  target_daily_false_alarm_rate: 0.05
+  min_f_threshold: 0.05
+  min_clim_sd: 0.05
+  persistence_obs: 2
+  persistence_window_days: 7
+  episode_break_quiet_obs: 2
+  max_lookback_days: 120
+  late_window_days: 30
+radii_km:
+- 50
+- 25
+- 100
+primary_radius_km: 50
+inputs_sha256:
+  data/derived/modis_bins_2003.csv.gz: a933a9029429d2b5b24358dac9c08211a155238b86e96e52ace5a9fcb97a24e4
+  data/derived/modis_bins_2004.csv.gz: e5bef68874cfbd40ed4ac52828d7d9528940a22189e4d8fd016b5ed681f9100e
+  data/derived/modis_bins_2005.csv.gz: 132ffead717109149b7b1718d132d8292a0ca36acf5776cbe87ab65c5afb12fd
+  data/derived/modis_bins_2006.csv.gz: 8b797e97f295cb677450968326019a7ae36ab14797bb0175de495e642fc4111b
+  data/derived/modis_bins_2007.csv.gz: bff65c386dd74cd49ade885adffa8888709e214b815f47080ee959bd989b9272
+climatology:
+  path: data/derived/climatology_modis_v1.csv.gz
+  sha256: ccf2396c99d86fdc03f754c64692c850507e9ee569dd8a383b2c487720bdea8d
+  n_bin_months: 33822
+zone_daily_calibration:
+  path: data/derived/zone_daily_calibration_modis_v1.csv
+  sha256: 9d7643b1f61374bfe69827c65b00016ab32f45768a63283fb093b9d4b77586a7
+thresholds:
+  dibba:
+    r50km:
+      f_threshold: 0.362046
+      f_quantile_raw: 0.362046
+      n_cal_observed_days: 418
+    r25km:
+      f_threshold: 0.421429
+      f_quantile_raw: 0.421429
+      n_cal_observed_days: 353
+    r100km:
+      f_threshold: 0.295298
+      f_quantile_raw: 0.295298
+      n_cal_observed_days: 509
+  fujairah:
+    r50km:
+      f_threshold: 0.322523
+      f_quantile_raw: 0.322523
+      n_cal_observed_days: 453
+    r25km:
+      f_threshold: 0.30045
+      f_quantile_raw: 0.30045
+      n_cal_observed_days: 370
+    r100km:
+      f_threshold: 0.326905
+      f_quantile_raw: 0.326905
+      n_cal_observed_days: 505
+  kalba:
+    r50km:
+      f_threshold: 0.326291
+      f_quantile_raw: 0.326291
+      n_cal_observed_days: 443
+    r25km:
+      f_threshold: 0.292803
+      f_quantile_raw: 0.292803
+      n_cal_observed_days: 375
+    r100km:
+      f_threshold: 0.352068
+      f_quantile_raw: 0.352068
+      n_cal_observed_days: 507
+  rak:
+    r50km:
+      f_threshold: 0.309038
+      f_quantile_raw: 0.309038
+      n_cal_observed_days: 438
+    r25km:
+      f_threshold: 0.4
+      f_quantile_raw: 0.4
+      n_cal_observed_days: 355
+    r100km:
+      f_threshold: 0.2505
+      f_quantile_raw: 0.2505
+      n_cal_observed_days: 515

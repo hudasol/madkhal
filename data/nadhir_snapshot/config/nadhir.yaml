@@ -1,0 +1,170 @@
+# Nadhir Hindcast MVP configuration.
+# RULE: no magic numbers in code. Every value here carries a comment saying where it came from.
+# Values marked "DESIGN CHOICE" are engineering decisions logged in DECISIONS.md, not measurements.
+
+region:
+  # Arabian Gulf + Strait of Hormuz + Gulf of Oman. Box given in the project brief
+  # ("roughly 48–60°E, 22–30°N"). DESIGN CHOICE: used verbatim.
+  lon_min: 48.0
+  lon_max: 60.0
+  lat_min: 22.0
+  lat_max: 30.0
+
+sources:
+  olci:
+    # Sentinel-3A OLCI Level-2 Water Full Resolution (WFR, 300 m), baseline collection 002/003,
+    # served as unpacked SAFE folders by the MEEO mirror in the AWS Open Data Registry
+    # (registry file datasets/sentinel-3.yaml: "arn:aws:s3:::meeo-s3/NTC/", region eu-central-1,
+    # "Data is available from July 2017 onwards"). Chosen because every primary ocean-colour
+    # archive (NASA OB.DAAC, Copernicus Marine, ESA OC-CCI, NOAA ERDDAP) is blocked by this
+    # environment's egress policy — see data/SOURCE_STATUS.md.
+    bucket_url: "https://meeo-s3.s3.eu-central-1.amazonaws.com"
+    prefix_template: "NTC/{platform}/OL_2_WFR___/{yyyy}/{mm}/{dd}/"
+    platforms: ["S3A", "S3B"]
+    # Files pulled per granule (ESA OLCI L2 product definition, Sentinel-3 OLCI Marine User Handbook):
+    # chl_oc4me = OC4Me band-ratio chlorophyll (log10 mg m-3); wqsf = water quality & science flags;
+    # geo_coordinates = per-pixel lat/lon (no geolocation interpolation needed).
+    files: ["chl_oc4me.nc", "wqsf.nc", "geo_coordinates.nc"]
+    # Descending daytime pass over 48–60°E at ~10:00 local solar time => ~05:30–07:30 UTC.
+    # (S3 mean local solar time at descending node 10:00, ESA Sentinel-3 mission guide.)
+    # Only used to skip reading manifests of granules that cannot overlap the region.
+    utc_start_hour_min: 5.0
+    utc_start_hour_max: 7.75
+    index_start: "2017-07-01"   # mirror start (AWS registry description)
+    index_end: "2023-12-31"     # covers the 2018 and 2023 cases plus quiet years
+    # EUMETSAT-recommended OC4Me quality flags (Sentinel-3 OLCI Marine User Handbook / EUMETSAT
+    # "OLCI Level 2 recommended flags" for CHL_OC4ME). Cited from domain knowledge; the EUMETSAT page
+    # could not be fetched here (host blocked) -> citation status UNVERIFIED in SOURCES.md (S-FLAGS).
+    # A pixel with ANY of these bits set is discarded (never filled).
+    reject_flags: [INVALID, LAND, CLOUD, CLOUD_AMBIGUOUS, CLOUD_MARGIN, SNOW_ICE, SUSPECT, HISOLZEN,
+                   SATURATED, HIGHGLINT, WHITECAPS, AC_FAIL, OC4ME_FAIL, ANNOT_TAU06,
+                   RWNEG_O2, RWNEG_O3, RWNEG_O4, RWNEG_O5, RWNEG_O6, RWNEG_O7, RWNEG_O8]
+    chl_variable: CHL_OC4ME        # DECISIONS D-002
+    # tie-point grid is used ONLY to choose which pixel rows/cols to read (plus margin);
+    # the lat/lon of every retained pixel comes from geo_coordinates.nc (DECISIONS D-003).
+    window_margin_px: 64           # one tie-point column spacing (ac_subsampling_factor = 64 in file attrs)
+
+    workers: 6                     # parallel granule processes (4 CPUs, I/O overlap); performance only
+
+# Intakes. Coordinates are PLANT/TOWN locations, not surveyed intake positions -> all ESTIMATED.
+# Uncertainty (~5–10 km) is small relative to the 50 km watch radius; sensitivity radii bracket it.
+intakes:
+  kalba:
+    name: "SEWA Kalba desalination (Sharjah east coast, Gulf of Oman)"
+    lat: 25.05
+    lon: 56.36
+    coord_status: ESTIMATED
+    coord_note: "Kalba town waterfront; intake position not published in any source we could reach (SOURCES S-KALBA-LOC). Uncertainty ~10 km."
+  barka:
+    name: "Barka desalination cluster (Barka I/II, South Batinah, Oman)"
+    lat: 23.707
+    lon: 57.9816
+    coord_status: ESTIMATED
+    coord_note: "Barka II IWPP plant location per Global Energy Monitor wiki search snippet (SOURCES S-BARKA-LOC, UNVERIFIED). Intake is offshore of plant; uncertainty ~5 km."
+  alraha:
+    name: "Al Raha Beach, Abu Dhabi (known-miss case; not an intake)"
+    lat: 24.45
+    lon: 54.60
+    coord_status: ESTIMATED
+    coord_note: "Al Raha Beach district waterfront, general gazetteer position; uncertainty ~5 km. Not a desalination intake — used only for the documented-limitation case."
+
+grid:
+  # DESIGN CHOICE (DECISIONS D-007): 0.05° bins (~5 km) — aggregates 300 m pixels by averaging
+  # log10 chl of VALID pixels only. No value is ever created for a bin without valid pixels.
+  bin_deg: 0.05
+  min_pixels_per_bin: 5        # DESIGN CHOICE: bin-day needs >=5 valid 300 m pixels (~0.45 km²) to count
+
+zones:
+  # Watch radius around each intake. DESIGN CHOICE (D-008): 50 km primary ≈ 1–3 days of advection at
+  # 0.2–0.5 m/s surface currents typical of the Gulf of Oman coastal current (order-of-magnitude, UNVERIFIED).
+  primary_radius_km: 50
+  sensitivity_radii_km: [25, 100]
+
+periods:
+  # Blind protocol (rule 5). DESIGN CHOICE (D-009, revised before any detector output existed):
+  # the mirror has NO granules before 2018-01 (index log), so calibration uses the three years with
+  # no documented disruption at our intakes. 2018 and 2023 contain the evaluated events.
+  calibration: ["2019-01-01", "2021-12-31"]   # climatology + threshold fitting only
+  heldout_quiet: ["2022-01-01", "2022-12-31"] # out-of-sample false-alarm estimate, all intakes
+  # Extra out-of-sample quiet days: event years outside event exclusion windows, per intake,
+  # except intake-years listed in quiet_exclude (undated or unbounded blooms known there).
+  extra_quiet_years: [2018, 2023]
+  quiet_exclude:
+    barka: [2018]    # ACWA Barka second 2018 bloom, date unknown (events.yaml unresolved_leads)
+    alraha: [2023]   # Al Raha bloom persisted Apr–Oct 2023 (E2023-ALRAHA)
+  # Days removed around every documented event t_ref at that intake from any quiet statistic.
+  event_exclusion_before_days: 120
+  event_exclusion_after_days: 90
+  data_start: "2018-01-01"   # first OLCI granule over the region on the mirror (olci_index.csv)
+
+detector:
+  # DESIGN CHOICES (D-010), fixed BEFORE any event lead time is computed.
+  climatology: per-bin, per-calendar-month mean & SD of daily bin log10(chl), calibration period only
+  min_clim_days: 8             # bin-month needs >= 8 calibration days to have a climatology
+  z_threshold: 2.0             # bin is "anomalous" if z >= 2 (≈ upper 2.3% under normality)
+  min_valid_bins_frac: 0.10    # zone-day is OBSERVED only if >=10% of zone bins with climatology are valid
+  target_daily_false_alarm_rate: 0.05  # f_threshold = 95th pct of calibration quiet-day anomaly fraction
+  min_f_threshold: 0.05        # floor on f_threshold: >=5% of observed zone bins must be anomalous (avoids f*=0)
+  min_clim_sd: 0.05            # floor on climatology SD in log10 units (~12%) so near-constant bins can't explode z
+  persistence_obs: 2           # alert needs anomaly on >=2 observed days within persistence_window_days
+  persistence_window_days: 7
+  episode_break_quiet_obs: 2   # an alert episode ends after 2 consecutive observed non-anomalous days
+  max_lookback_days: 120       # alert episodes must have exceeded within 120 d before t_ref
+  late_window_days: 30         # an alert starting <=30 d AFTER t_ref is reported as LATE (negative lead)
+
+outputs:
+  derived_dir: data/derived
+  out_dir: outputs
+
+# ---------------------------------------------------------------------------------------------
+# Profiles: the SAME detector parameters (section `detector` above, unchanged) applied to another
+# sensor/period. Only data source, sites and blind-protocol periods differ. DECISIONS D-014.
+profiles:
+  modis_v1:
+    bins_prefix: modis
+    version: modis_v1
+    frozen_name: frozen_detector_modis_v1
+    tag: frozen-detector-modis-v1
+    data_label: "MODIS-Aqua L3SMI daily 4 km chlorophyll (NASA OBPG R2018.1), NOAA CoastWatch ERDDAP erdMH1chla1day subsets"
+    # Yearly ERDDAP subsets 2003–2014, box 48–60°E / 22–30°N, downloaded by the project owner on
+    # 2026-09-29 (ERDDAP request timestamps in file names/history) and shared READ-ONLY via
+    # github.com/hudasol/nadhir-raw-modis-data. Override with env NADHIR_MODIS_DIR.
+    data_dir: /home/user/hudasol/nadhir-raw-modis-data
+    file_glob: "erdMH1chla1day_*.nc"
+    variable: chlorophyll
+    intakes:
+      kalba:
+        name: "SEWA Kalba desalination (Gulf of Oman)"
+        lat: 25.05
+        lon: 56.36
+        coord_status: ESTIMATED
+        coord_note: "same as OLCI profile (Kalba town waterfront), uncertainty ~10 km"
+      fujairah:
+        name: "Fujairah SWRO (2008–09 shutdown)"
+        lat: 25.14
+        lon: 56.36
+        coord_status: ESTIMATED
+        coord_note: "Fujairah city coast, general gazetteer; plant/intake position not sourced. ~10 km from Kalba, so zones largely overlap."
+      rak:
+        name: "Al Ghalilah desalination plant, Ras Al Khaimah"
+        lat: 25.95
+        lon: 56.07
+        coord_status: ESTIMATED
+        coord_note: "Ghalilah coast, general gazetteer; uncertainty ~10 km"
+      dibba:
+        name: "Dibba Al-Hassan (site of first 2008 discoloration sighting; not an intake)"
+        lat: 25.59
+        lon: 56.27
+        coord_status: ESTIMATED
+        coord_note: "Dibba/Fujairah AOI centre used in hudasol/HAB-hyperspectral data-access-log.md (~56.27°E, 25.59°N)"
+    periods:
+      # Blind protocol, DECISIONS D-014: calibration = 2003–2007, the five full MODIS years before the
+      # first documented event (Aug 2008). Held-out quiet = 2010–2012 + 2014: after the 2008–09 bloom
+      # (Richlen 2010: >8 months from Aug 2008) and excluding 2013 (Kalba event dated to year only).
+      calibration: ["2003-01-01", "2007-12-31"]
+      heldout_quiet: ["2010-01-01", "2012-12-31"]
+      extra_quiet_years: [2014]
+      quiet_exclude: {}
+      event_exclusion_before_days: 120
+      event_exclusion_after_days: 90
+      data_start: "2003-01-01"

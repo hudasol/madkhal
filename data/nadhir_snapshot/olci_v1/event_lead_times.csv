@@ -1,0 +1,13 @@
+event,evaluation,intake,radius_km,f_threshold,date_precision,evidence_status,t_ref,t_ref_earliest,lookback_start,days_in_lookback,obs_days_in_lookback,outcome,first_exceed,first_alert,last_exceed,lead_alert_days,lead_alert_min_days,lead_first_exceed_days,last_quiet_before,lead_max_days,censored_at_data_start
+E2018-KALBA,EVALUATED,kalba,50,0.227273,day-of-report (upper bound),UNVERIFIED,2018-09-15,2018-09-01,2018-05-18,121,33,DETECTED,2018-09-03,2018-09-07,2018-09-23,8.0,-6.0,12.0,2018-08-31,15.0,False
+E2018-BARKA,EVALUATED,barka,50,0.213534,month,UNVERIFIED,2018-02-25,2018-02-01,2018-01-01,56,20,MISS,,,,,,,,,
+E2023-BARKA,EVALUATED,barka,50,0.213534,day-of-report (upper bound),UNVERIFIED,2023-07-24,2023-07-01,2023-03-26,121,66,MISS,,,,,,,,,
+E2023-ALRAHA,LIMITATION-TEST,alraha,50,0.154503,month,"VERIFIED-PRIMARY for place/month/species (EAD report, read in full by HAB-hyperspectral 2026-09-16; not re-fetched here)",2023-04-15,2023-04-01,2022-12-16,121,68,MISS,,,,,,,,,
+E2018-KALBA,EVALUATED,kalba,25,0.272727,day-of-report (upper bound),UNVERIFIED,2018-09-15,2018-09-01,2018-05-18,121,33,DETECTED,2018-09-03,2018-09-07,2018-09-19,8.0,-6.0,12.0,2018-08-31,15.0,False
+E2018-BARKA,EVALUATED,barka,25,0.25,month,UNVERIFIED,2018-02-25,2018-02-01,2018-01-01,56,19,MISS,,,,,,,,,
+E2023-BARKA,EVALUATED,barka,25,0.25,day-of-report (upper bound),UNVERIFIED,2023-07-24,2023-07-01,2023-03-26,121,65,MISS,,,,,,,,,
+E2023-ALRAHA,LIMITATION-TEST,alraha,25,0.141883,month,"VERIFIED-PRIMARY for place/month/species (EAD report, read in full by HAB-hyperspectral 2026-09-16; not re-fetched here)",2023-04-15,2023-04-01,2022-12-16,121,67,MISS,,,,,,,,,
+E2018-KALBA,EVALUATED,kalba,100,0.186604,day-of-report (upper bound),UNVERIFIED,2018-09-15,2018-09-01,2018-05-18,121,35,DETECTED,2018-09-03,2018-09-04,2018-09-23,11.0,-3.0,12.0,2018-08-31,15.0,False
+E2018-BARKA,EVALUATED,barka,100,0.187082,month,UNVERIFIED,2018-02-25,2018-02-01,2018-01-01,56,21,MISS,,,,,,,,,
+E2023-BARKA,EVALUATED,barka,100,0.187082,day-of-report (upper bound),UNVERIFIED,2023-07-24,2023-07-01,2023-03-26,121,73,MISS,,,,,,,,,
+E2023-ALRAHA,LIMITATION-TEST,alraha,100,0.194769,month,"VERIFIED-PRIMARY for place/month/species (EAD report, read in full by HAB-hyperspectral 2026-09-16; not re-fetched here)",2023-04-15,2023-04-01,2022-12-16,121,71,MISS,,,,,,,,,

@@ -1,0 +1,45 @@
+{
+ "detector": "frozen_detector_v1",
+ "tag_commit": "723212e",
+ "code_commit": "20aaaaf",
+ "config_sha256": "ba22ab0dc8076dab329e62d226d577f96bf984a7f46b9eba6803f0baece8a08d",
+ "frozen_config_sha256": "0738a21f24e8173d225bba242f299b7df452b298579f19d6b58a81ba1dfe24ab",
+ "events_sha256": "d0f61218d5a69c7e8e172652b136863a5279a72c91312a1e371ee15fd021dff2",
+ "profile": "olci_v1",
+ "data": "Sentinel-3 OLCI L2 WFR OC4Me via AWS meeo-s3 mirror",
+ "bins_sha256": {
+  "olci_bins_2018.csv.gz": {
+   "gz_sha256": "61fc70b2957b548cd78a7baa48cb0cbb5b7c6576a8125b475d82a38cd2480a3c",
+   "content_sha256": "64cedc8915584538f7db11a5a534141085d67ffd6368def7de20484893509803"
+  },
+  "olci_bins_2019.csv.gz": {
+   "gz_sha256": "39afb97e1a40e273e2731575e1246d14e3225bcec0c5dce9eaf2dd5e25612784",
+   "content_sha256": "61304ab27df0921f917db84b582ba58c8f2aa00e6fb6827e095f8e48468256da"
+  },
+  "olci_bins_2020.csv.gz": {
+   "gz_sha256": "cae4c402dbe5b53d9207bb93226e297fb81cce04efda14028afa993bacbc11de",
+   "content_sha256": "66d0199945dad778b3b78a5d4243bff55fb0d6d19477c15dd7d31d514ce17d7a"
+  },
+  "olci_bins_2021.csv.gz": {
+   "gz_sha256": "591341701f54222bacbe70070bfdaa371c77e2ec0a08b962002d32b1f2fada24",
+   "content_sha256": "75a4d324224e3491d1c254935454762f01cf681c99a9e86a8bcf92d34c44d794"
+  },
+  "olci_bins_2022.csv.gz": {
+   "gz_sha256": "5c88e3868e5700125aa4cf2784e4dcd051d645d39329619df2cf42da5732896b",
+   "content_sha256": "473b5b5055fd605bf640e2a3e06203a4524e573e1c9e693d2be500ad80b7eaab"
+  },
+  "olci_bins_2023.csv.gz": {
+   "gz_sha256": "71a76acbb7102d044f61ca40a64dc6d34ae7b357c966513b48cdce6a8a693508",
+   "content_sha256": "d856eefe5e79ec6d660ad3f82b055686550d46780240d14216fb85b868d95e76"
+  }
+ },
+ "objects_manifests": [
+  "olci_objects_2018.csv",
+  "olci_objects_2019.csv",
+  "olci_objects_2020.csv",
+  "olci_objects_2021.csv",
+  "olci_objects_2022.csv",
+  "olci_objects_2023.csv"
+ ],
+ "note": "Every source file is listed with SHA-256 in data/derived/olci_objects*.csv"
+}

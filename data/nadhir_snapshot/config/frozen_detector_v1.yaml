@@ -1,0 +1,79 @@
+version: frozen-detector-v1
+frozen_at_utc: '2026-09-28T16:12:13+00:00'
+code_commit_at_freeze: 2844fbb3fcdecbed387735387ba7d2b5c6d6d04a
+note: Computed from calibration years only; no event-year file was read. Tag this
+  commit frozen-detector-v1 before running nadhir.evaluate.
+calibration_period:
+- '2019-01-01'
+- '2021-12-31'
+config_sha256: ccfe7338f2bc25f6c31677440e293dc11e6a067e0fe48d76cf791b67e9c8216e
+detector_params:
+  climatology: per-bin, per-calendar-month mean & SD of daily bin log10(chl), calibration
+    period only
+  min_clim_days: 8
+  z_threshold: 2.0
+  min_valid_bins_frac: 0.1
+  target_daily_false_alarm_rate: 0.05
+  min_f_threshold: 0.05
+  min_clim_sd: 0.05
+  persistence_obs: 2
+  persistence_window_days: 7
+  episode_break_quiet_obs: 2
+  max_lookback_days: 120
+  late_window_days: 30
+radii_km:
+- 50
+- 25
+- 100
+primary_radius_km: 50
+inputs_sha256:
+  data/derived/olci_bins_2019.csv.gz: 39afb97e1a40e273e2731575e1246d14e3225bcec0c5dce9eaf2dd5e25612784
+  data/derived/olci_bins_2020.csv.gz: cae4c402dbe5b53d9207bb93226e297fb81cce04efda14028afa993bacbc11de
+  data/derived/olci_bins_2021.csv.gz: 591341701f54222bacbe70070bfdaa371c77e2ec0a08b962002d32b1f2fada24
+climatology:
+  path: data/derived/climatology_v1.csv.gz
+  sha256: b9a7a2f53edb259ab2ac3b22e5dce5cbcc6a7839ded4e258de85bff4357ea713
+  n_bin_months: 19019
+zone_daily_calibration:
+  path: data/derived/zone_daily_calibration_v1.csv
+  sha256: 08b8c4384fd0a084df1ee5a5d6dc495d28669ca6fdf7a6021b88ff9a290d96b4
+thresholds:
+  alraha:
+    r50km:
+      f_threshold: 0.154503
+      f_quantile_raw: 0.154503
+      n_cal_observed_days: 703
+    r25km:
+      f_threshold: 0.141883
+      f_quantile_raw: 0.141883
+      n_cal_observed_days: 684
+    r100km:
+      f_threshold: 0.194769
+      f_quantile_raw: 0.194769
+      n_cal_observed_days: 723
+  barka:
+    r50km:
+      f_threshold: 0.213534
+      f_quantile_raw: 0.213534
+      n_cal_observed_days: 585
+    r25km:
+      f_threshold: 0.25
+      f_quantile_raw: 0.25
+      n_cal_observed_days: 571
+    r100km:
+      f_threshold: 0.187082
+      f_quantile_raw: 0.187082
+      n_cal_observed_days: 619
+  kalba:
+    r50km:
+      f_threshold: 0.227273
+      f_quantile_raw: 0.227273
+      n_cal_observed_days: 633
+    r25km:
+      f_threshold: 0.272727
+      f_quantile_raw: 0.272727
+      n_cal_observed_days: 621
+    r100km:
+      f_threshold: 0.186604
+      f_quantile_raw: 0.186604
+      n_cal_observed_days: 663

@@ -1,0 +1,64 @@
+{
+ "detector": "frozen_detector_modis_v1",
+ "tag_commit": "0eef7be",
+ "code_commit": "20aaaaf",
+ "config_sha256": "ba22ab0dc8076dab329e62d226d577f96bf984a7f46b9eba6803f0baece8a08d",
+ "frozen_config_sha256": "5bca6f4cde794f511df89b95cbe4e33cf9fac0df88f725b75ce4bc8fc2f68941",
+ "events_sha256": "d0f61218d5a69c7e8e172652b136863a5279a72c91312a1e371ee15fd021dff2",
+ "profile": "modis_v1",
+ "data": "MODIS-Aqua L3SMI daily 4 km chlorophyll (NASA OBPG R2018.1), NOAA CoastWatch ERDDAP erdMH1chla1day subsets",
+ "bins_sha256": {
+  "modis_bins_2003.csv.gz": {
+   "gz_sha256": "a933a9029429d2b5b24358dac9c08211a155238b86e96e52ace5a9fcb97a24e4",
+   "content_sha256": "568222c1376af7cc82c37aceea02272a070fe966741bf4c74d529eada237fa85"
+  },
+  "modis_bins_2004.csv.gz": {
+   "gz_sha256": "e5bef68874cfbd40ed4ac52828d7d9528940a22189e4d8fd016b5ed681f9100e",
+   "content_sha256": "fc53991a9eaabc48bcea66d7203ff9ed47684b7aa685d4b75ed7d6c323708271"
+  },
+  "modis_bins_2005.csv.gz": {
+   "gz_sha256": "132ffead717109149b7b1718d132d8292a0ca36acf5776cbe87ab65c5afb12fd",
+   "content_sha256": "17a1c48ee2008be2f01423884a2e807fa047975ea979819f26584326415cf48a"
+  },
+  "modis_bins_2006.csv.gz": {
+   "gz_sha256": "8b797e97f295cb677450968326019a7ae36ab14797bb0175de495e642fc4111b",
+   "content_sha256": "5b5da0c96384bbff832a15541b4e38843ac736f5511271f2f68dd9a1b126875e"
+  },
+  "modis_bins_2007.csv.gz": {
+   "gz_sha256": "bff65c386dd74cd49ade885adffa8888709e214b815f47080ee959bd989b9272",
+   "content_sha256": "a8e25faeb530f7af9c33d592a2aed6ca36705b2b7caf8bb442cc0b9a76c43c35"
+  },
+  "modis_bins_2008.csv.gz": {
+   "gz_sha256": "706dfc7d1dd7dc011d0985040ca7b99836a214161a600b96a1333653dfddccc6",
+   "content_sha256": "dbbba466ec425f43b5b736f6c3ae4764f2ec5c73db8ee9c7edad9f60f0ee3fea"
+  },
+  "modis_bins_2009.csv.gz": {
+   "gz_sha256": "5ef6563e5a1fdaf903e5c48b0dffd215e1ca93ce4be129e21419115e8750f3f0",
+   "content_sha256": "18f0139bce54b42cf65d04cc2b908d9ec27fb3fc578ee450e0d1d42e3cf5a030"
+  },
+  "modis_bins_2010.csv.gz": {
+   "gz_sha256": "3d92512ce500cd47a574f1b786ac7391931366d7966a47433952b0c446365877",
+   "content_sha256": "ec47ba2a76d60267e826ffce5c5ad33d18fc961d51b5b748fbe32dff7de450f5"
+  },
+  "modis_bins_2011.csv.gz": {
+   "gz_sha256": "e0ee125b44669392dbd7761ba9b89cc3495e12448d41348f9d76b91cadaa20fd",
+   "content_sha256": "3866d773630acd19c7175ed4da1afc6de0b33900231ceeaeb08d982e673f7a28"
+  },
+  "modis_bins_2012.csv.gz": {
+   "gz_sha256": "5f89809b434c434342bd6efa7d22427460ea0d4412816b67548ca4457c49cbc0",
+   "content_sha256": "9f0008165487c7bcc1433ac6bab3446421b4c08ba69c1297ad882f0bc62adb79"
+  },
+  "modis_bins_2013.csv.gz": {
+   "gz_sha256": "1748e8de93895be947b23a3f8a1315678ae258526ed4be32a19179641dae9aec",
+   "content_sha256": "aebddde70b8544612c03c71102924bc5204e09057b0f92d2e5e9e994fa4acef4"
+  },
+  "modis_bins_2014.csv.gz": {
+   "gz_sha256": "e32c0e76a35f4163177ac2dae8b4469e290eab9128cad6fe5ebca8b02b52f733",
+   "content_sha256": "c3f5429967ea3eede29160168c86689542fa619dc9fa795a7c47d6657c5c4ca6"
+  }
+ },
+ "objects_manifests": [
+  "modis_objects.csv"
+ ],
+ "note": "Every source file is listed with SHA-256 in data/derived/modis_objects*.csv"
+}

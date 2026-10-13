@@ -1,0 +1,7 @@
+event,evaluation,intake,radius_km,f_threshold,date_precision,evidence_status,t_ref,t_ref_earliest,lookback_start,days_in_lookback,obs_days_in_lookback,outcome
+E2008-RAK,EVALUATED,rak,50,0.309038,month,UNVERIFIED,2008-09-10,2008-09-01,2008-05-13,121,1,MISS
+E2008-DIBBA,EVALUATED,dibba,50,0.362046,dekad (late August),UNVERIFIED (date phrase from search summary; paper record itself confirmed via HAB-hyperspectral),2008-08-31,2008-08-21,2008-05-03,121,0,NO-DATA
+E2008-RAK,EVALUATED,rak,25,0.4,month,UNVERIFIED,2008-09-10,2008-09-01,2008-05-13,121,1,MISS
+E2008-DIBBA,EVALUATED,dibba,25,0.421429,dekad (late August),UNVERIFIED (date phrase from search summary; paper record itself confirmed via HAB-hyperspectral),2008-08-31,2008-08-21,2008-05-03,121,0,NO-DATA
+E2008-RAK,EVALUATED,rak,100,0.2505,month,UNVERIFIED,2008-09-10,2008-09-01,2008-05-13,121,4,MISS
+E2008-DIBBA,EVALUATED,dibba,100,0.295298,dekad (late August),UNVERIFIED (date phrase from search summary; paper record itself confirmed via HAB-hyperspectral),2008-08-31,2008-08-21,2008-05-03,121,4,MISS

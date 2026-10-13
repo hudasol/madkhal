@@ -1,0 +1,168 @@
+# Documented HAB-related desalination disruptions (and one documented-limitation case).
+# Every field cites SOURCES.md IDs. Evidence status follows SOURCES.md: in this session every
+# source could only be LOCATED by web search — page fetch was blocked (data/SOURCE_STATUS.md) —
+# so all are UNVERIFIED unless upgraded from the project owner's research repository
+# hudasol/HAB-hyperspectral (read-only; its bibliography.md / data-access-log.md record fetched,
+# dated reads). Upgrades are marked "via HAB-hyperspectral" in SOURCES.md (added 2026-09-29).
+#
+# `dataset` says which frozen detector can score the event: olci_v1 (2018+) or modis_v1 (2003–2014).
+# ACTIVITY-ONLY events have no usable single date (season/year precision): we report the detector's
+# alert activity over the documented period instead of a lead time.
+#
+# t_ref = the date used as "the bloom reached the intake" for lead-time arithmetic.
+# Where only a news report date is known, t_ref is the REPORT date, which is an UPPER BOUND on the
+# true onset of impact: lead times against it are optimistic by up to (t_ref - t_ref_earliest) days.
+# t_ref_earliest = earliest date consistent with the sources (for the lead-time uncertainty interval).
+
+events:
+  - id: E2008-FUJ
+    name: "2008–09 Cochlodinium polykrikoides red tide — Fujairah SWRO shutdown"
+    plants: ["Fujairah SWRO (co-located with thermal plant)"]
+    intake_key: fujairah        # profiles.modis_v1.intakes.fujairah
+    dataset: modis_v1
+    lat: 25.14                  # ESTIMATED: Fujairah city coast, general gazetteer, not an intake survey
+    lon: 56.36
+    coord_status: ESTIMATED
+    species: "Cochlodinium (Margalefidinium) polykrikoides"
+    shutdown_start: "2008-08/2008-12"   # season-level: bloom on east coast from late Aug 2008
+    shutdown_end: unknown
+    date_precision: season
+    first_sighting: "late August 2008, Dibba Al-Hassan (discoloration)"
+    evidence: [S-RICHLEN2010, S-ZHAO2014, S-NATIONAL-DESALTHREAT, S-NATIONAL-REOPEN, S-NATIONAL-VEOLIA, S-IDA-DAF]
+    evidence_status: "VERIFIED-SECONDARY (Fujairah plant losses during 2008–09 bloom: The National, via HAB-hyperspectral); shutdown dates UNVERIFIED"
+    # No shutdown date exists in any source -> no lead time. Activity over the documented bloom:
+    # from first sighting (late Aug 2008, S-ZHAO2014) through "eight months" (S-NATIONAL-REOPEN).
+    bloom_period_start: "2008-08-21"
+    bloom_period_end: "2009-04-30"
+    evaluation: ACTIVITY-ONLY
+
+  - id: E2008-RAK
+    name: "2008 red tide — RAK Al Ghalilah desalination plant closed; Al Jeil without water 4 days"
+    plants: ["Al Ghalilah desalination plant, Ras Al Khaimah"]
+    intake_key: rak             # profiles.modis_v1.intakes.rak
+    dataset: modis_v1
+    lat: 25.95                  # ESTIMATED: Ghalilah coast, general gazetteer
+    lon: 56.07
+    coord_status: ESTIMATED
+    species: "Cochlodinium polykrikoides (same regional bloom, per S-RICHLEN2010 context)"
+    shutdown_start: "2008-09"   # "appeared in RAK early in September 2008"
+    shutdown_end: unknown
+    date_precision: month
+    t_ref: "2008-09-10"         # upper bound of "early September 2008" (S-NATIONAL-RAK)
+    t_ref_earliest: "2008-09-01"
+    evidence: [S-NATIONAL-RAK]
+    evidence_status: UNVERIFIED
+    evaluation: EVALUATED
+
+  - id: E2008-DIBBA
+    name: "2008 first public sighting of the red tide, Dibba Al-Hassan (not a shutdown)"
+    plants: []
+    intake_key: dibba           # profiles.modis_v1.intakes.dibba
+    dataset: modis_v1
+    lat: 25.59
+    lon: 56.27
+    coord_status: ESTIMATED
+    species: "Cochlodinium polykrikoides"
+    date_precision: "dekad (late August)"
+    # Question answered: would the satellite detector have flagged the bloom before people saw it?
+    t_ref: "2008-08-31"         # upper bound of "late August 2008" (S-ZHAO2014)
+    t_ref_earliest: "2008-08-21"
+    evidence: [S-ZHAO2014, S-RICHLEN2010]
+    evidence_status: "UNVERIFIED (date phrase from search summary; paper record itself confirmed via HAB-hyperspectral)"
+    evaluation: EVALUATED
+
+  - id: E2013-KALBA
+    name: "2013 Kalba desalination plant shut (membrane clogging by algae)"
+    plants: ["SEWA Kalba"]
+    intake_key: kalba
+    lat: 25.05
+    lon: 56.36
+    coord_status: ESTIMATED
+    species: "various algal species (green-orange / yellow-green water) — species not stated"
+    shutdown_start: "2013"      # year only; no primary source found (secondary: arXiv 2003.05694 citing MemRE 2017)
+    shutdown_end: unknown
+    date_precision: year
+    dataset: modis_v1
+    evidence: [S-ARXIV2003.05694]
+    evidence_status: UNVERIFIED
+    bloom_period_start: "2013-01-01"   # year-only precision -> activity over the whole year
+    bloom_period_end: "2013-12-31"
+    evaluation: ACTIVITY-ONLY
+
+  - id: E2018-BARKA
+    dataset: olci_v1
+    name: "2018 red tide disrupts Barka II desalination (SMN Power), Oman"
+    plants: ["Barka II IWPP (SMN Barka Power)", "Barka desalination cluster"]
+    intake_key: barka
+    lat: 23.707
+    lon: 57.9816
+    coord_status: ESTIMATED     # plant location (S-BARKA-LOC); intake offshore
+    species: "not stated in located sources ('red tide' / 'algal bloom')"
+    shutdown_start: "2018-02"   # "Water production ... impacted ... since February 2018" (S-OBSERVER-SMN)
+    shutdown_end: unknown
+    date_precision: month
+    t_ref: "2018-02-25"         # Oman Observer "Red tide in Barka likely to impact water supply" dated 25 Feb 2018 (S-OBSERVER-BARKA-2018)
+    t_ref_earliest: "2018-02-01"
+    evidence: [S-OBSERVER-SMN, S-OBSERVER-BARKA-2018, S-BARKA-LOC]
+    evidence_status: UNVERIFIED
+    evaluation: EVALUATED       # OLCI mirror coverage begins 2018-01 -> lookback capped at ~55 days
+
+  - id: E2018-KALBA
+    dataset: olci_v1
+    name: "2018 red tide — SEWA halts Kalba seawater desalination units"
+    plants: ["SEWA Kalba seawater desalination units"]
+    intake_key: kalba
+    lat: 25.05
+    lon: 56.36
+    coord_status: ESTIMATED
+    species: "not stated in located sources ('Red Tide')"
+    shutdown_start: "<=2018-09-15"   # Gulf News report 15 Sep 2018; exact halt day not in located text
+    shutdown_end: unknown            # "until ... effect ... had passed"; no resumption date located
+    date_precision: day-of-report (upper bound)
+    t_ref: "2018-09-15"
+    t_ref_earliest: "2018-09-01"     # ASSUMPTION: report is about a current halt; month start as lower bound
+    evidence: [S-GULFNEWS-2018, S-KT-2018, S-AB-2018]
+    evidence_status: UNVERIFIED
+    evaluation: EVALUATED
+
+  - id: E2023-BARKA
+    dataset: olci_v1
+    name: "2023 red tide — Barka desalination production reduced/ceased; Nama Water Services emergency plan"
+    plants: ["Barka desalination plant(s)"]
+    intake_key: barka
+    lat: 23.707
+    lon: 57.9816
+    coord_status: ESTIMATED
+    species: "not stated in located sources ('red tide')"
+    shutdown_start: "<=2023-07-24"
+    shutdown_end: unknown
+    date_precision: day-of-report (upper bound)
+    t_ref: "2023-07-24"
+    t_ref_earliest: "2023-07-01"     # ASSUMPTION: month start as lower bound
+    evidence: [S-MUSCATDAILY-2023, S-MUSCATDAILY-2023-FISH]
+    evidence_status: UNVERIFIED
+    evaluation: EVALUATED
+
+  - id: E2023-ALRAHA
+    dataset: olci_v1
+    name: "2023 Al Raha Beach algal bloom (documented-limitation / known-miss candidate)"
+    plants: []                  # not a desalination disruption
+    intake_key: alraha
+    lat: 24.45
+    lon: 54.60
+    coord_status: ESTIMATED
+    species: "Pseudo-nitzschia multistriata (EAD 2023 Annual Marine Water Quality Report: Red Tide incident, Al Raha Beach, April 2023 — via HAB-hyperspectral data-access-log.md)"
+    bloom_period: "2023-04 (sampling start) to at least 2023-10-09 (news report)"
+    bloom_period_start: "2023-04-01"
+    bloom_period_end: "2023-10-09"
+    date_precision: month
+    t_ref: "2023-04-15"         # mid-month of the earliest documented observation month (sampling since April 2023)
+    t_ref_earliest: "2023-04-01"
+    evidence: [S-EAD-MWQ-2023, S-NATIONAL-ALRAHA-2023, S-EAD-HAB, S-HABHYP-BROADBAND]
+    evidence_status: "VERIFIED-PRIMARY for place/month/species (EAD report, read in full by HAB-hyperspectral 2026-09-16; not re-fetched here)"
+    brief_claim_status: "Species/month/place now VERIFIED-PRIMARY (EAD). The no-anomaly part is corroborated independently by HAB-hyperspectral results-log.md (monthly MODIS 2.25 and CMEMS 2.03 mg/m3 in Apr 2023, within normal range) and tested here with daily OLCI."
+    evaluation: LIMITATION-TEST
+
+unresolved_leads:
+  - "ACWA Power Barka: second algal-bloom loss (RO 140,000 / US$364,000) 'later in 2018' — exact date not located (S-CW-ACWA). Not an event row; its window is unknown, so Barka 2018 days outside E2018-BARKA are NOT counted as verified-quiet."
+  - "Oman PAEW / Nama and MOCCAE official statements — not located by search."

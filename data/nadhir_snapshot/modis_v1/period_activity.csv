@@ -1,0 +1,7 @@
+event,evaluation,intake,radius_km,f_threshold,period,days,observed_days,exceed_or_alert_days,alert_days,max_anom_frac,median_anom_frac,alert_episodes_started,first_alert_in_period,first_exceed_in_period,evidence_status
+E2013-KALBA,ACTIVITY-ONLY,kalba,50,0.326291,2013-01-01..2013-12-31,365,83,7,3,0.9733,0.0,1,2013-05-18,2013-01-21,UNVERIFIED
+E2008-FUJ,ACTIVITY-ONLY,fujairah,50,0.322523,2008-08-21..2009-04-30,253,66,9,5,0.7105,0.0454,1,2008-11-16,2008-11-14,"VERIFIED-SECONDARY (Fujairah plant losses during 2008–09 bloom: The National, via HAB-hyperspectral); shutdown dates UNVERIFIED"
+E2013-KALBA,ACTIVITY-ONLY,kalba,25,0.292803,2013-01-01..2013-12-31,365,71,13,8,1.0,0.0,4,2013-01-05,2013-01-03,UNVERIFIED
+E2008-FUJ,ACTIVITY-ONLY,fujairah,25,0.30045,2008-08-21..2009-04-30,253,54,6,1,1.0,0.0,1,2008-11-21,2008-09-27,"VERIFIED-SECONDARY (Fujairah plant losses during 2008–09 bloom: The National, via HAB-hyperspectral); shutdown dates UNVERIFIED"
+E2013-KALBA,ACTIVITY-ONLY,kalba,100,0.352068,2013-01-01..2013-12-31,365,94,3,1,0.8195,0.0088,1,2013-05-18,2013-01-21,UNVERIFIED
+E2008-FUJ,ACTIVITY-ONLY,fujairah,100,0.326905,2008-08-21..2009-04-30,253,77,9,7,0.6717,0.0605,2,2008-11-16,2008-11-14,"VERIFIED-SECONDARY (Fujairah plant losses during 2008–09 bloom: The National, via HAB-hyperspectral); shutdown dates UNVERIFIED"

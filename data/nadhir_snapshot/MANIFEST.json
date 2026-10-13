@@ -1,0 +1,295 @@
+{
+  "files": [
+    {
+      "bytes": 3096,
+      "gzipped": false,
+      "path": "config/frozen_detector_modis_v1.yaml",
+      "sha256": "5bca6f4cde794f511df89b95cbe4e33cf9fac0df88f725b75ce4bc8fc2f68941",
+      "source_path": "config/frozen_detector_modis_v1.yaml"
+    },
+    {
+      "bytes": 2423,
+      "gzipped": false,
+      "path": "config/frozen_detector_v1.yaml",
+      "sha256": "0738a21f24e8173d225bba242f299b7df452b298579f19d6b58a81ba1dfe24ab",
+      "source_path": "config/frozen_detector_v1.yaml"
+    },
+    {
+      "bytes": 9852,
+      "gzipped": false,
+      "path": "config/nadhir.yaml",
+      "sha256": "ba22ab0dc8076dab329e62d226d577f96bf984a7f46b9eba6803f0baece8a08d",
+      "source_path": "config/nadhir.yaml"
+    },
+    {
+      "bytes": 8849,
+      "gzipped": false,
+      "path": "events.yaml",
+      "sha256": "d0f61218d5a69c7e8e172652b136863a5279a72c91312a1e371ee15fd021dff2",
+      "source_path": "events/events.yaml"
+    },
+    {
+      "bytes": 6776,
+      "gzipped": false,
+      "path": "modis_v1/coverage.csv",
+      "sha256": "e7a1ba13f5b09ed23bfe6b199a9fd8d62b191d130ecccafa5ed1fbd0556f0b6c",
+      "source_path": "outputs/frozen_detector_modis_v1/coverage.csv"
+    },
+    {
+      "bytes": 1144,
+      "gzipped": false,
+      "path": "modis_v1/episodes_dibba_r100.csv",
+      "sha256": "3dc7fc63ef5f943192de93df8443164a599bbdd574ce15ac7132d3d67472f3ca",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_dibba_r100.csv"
+    },
+    {
+      "bytes": 859,
+      "gzipped": false,
+      "path": "modis_v1/episodes_dibba_r25.csv",
+      "sha256": "0eddd821e825513af33cade5fc5d63f9ee7dc243606783ee6b0fe6bc50a823cd",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_dibba_r25.csv"
+    },
+    {
+      "bytes": 902,
+      "gzipped": false,
+      "path": "modis_v1/episodes_dibba_r50.csv",
+      "sha256": "b7437ecbe888061d0ade6d208bb65d6e3fc4c5f3beb503c198c71929578c4341",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_dibba_r50.csv"
+    },
+    {
+      "bytes": 919,
+      "gzipped": false,
+      "path": "modis_v1/episodes_fujairah_r100.csv",
+      "sha256": "63bfa62f552c77ea87355d130fc50dacbdec268a6972afce71a5b45df713cceb",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_fujairah_r100.csv"
+    },
+    {
+      "bytes": 894,
+      "gzipped": false,
+      "path": "modis_v1/episodes_fujairah_r25.csv",
+      "sha256": "37248b0a4114bfdc35adae2a94807763db7a6a6a534a6540f07fb34e2f2c20cf",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_fujairah_r25.csv"
+    },
+    {
+      "bytes": 792,
+      "gzipped": false,
+      "path": "modis_v1/episodes_fujairah_r50.csv",
+      "sha256": "da4e270fb1adbf6071589652990f373f1a9a8fdc5bb4a24a3f7c507b0a8c10d9",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_fujairah_r50.csv"
+    },
+    {
+      "bytes": 820,
+      "gzipped": false,
+      "path": "modis_v1/episodes_kalba_r100.csv",
+      "sha256": "6a6c355a94be84d09893df6cd53fbbe87c1e0b77f149ab0d350ee28be56f00f6",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_kalba_r100.csv"
+    },
+    {
+      "bytes": 955,
+      "gzipped": false,
+      "path": "modis_v1/episodes_kalba_r25.csv",
+      "sha256": "65080a814780f71e4611e59339b84a1e48e687b20a26a2d7e5208f08348b93ae",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_kalba_r25.csv"
+    },
+    {
+      "bytes": 700,
+      "gzipped": false,
+      "path": "modis_v1/episodes_kalba_r50.csv",
+      "sha256": "e69456c69f7a14621555c9dc6c2fadb561d1ed459bab151847efc8a621466d1c",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_kalba_r50.csv"
+    },
+    {
+      "bytes": 1104,
+      "gzipped": false,
+      "path": "modis_v1/episodes_rak_r100.csv",
+      "sha256": "c37b50ed324e66cfcbc9481b2ad86bd8a17d51f28a12a1a4c2ea59bd475f7f88",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_rak_r100.csv"
+    },
+    {
+      "bytes": 319,
+      "gzipped": false,
+      "path": "modis_v1/episodes_rak_r25.csv",
+      "sha256": "902752b18e3112279fc75d375737465ae1895de1e4305bc6766e34dd4ff64c2a",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_rak_r25.csv"
+    },
+    {
+      "bytes": 880,
+      "gzipped": false,
+      "path": "modis_v1/episodes_rak_r50.csv",
+      "sha256": "943055f6464bc24b3cb7b3db72f144b7f5f94b3f165ec9facf6c6c72eb1c28d3",
+      "source_path": "outputs/frozen_detector_modis_v1/episodes_rak_r50.csv"
+    },
+    {
+      "bytes": 1057,
+      "gzipped": false,
+      "path": "modis_v1/event_lead_times.csv",
+      "sha256": "5cf16a928e12173f9d836d0465fb5ad7c38a7de558f3d4f10326cf02ed0c435b",
+      "source_path": "outputs/frozen_detector_modis_v1/event_lead_times.csv"
+    },
+    {
+      "bytes": 1768,
+      "gzipped": false,
+      "path": "modis_v1/false_alarms.csv",
+      "sha256": "c5b909c6c52f4538d985bf8965dfb40f6253418b0b1cd2a2930ee2ef758e25fc",
+      "source_path": "outputs/frozen_detector_modis_v1/false_alarms.csv"
+    },
+    {
+      "bytes": 1334,
+      "gzipped": false,
+      "path": "modis_v1/period_activity.csv",
+      "sha256": "ddb36d659d190ac03bc0543ecac8164cff42fe7975b768af2cab682d1b25a391",
+      "source_path": "outputs/frozen_detector_modis_v1/period_activity.csv"
+    },
+    {
+      "bytes": 3147,
+      "gzipped": false,
+      "path": "modis_v1/provenance.json",
+      "sha256": "22ad00dd55d967c918255864a47a06c51e46e2b37ec8f530ccb6bdc42a6bd1df",
+      "source_path": "outputs/frozen_detector_modis_v1/provenance.json"
+    },
+    {
+      "bytes": 1061466,
+      "gzipped": false,
+      "path": "modis_v1/zone_daily_r100.csv",
+      "sha256": "be9a07aaf8fb9dcb24db0fad0f99fb2b92ccce80da53ab0af1bacbb9a130a374",
+      "source_path": "outputs/frozen_detector_modis_v1/zone_daily_r100.csv"
+    },
+    {
+      "bytes": 979342,
+      "gzipped": false,
+      "path": "modis_v1/zone_daily_r25.csv",
+      "sha256": "61b1ba18fc5a74b82a200b56e6e657ee9d0622e1f0ebd087aa1926dad6e1f48a",
+      "source_path": "outputs/frozen_detector_modis_v1/zone_daily_r25.csv"
+    },
+    {
+      "bytes": 1014910,
+      "gzipped": false,
+      "path": "modis_v1/zone_daily_r50.csv",
+      "sha256": "bbc3093aa03eb7f0a5d2163326d848b63ee703b3fe0eb18c4a94aa65e23d0124",
+      "source_path": "outputs/frozen_detector_modis_v1/zone_daily_r50.csv"
+    },
+    {
+      "bytes": 2298,
+      "gzipped": false,
+      "path": "olci_v1/coverage.csv",
+      "sha256": "2db789dcad9a4f8a14b599ffe2e5ae0d695b43d500b1f1b5b64e84d552821ccf",
+      "source_path": "outputs/frozen_detector_v1/coverage.csv"
+    },
+    {
+      "bytes": 1384,
+      "gzipped": false,
+      "path": "olci_v1/episodes_alraha_r100.csv",
+      "sha256": "b2f89e145207018039cd3d230a416ea7aaa1ebde840a6f3624fdd63ee81b19a9",
+      "source_path": "outputs/frozen_detector_v1/episodes_alraha_r100.csv"
+    },
+    {
+      "bytes": 982,
+      "gzipped": false,
+      "path": "olci_v1/episodes_alraha_r25.csv",
+      "sha256": "1627f3184776c450c9fa8e2e5aa9163cdd56c9538022311ed8b849b796597657",
+      "source_path": "outputs/frozen_detector_v1/episodes_alraha_r25.csv"
+    },
+    {
+      "bytes": 982,
+      "gzipped": false,
+      "path": "olci_v1/episodes_alraha_r50.csv",
+      "sha256": "62c2fc8445fde66d5c5dc946f038ee3a8e371e251232e360146a70e4d884cc75",
+      "source_path": "outputs/frozen_detector_v1/episodes_alraha_r50.csv"
+    },
+    {
+      "bytes": 982,
+      "gzipped": false,
+      "path": "olci_v1/episodes_barka_r100.csv",
+      "sha256": "3d1c7213554db61bae5122592471d7e1f7b6a76174682d700ef267e7d3529dc4",
+      "source_path": "outputs/frozen_detector_v1/episodes_barka_r100.csv"
+    },
+    {
+      "bytes": 859,
+      "gzipped": false,
+      "path": "olci_v1/episodes_barka_r25.csv",
+      "sha256": "fda0295f6101009873bc64171a51ad9a4ecadf36c69544868f3d23f9826a3bfa",
+      "source_path": "outputs/frozen_detector_v1/episodes_barka_r25.csv"
+    },
+    {
+      "bytes": 806,
+      "gzipped": false,
+      "path": "olci_v1/episodes_barka_r50.csv",
+      "sha256": "d13da48b06dac1c6294677dafbe5013d82ac317fdbe38f18f6038c62087e9c50",
+      "source_path": "outputs/frozen_detector_v1/episodes_barka_r50.csv"
+    },
+    {
+      "bytes": 1144,
+      "gzipped": false,
+      "path": "olci_v1/episodes_kalba_r100.csv",
+      "sha256": "b42ff2f26b634481b3c12419891c8559bc3318673107b07deab2f095e8577a7a",
+      "source_path": "outputs/frozen_detector_v1/episodes_kalba_r100.csv"
+    },
+    {
+      "bytes": 1071,
+      "gzipped": false,
+      "path": "olci_v1/episodes_kalba_r25.csv",
+      "sha256": "766b643c39be3ee2495a179045b4009bf21f4bf4bed3b70a3f55d1d03ac555eb",
+      "source_path": "outputs/frozen_detector_v1/episodes_kalba_r25.csv"
+    },
+    {
+      "bytes": 1018,
+      "gzipped": false,
+      "path": "olci_v1/episodes_kalba_r50.csv",
+      "sha256": "eedd237d7dacb61f7cfd633ae13ebbd64abf3b0ff2d59dfd094feaca4dde7be0",
+      "source_path": "outputs/frozen_detector_v1/episodes_kalba_r50.csv"
+    },
+    {
+      "bytes": 2320,
+      "gzipped": false,
+      "path": "olci_v1/event_lead_times.csv",
+      "sha256": "4bb614a6f9029cc1e9f113159acca1623fd82d0c31325ed4e5ad24ea6abb382b",
+      "source_path": "outputs/frozen_detector_v1/event_lead_times.csv"
+    },
+    {
+      "bytes": 1391,
+      "gzipped": false,
+      "path": "olci_v1/false_alarms.csv",
+      "sha256": "bc61ba7b71b1c51ee348daaa0101f43d32a6bf172c545b61fa2820c14f431726",
+      "source_path": "outputs/frozen_detector_v1/false_alarms.csv"
+    },
+    {
+      "bytes": 943,
+      "gzipped": false,
+      "path": "olci_v1/period_activity.csv",
+      "sha256": "77ab103cbea0588e94f4b0c489750e7c9989c93a1905233a05e768d7d4aa6c69",
+      "source_path": "outputs/frozen_detector_v1/period_activity.csv"
+    },
+    {
+      "bytes": 1975,
+      "gzipped": false,
+      "path": "olci_v1/provenance.json",
+      "sha256": "b8c5edfcea35aede9199bcc1897e021529f056c7b900ff23d346e3fe3f19f852",
+      "source_path": "outputs/frozen_detector_v1/provenance.json"
+    },
+    {
+      "bytes": 424130,
+      "gzipped": false,
+      "path": "olci_v1/zone_daily_r100.csv",
+      "sha256": "b7e40bf12c0dfeef4dcd70be9fbb963d00ed789793a5bf14254b494221309d20",
+      "source_path": "outputs/frozen_detector_v1/zone_daily_r100.csv"
+    },
+    {
+      "bytes": 397415,
+      "gzipped": false,
+      "path": "olci_v1/zone_daily_r25.csv",
+      "sha256": "c9934f35118c5fb60a3776a1dfb4fa0aa22d7585fc3cad1052f840f74a06e6a5",
+      "source_path": "outputs/frozen_detector_v1/zone_daily_r25.csv"
+    },
+    {
+      "bytes": 409639,
+      "gzipped": false,
+      "path": "olci_v1/zone_daily_r50.csv",
+      "sha256": "1f5d4b97e4246a66c7cf8f9158152689551a1ef083639308f9b6a3b0bc482c1f",
+      "source_path": "outputs/frozen_detector_v1/zone_daily_r50.csv"
+    }
+  ],
+  "note": "Byte for byte copies of Nadhir outputs at the pinned commit. Real satellite evidence (Sentinel-3 OLCI 2018 to 2023, MODIS-Aqua 2003 to 2014). Do not edit; regenerate with scripts/refresh_nadhir_snapshot.py.",
+  "source_commit": "ca484e231943bf16262937dd727c6408a629a704",
+  "source_repository": "https://github.com/hudasol/nadhir",
+  "total_bytes": 4353647
+}

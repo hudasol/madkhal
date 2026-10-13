@@ -1,0 +1,4 @@
+event,evaluation,intake,radius_km,f_threshold,period,days,observed_days,exceed_or_alert_days,alert_days,max_anom_frac,median_anom_frac,alert_episodes_started,first_alert_in_period,first_exceed_in_period,evidence_status
+E2023-ALRAHA,LIMITATION-TEST,alraha,50,0.154503,2023-04-01..2023-10-09,192,102,6,3,0.5529,0.0,2,2023-09-06,2023-08-18,"VERIFIED-PRIMARY for place/month/species (EAD report, read in full by HAB-hyperspectral 2026-09-16; not re-fetched here)"
+E2023-ALRAHA,LIMITATION-TEST,alraha,25,0.141883,2023-04-01..2023-10-09,192,99,6,1,0.25,0.0,1,2023-09-05,2023-04-01,"VERIFIED-PRIMARY for place/month/species (EAD report, read in full by HAB-hyperspectral 2026-09-16; not re-fetched here)"
+E2023-ALRAHA,LIMITATION-TEST,alraha,100,0.194769,2023-04-01..2023-10-09,192,106,8,4,0.5811,0.0127,4,2023-05-23,2023-05-21,"VERIFIED-PRIMARY for place/month/species (EAD report, read in full by HAB-hyperspectral 2026-09-16; not re-fetched here)"

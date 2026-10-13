@@ -1,0 +1,19 @@
+intake,radius_km,f_threshold,set,quiet_days,quiet_observed_days,alert_days,alert_day_rate_of_observed,alert_episodes_started,episodes_per_365_days,episodes_per_100_observed_days
+kalba,50,0.227273,heldout_quiet,830,426,19,0.0446,5,2.2,1.17
+kalba,50,0.227273,calibration (in-sample),1096,633,12,0.019,10,3.33,1.58
+barka,50,0.213534,heldout_quiet,465,263,13,0.0494,3,2.35,1.14
+barka,50,0.213534,calibration (in-sample),1096,585,13,0.0222,8,2.66,1.37
+alraha,50,0.154503,heldout_quiet,714,329,10,0.0304,5,2.56,1.52
+alraha,50,0.154503,calibration (in-sample),1096,703,13,0.0185,10,3.33,1.42
+kalba,25,0.272727,heldout_quiet,830,410,19,0.0463,8,3.52,1.95
+kalba,25,0.272727,calibration (in-sample),1096,621,14,0.0225,9,3.0,1.45
+barka,25,0.25,heldout_quiet,465,264,14,0.053,6,4.71,2.27
+barka,25,0.25,calibration (in-sample),1096,571,11,0.0193,8,2.66,1.4
+alraha,25,0.141883,heldout_quiet,714,321,3,0.0093,3,1.53,0.93
+alraha,25,0.141883,calibration (in-sample),1096,684,11,0.0161,10,3.33,1.46
+kalba,100,0.186604,heldout_quiet,830,458,27,0.059,8,3.52,1.75
+kalba,100,0.186604,calibration (in-sample),1096,663,16,0.0241,8,2.66,1.21
+barka,100,0.187082,heldout_quiet,465,283,17,0.0601,4,3.14,1.41
+barka,100,0.187082,calibration (in-sample),1096,619,13,0.021,9,3.0,1.45
+alraha,100,0.194769,heldout_quiet,714,350,16,0.0457,9,4.6,2.57
+alraha,100,0.194769,calibration (in-sample),1096,723,11,0.0152,10,3.33,1.38
