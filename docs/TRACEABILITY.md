@@ -8,7 +8,7 @@ Enforced through phase P3.
 
 | Tier | Requirements | With at least one test |
 |---|---|---|
-| MUST | 97 | 36 |
+| MUST | 97 | 45 |
 | SHOULD | 6 | 2 |
 | MAY | 0 | 0 |
 
@@ -139,29 +139,29 @@ Enforced through phase P3.
 
 | ID | Tier | Requirement | Tests |
 |---|---|---|---|
-| MK-L7-001 | MUST | The API is versioned under /v1 and publishes OpenAPI. | **none** |
-| MK-L7-002 | MUST | Errors are application/problem+json. | **none** |
-| MK-L7-003 | MUST | Endpoints health, sites, evidence, track-record and belief exist and are tested. | **none** |
+| MK-L7-001 | MUST | The API is versioned under /v1 and publishes OpenAPI. | `tests/test_api.py::test_openapi_is_versioned` |
+| MK-L7-002 | MUST | Errors are application/problem+json. | `tests/test_api.py::test_errors_are_problem_json` |
+| MK-L7-003 | MUST | Endpoints health, sites, evidence, track-record and belief exist and are tested. | `tests/test_api.py::test_belief_and_series`<br>`tests/test_api.py::test_evidence_calendar`<br>`tests/test_api.py::test_health`<br>`tests/test_api.py::test_sites_olci_and_modis`<br>`tests/test_api.py::test_track_record_counts` |
 | MK-L7-004 | MUST | Endpoints advisory, scenario/advise, timeline, plant/profile and plant/sensitivity exist and are tested. | **none** |
 | MK-L7-005 | MUST | Endpoints policies/results, replay, method, claims and provenance exist and are tested. | **none** |
 | MK-L7-006 | MUST | Endpoint missions exists and is tested. | **none** |
-| MK-L7-007 | MUST | Inputs are bounded (seeds, horizons, request size), responses contain no file paths, ids come from an inputs hash. | **none** |
-| MK-L7-008 | MUST | madkhal snapshot writes a static copy of every response so the web app runs without a backend. | **none** |
+| MK-L7-007 | MUST | Inputs are bounded (seeds, horizons, request size), responses contain no file paths, ids come from an inputs hash. | `tests/test_api.py::test_bounded_inputs_and_idempotent_ids`<br>`tests/test_api.py::test_no_file_paths_in_any_static_route`<br>`tests/test_api.py::test_request_size_limit` |
+| MK-L7-008 | MUST | madkhal snapshot writes a static copy of every response so the web app runs without a backend. | `tests/test_api.py::test_static_snapshot_matches_live_responses` |
 
 ## Layer L8
 
 | ID | Tier | Requirement | Tests |
 |---|---|---|---|
-| MK-L8-001 | MUST | The Console and Evidence screens render from the API or the static snapshot. | **none** |
-| MK-L8-002 | MUST | The two part banner is on every screen and cannot be dismissed. | **none** |
+| MK-L8-001 | MUST | The Console and Evidence screens render from the API or the static snapshot. | `web/e2e/skeleton.spec.ts::MK-L8-001 console tiles show belief intervals from the stati`<br>`web/e2e/skeleton.spec.ts::MK-L8-001 evidence screen shows the calendar and the counted`<br>`web/src/App.test.tsx::MK-L8-001 renders one tile per site with intervals`<br>`web/src/App.test.tsx::MK-L8-001 shows an error state with retry when the API fails`<br>`web/src/App.test.tsx::MK-L8-001 shows the track record with counts beside the rate` |
+| MK-L8-002 | MUST | The two part banner is on every screen and cannot be dismissed. | `web/e2e/skeleton.spec.ts::MK-L8-002 banner stays visible in Arabic` |
 | MK-L8-003 | MUST | Timeline, Scenario Lab, Policy comparison, Inspection, Plant model, Replay and Method screens exist. | **none** |
 | MK-L8-004 | MUST | Every screen is available in English and Arabic with right to left parity and an Arabic Indic digit toggle. | **none** |
 | MK-L8-005 | MUST | Light and dark themes meet WCAG 2.2 AA text contrast and 3:1 for graphical objects, proven by a test. | **none** |
 | MK-L8-006 | MUST | GO, DERATE, PARK, INSPECT and NO SAFE OPTION are encoded by shape and pattern as well as colour. | **none** |
 | MK-L8-007 | MUST | Every chart shows intervals, has a screen reader label and a table alternative. | **none** |
 | MK-L8-008 | MUST | Automated axe checks pass on every screen. | **none** |
-| MK-L8-009 | MUST | The web app makes no network call other than to its own API or static files (no tiles, fonts or analytics from elsewhere). | **none** |
-| MK-L8-010 | MUST | Static mode works with no backend. | **none** |
+| MK-L8-009 | MUST | The web app makes no network call other than to its own API or static files (no tiles, fonts or analytics from elsewhere). | `web/src/api/client.test.ts::MK-L8-009 live mode only calls the product API under /v1`<br>`web/src/noNetwork.test.ts::MK-L8-009 fonts are self hosted through @fontsource and the `<br>`web/src/noNetwork.test.ts::MK-L8-009 source makes no call to any external host (no tile` |
+| MK-L8-010 | MUST | Static mode works with no backend. | `web/e2e/skeleton.spec.ts::MK-L8-010 renders ${s.heading} with no request outside its o`<br>`web/src/api/client.test.ts::MK-L8-010 static mode ignores query parameters and fetches t`<br>`web/src/api/client.test.ts::MK-L8-010 static mode maps a route to a precomputed JSON fil` |
 | MK-L8-011 | SHOULD | A printable shift handover summarises the current advisory. | **none** |
 | MK-L8-012 | MUST | Screens have loading, empty, error and partial data states. | **none** |
 | MK-L8-013 | MUST | Times are shown in Asia/Dubai with UTC available in a tooltip. | **none** |
