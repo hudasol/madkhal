@@ -1,7 +1,7 @@
 # Madkhal requirements. Source of truth for docs/TRACEABILITY.md.
 # id: MK-<layer>-<nnn>; tier: MUST | SHOULD | MAY; phase: the build phase that delivers it.
 # The fast check fails when a MUST requirement of a phase up to `enforced_through` has no test.
-enforced_through: P0
+enforced_through: P1
 
 requirements:
   # Cross cutting
