@@ -12,3 +12,6 @@ code in this repository), ASSUMPTION (a modelling choice, stated as such), UNVER
 |---|---|---|---|---|
 | CL-001 | Madkhal is released under the Apache License 2.0. | SUPPORTED_BY_RESULT | README | file: `LICENSE` |
 | CL-002 | Madkhal is advisory software for planning and learning; it has no connection to any plant system and controls nothing. | ASSUMPTION | README, UI | file: `docs/adr/0001-licence-and-scope.md` |
+| CL-003 | Of five dated bloom related disruptions scored by Nadhir, the detector caught one (Kalba 2018), missed two (Barka 2018 and 2023) and could not observe two (RAK and Dibba 2008). | SUPPORTED_BY_RESULT | README, UI, docs/METHOD.md | snapshot: `olci_v1/event_lead_times.csv#row=1` |
+| CL-004 | Most event dates are UNVERIFIED news report dates, which are upper bounds on the true onset; intake coordinates are ESTIMATED. | UNVERIFIED | README, UI, docs/LIMITATIONS.md | snapshot: `events.yaml` |
+| CL-005 | The Al Raha April 2023 diatom bloom produced no broadband chlorophyll anomaly in daily OLCI (median anomaly fraction 0.0 over 102 clear days): a documented species level blind spot. | SUPPORTED_BY_RESULT | UI, docs/METHOD.md | snapshot: `olci_v1/period_activity.csv#row=1` |
