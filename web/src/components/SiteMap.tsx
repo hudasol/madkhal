@@ -41,7 +41,10 @@ export function SiteMap({ lat, lon, path, label }: MapProps) {
     let cancelled = false;
     void (async () => {
       try {
-        const maplibre = (await import("maplibre-gl")).default;
+        const maplibre = await import("maplibre-gl");
+        // MapLibre 6 runs its worker from a separate module; Vite emits it as a local asset
+        const worker = await import("maplibre-gl/dist/maplibre-gl-worker.mjs?url");
+        maplibre.setWorkerUrl(worker.default);
         if (cancelled || !ref.current) return;
         const base = import.meta.env.BASE_URL.endsWith("/")
           ? import.meta.env.BASE_URL
