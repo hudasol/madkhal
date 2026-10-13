@@ -1,0 +1,48 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      PYTHONUTF8: "1"
+      CI: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install
+        run: python -m pip install -r requirements.lock.txt -e . --no-deps
+      - name: Fast check
+        run: madkhal check
+      - name: One seed of the experiments
+        run: madkhal eval --seeds 1 --out ci-results
+        if: hashFiles('results/*.json') != ''
+
+  web:
+    runs-on: ubuntu-latest
+    env:
+      CI: "1"
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install
+        run: npm ci --no-audit --no-fund
+        if: hashFiles('web/package-lock.json') != ''
+      - name: Build
+        run: npm run build
+        if: hashFiles('web/package-lock.json') != ''
