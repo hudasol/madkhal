@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import subprocess
 
 import pytest
@@ -118,4 +119,40 @@ def test_no_em_dashes_in_published_text() -> None:
         path = ROOT / f
         if path.is_file() and EM_DASH in path.read_text(encoding="utf-8", errors="ignore"):
             offenders.append(f)
+    assert offenders == []
+
+
+# Operator and utility names, and words that would state an institutional affiliation,
+# matched without regard to case (so URL slugs are caught too). The word list for adapter
+# labels lives in tests/test_evidence.py; both files are skipped below because they hold the
+# lists themselves.
+NAMES = re.compile(
+    r"(taqa|ewec|dewa|sewa|fewa|adwea|acwa|smn|nama|iwpp|adx|aletihad)"
+    r"|(veolia|mubadala|transco|university|uaeu|nyuad|college)",
+    re.IGNORECASE,
+)
+
+
+@pytest.mark.req("MK-X-008")
+def test_no_operator_name_logo_or_affiliation_outside_context() -> None:
+    skip = {
+        "docs/CONTEXT.md",
+        "tests/test_evidence.py",
+        "tests/test_harness.py",
+        "web/package-lock.json",
+    }
+    offenders = []
+    for f in _tracked_files():
+        if "logo" in f.lower():
+            offenders.append(f"{f}: logo file")
+        if f in skip or f.startswith("data/nadhir_snapshot/"):
+            continue
+        path = ROOT / f
+        if not path.is_file() or path.suffix in {".png", ".jpg", ".ico", ".woff", ".woff2"}:
+            continue
+        for n, line in enumerate(path.read_text(encoding="utf-8", errors="ignore").splitlines(), 1):
+            if "MK-X-008" in line:
+                continue  # the requirement's own wording
+            if NAMES.search(line):
+                offenders.append(f"{f}:{n}")
     assert offenders == []

@@ -185,8 +185,107 @@ def test_lower_storage_never_loosens_water_constraint(
 def test_dwell_blocks_relaxation(cur_idx: int, hours: float, p_dev: float, p_at: float) -> None:
     a, q = CANDIDATES[cur_idx]
     state = PlantState(current_action=a, current_scale=q, hours_in_action=hours)
-    adv = decide(make_inputs(p_dev, p_at, state=state))
-    assert restrictiveness(adv.action, adv.scale) >= restrictiveness(a, q) - 1e-12
+    inp = make_inputs(p_dev, p_at, state=state)
+    ev = evaluate(inp)
+    adv = decide(inp)
+    if ev.yielded:
+        # the rules give way only when the action in force and every more restrictive option
+        # breach a budget (D-012); the advice is then the smallest relaxation within budget
+        lim = inp.limits
+        for j in range(cur_idx, len(CANDIDATES)):
+            assert ev.p_foul[j] > lim.fouling_risk_budget or ev.p_water[j] > lim.water_risk_budget
+        plain = [
+            j
+            for j in range(len(CANDIDATES))
+            if ev.p_foul[j] <= lim.fouling_risk_budget and ev.p_water[j] <= lim.water_risk_budget
+        ]
+        assert ev.choice == max(plain)
+    else:
+        assert restrictiveness(adv.action, adv.scale) >= restrictiveness(a, q) - 1e-12
+
+
+def _plainly_feasible(inp: DecisionInputs) -> list[int]:
+    ev = evaluate(inp)
+    lim = inp.limits
+    return [
+        j
+        for j in range(len(CANDIDATES))
+        if ev.p_foul[j] <= lim.fouling_risk_budget + 1e-12
+        and ev.p_water[j] <= lim.water_risk_budget + 1e-12
+    ]
+
+
+ACTIONS_IN_FORCE = [*CANDIDATES, (ActionKind.NO_SAFE_OPTION_ESCALATE, 0.0)]
+
+
+@pytest.mark.req("MK-L4-004")
+@pytest.mark.req("MK-L4-010")
+@settings(max_examples=60, deadline=None)
+@given(
+    st.sampled_from(list(range(len(ACTIONS_IN_FORCE)))),
+    st.floats(0.0, 48.0),
+    st.floats(0.0, 36.0),
+    st.floats(0.0, 0.4),
+    st.floats(0.0, 0.4),
+)
+def test_no_safe_option_only_when_every_option_breaches(
+    cur_idx: int, hours: float, storage: float, p_dev: float, p_at: float
+) -> None:
+    """NO SAFE OPTION is shown exactly when it is true, whatever the action in force and dwell."""
+    a, q = ACTIONS_IN_FORCE[cur_idx]
+    state = PlantState(
+        current_action=a, current_scale=q, hours_in_action=hours, storage_hours=storage
+    )
+    inp = make_inputs(p_dev, p_at, state=state)
+    adv = decide(inp)
+    is_nso = adv.action is ActionKind.NO_SAFE_OPTION_ESCALATE
+    assert is_nso == (not _plainly_feasible(inp))
+
+
+@pytest.mark.req("MK-L4-004")
+@pytest.mark.req("MK-L4-010")
+def test_park_in_dwell_with_storage_running_dry_moves_to_a_safe_option() -> None:
+    """The reviewer's case: parked for 1 hour, low bloom; staying parked runs storage dry."""
+    for start in [(ActionKind.PARK, 0.0), (ActionKind.DERATE, 0.2)]:
+        for storage in (2.0, 6.0, 12.0, 24.0):
+            state = PlantState(
+                current_action=start[0],
+                current_scale=start[1],
+                hours_in_action=1.0,
+                storage_hours=storage,
+            )
+            inp = make_inputs(p_dev=0.01, p_at=0.005, state=state)
+            plain = _plainly_feasible(inp)
+            adv = decide(inp)
+            if plain:
+                assert adv.action is not ActionKind.NO_SAFE_OPTION_ESCALATE
+                held = (adv.action, adv.scale) == start
+                assert held or "give way" in " ".join(adv.reasons)
+
+
+@pytest.mark.req("MK-L4-006")
+@pytest.mark.req("MK-L4-010")
+@settings(max_examples=40, deadline=None)
+@given(
+    st.sampled_from(list(range(len(CANDIDATES)))),
+    st.floats(0.0, 11.9),
+    st.floats(0.0, 0.4),
+    st.floats(0.0, 0.4),
+    st.floats(0.0, 1.0),
+)
+def test_within_dwell_higher_bloom_never_more_permissive_while_rules_hold(
+    cur_idx: int, hours: float, p_dev: float, p_at: float, f: float
+) -> None:
+    a, q = CANDIDATES[cur_idx]
+    state = PlantState(current_action=a, current_scale=q, hours_in_action=hours)
+    inp = make_inputs(p_dev, p_at, state=state)
+    b2 = inp.belief.copy()
+    m = b2[:, 0] * f
+    b2[:, 0] -= m
+    b2[:, 2] += m
+    worse = with_belief(inp, b2)
+    if not evaluate(worse).yielded:
+        assert rank(worse) >= rank(inp) - 1e-12
 
 
 @pytest.mark.req("MK-L4-010")

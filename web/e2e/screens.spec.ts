@@ -48,6 +48,11 @@ for (const c of COMBOS) {
       await prepare(page, c.lang, c.theme);
       const requests: string[] = [];
       page.on("request", (r) => requests.push(r.url()));
+      const errors: string[] = [];
+      page.on("console", (m) => {
+        if (m.type() === "error") errors.push(m.text());
+      });
+      page.on("pageerror", (e) => errors.push(e.message));
       await page.goto(`/#/${s}`);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       await expect(page.getByTestId("banner")).toBeVisible();
@@ -66,6 +71,7 @@ for (const c of COMBOS) {
             .join(", ")}`,
       );
       expect(summary).toEqual([]);
+      expect(errors).toEqual([]);
       expect(
         requests.filter((u) => !u.startsWith(`${baseURL}/`) && !u.startsWith(`blob:${baseURL}/`)),
       ).toEqual([]);

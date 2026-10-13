@@ -278,3 +278,18 @@ def test_survey_update_moves_belief_the_right_way() -> None:
     assert np.allclose(up.sum(axis=1), 1.0)
     # the survey sees blooms the satellite cannot: invisible states move like visible ones
     assert np.allclose(up[:, AT_I], up[:, AT_V]) and up[0, DEV_V] > b[0, DEV_V]
+
+
+@pytest.mark.req("MK-L3-007")
+def test_lab_command_runs_the_quiet_preset_without_shutdowns() -> None:
+    import json
+
+    from typer.testing import CliRunner
+
+    from madkhal.cli import app
+
+    res = CliRunner().invoke(app, ["lab", "--preset", "quiet", "--draws", "40"])
+    assert res.exit_code == 0, res.output
+    out = json.loads(res.stdout)
+    assert all(d["forced_shutdowns"] == 0 for d in out["days"])
+    assert CliRunner().invoke(app, ["lab", "--preset", "nothing"]).exit_code != 0

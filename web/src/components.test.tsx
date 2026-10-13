@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,7 +12,7 @@ import { formatInstant, formatNumber } from "./format";
 import { SettingsProvider } from "./settings";
 import { mockFetch, renderAt } from "./test/render";
 
-vi.mock("maplibre-gl", () => ({ default: {} }));
+vi.mock("maplibre-gl", () => ({}));
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -33,6 +33,14 @@ describe("screens", () => {
     mockFetch(["/v1/policies/results"]);
     renderAt("/policies");
     expect(await screen.findByRole("alert")).toHaveTextContent("Could not load");
+  });
+
+  it("MK-L8-012 the console chart shows an error, not endless loading, when its series fails", async () => {
+    mockFetch(["/v1/belief/kalba/series"]);
+    renderAt("/");
+    // one alert in the Kalba tile and one in place of the chart for the focus site (Kalba)
+    await waitFor(() => expect(screen.getAllByRole("alert")).toHaveLength(2));
+    expect(screen.queryAllByRole("status").filter((n) => n.getAttribute("aria-busy"))).toEqual([]);
   });
 
   it("MK-L8-012 loading state is announced", () => {

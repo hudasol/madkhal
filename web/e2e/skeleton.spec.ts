@@ -32,7 +32,10 @@ test("MK-L8-001 console tiles show belief intervals from the static snapshot", a
   }
   // the belief bars carry the median and interval in their label
   await expect(
-    page.getByTestId("tile-kalba").getByRole("img", { name: /median/ }).first(),
+    page
+      .getByTestId("tile-kalba")
+      .getByRole("img", { name: /median/ })
+      .first(),
   ).toBeVisible();
   await page.screenshot({ path: "test-results/p4-console.png", fullPage: true });
 });

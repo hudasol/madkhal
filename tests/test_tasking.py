@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 
 import pytest
 
-from madkhal.contract import SIMULATION_NOTICE, DroneProfile
+from madkhal.contract import ADVISORY_SCOPE, SIMULATION_NOTICE, DroneProfile
 from madkhal.decision import SurveyConfig
 from madkhal.estimator import SurveySensor
 from madkhal.lab.inputs import snapshot
@@ -89,6 +89,7 @@ def test_validator_catches_broken_plans() -> None:
         lambda p: p["mission"]["items"].pop(0),
         lambda p: p["mission"]["items"][1].update(Altitude=300),
         lambda p: p["madkhal"].update(notice="cleared to fly"),
+        lambda p: p["madkhal"].pop("scope"),
     ):
         broken = copy.deepcopy(plan)
         breaker(broken)
@@ -103,3 +104,26 @@ def test_every_export_carries_the_simulation_notice() -> None:
     assert all(f["properties"]["notice"] == SIMULATION_NOTICE for f in geojson(m)["features"])
     assert SIMULATION_NOTICE.replace("'", "&apos;") in kml(m) or SIMULATION_NOTICE in kml(m)
     assert qgc_plan(m)["madkhal"]["notice"] == SIMULATION_NOTICE
+    # the advisory scope statement travels with every export too
+    assert all(f["properties"]["scope"] == ADVISORY_SCOPE for f in geojson(m)["features"])
+    assert ADVISORY_SCOPE in kml(m)
+    assert qgc_plan(m)["madkhal"]["scope"] == ADVISORY_SCOPE
+
+
+@pytest.mark.req("MK-L6-005")
+@pytest.mark.req("MK-L6-006")
+def test_plan_command_writes_three_exports_with_the_notice(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    from typer.testing import CliRunner
+
+    from madkhal.cli import app
+
+    res = CliRunner().invoke(app, ["plan", "--site", "barka", "--out", str(tmp_path)])
+    assert res.exit_code == 0, res.output
+    files = sorted(p.name for p in tmp_path.iterdir())
+    assert files == ["barka.geojson", "barka.kml", "barka.plan"]
+    for name in files:
+        text = (tmp_path / name).read_text(encoding="utf-8")
+        assert SIMULATION_NOTICE in text
+        assert ADVISORY_SCOPE in text
+    bad = CliRunner().invoke(app, ["plan", "--site", "nowhere", "--out", str(tmp_path)])
+    assert bad.exit_code != 0

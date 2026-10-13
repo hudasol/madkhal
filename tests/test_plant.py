@@ -96,7 +96,11 @@ def test_lower_scale_never_raises_fouling(extra: float, a: float, b: float) -> N
     lo, hi = sorted((a, b))
     load = np.full((2, 72), 0.35 + extra)
     out = run(load, np.array([lo, hi]), mode="decision")
-    assert out.fouling_dose[0] <= out.fouling_dose[1] + 1e-12
+    # As in the load test above: compare the index capped at the hard limit and the breach
+    # time. The raw dose is not monotone at the trip boundary, because the hour that trips
+    # the plant overshoots the limit by an amount that depends on the scale (D-012).
+    assert min(out.fouling[0], 1.0) <= min(out.fouling[1], 1.0) + 1e-12
+    assert out.breach_hour[0] >= out.breach_hour[1]
 
 
 @pytest.mark.req("MK-L3-005")
