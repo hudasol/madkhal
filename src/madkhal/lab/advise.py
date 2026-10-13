@@ -108,9 +108,13 @@ class TableCache:
 
     @staticmethod
     def _context(inp: DecisionInputs) -> str:
-        """Content hash of everything except the day and the plant state (no object ids)."""
+        """Content hash of everything except the day and the plant state (no object ids).
+
+        The onset hazard is included although callers derive it from the same draws, so a
+        caller that varies the onset prior cannot receive a stale table.
+        """
         h = hashlib.sha256()
-        for a in (inp.p_da, inp.p_dc, inp.p_ac):
+        for a in (inp.p_da, inp.p_dc, inp.p_ac, inp.hazard):
             h.update(np.ascontiguousarray(a, dtype=np.float64).tobytes())
         h.update(inp.profile.model_dump_json().encode())
         h.update(inp.limits.model_dump_json().encode())
