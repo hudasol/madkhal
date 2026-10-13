@@ -17,7 +17,13 @@ What works today, in plain words.
   P(any bloom) as medians with 90 percent intervals, and the days since the last clear view.
   Days without a satellite view carry no information. `madkhal belief` and `madkhal replay`
   print these from the command line.
-- No plant model, decision engine, API or screen exists yet.
+- A read only HTTP API (`madkhal serve`) serves sites, evidence, the track record and beliefs
+  under `/v1`, with problem+json errors. `madkhal snapshot` writes the same responses as static
+  files.
+- The web console (React) has two screens, Console and Evidence, in English and Arabic, light
+  and dark, with the two part banner on every screen. It runs against the live API or as a
+  static demo with no backend.
+- No plant model or decision engine exists yet, so the console shows beliefs, not advisories.
 
 Evidence: real satellite history from the Nadhir hindcast. Plant, drone and consequences:
 hypothetical, synthetic parameters.
