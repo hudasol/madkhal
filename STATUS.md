@@ -23,7 +23,12 @@ What works today, in plain words.
 - The web console (React) has two screens, Console and Evidence, in English and Arabic, light
   and dark, with the two part banner on every screen. It runs against the live API or as a
   static demo with no backend.
-- No plant model or decision engine exists yet, so the console shows beliefs, not advisories.
+- A hypothetical SWRO plant model (every parameter an assumption) and a decision engine turn
+  the belief into GO, DERATE, PARK or NO SAFE OPTION, ESCALATE, with the binding constraint,
+  P(fouling breach), time to limit, evidence level and a plain language explanation. The API
+  serves advisories, a daily replay timeline and user scenarios. `madkhal advise` and
+  `madkhal timeline` print them.
+- The web console does not show advisories yet; it shows beliefs and evidence.
 
 Evidence: real satellite history from the Nadhir hindcast. Plant, drone and consequences:
 hypothetical, synthetic parameters.
