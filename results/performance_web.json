@@ -1,0 +1,13 @@
+{
+  "measure": "Seconds from navigation to the banner and the first site tile being visible, static build served by vite preview on the same machine, fresh browser context per run.",
+  "runs": 5,
+  "seconds": [
+    0.347,
+    0.293,
+    0.273,
+    0.355,
+    0.343
+  ],
+  "max": 0.355,
+  "budget_s": 3
+}

@@ -1,0 +1,140 @@
+{
+  "budget": {
+    "advisory_one": {
+      "budget_s": 0.3,
+      "observed_s": 0.1394,
+      "within": true
+    },
+    "api_p95_cached": {
+      "budget_s": 0.2,
+      "observed_s": 0.0916,
+      "within": true
+    },
+    "belief_six_years_400_draws": {
+      "budget_s": 5.0,
+      "observed_s": 1.682,
+      "within": true
+    },
+    "experiment_suite": {
+      "budget_s": 900.0,
+      "observed_s": 833.4,
+      "within": true
+    },
+    "web_first_load_static": {
+      "budget_s": 3.0,
+      "observed_s": 0.355,
+      "within": true
+    }
+  },
+  "detail": {
+    "advisory": {
+      "date": "2023-11-07",
+      "max": 0.13940059999004006,
+      "median": 0.09449809996294789,
+      "repeats": 20,
+      "site": "kalba"
+    },
+    "api": {
+      "max_p95": 0.0916,
+      "per_path": {
+        "/v1/advisory/kalba": {
+          "first_call": 1.5698,
+          "p95": 0.0762
+        },
+        "/v1/belief/kalba": {
+          "first_call": 3.0943,
+          "p95": 0.0343
+        },
+        "/v1/belief/kalba/series": {
+          "first_call": 0.0515,
+          "p95": 0.0485
+        },
+        "/v1/claims": {
+          "first_call": 0.0246,
+          "p95": 0.025
+        },
+        "/v1/evidence/kalba": {
+          "first_call": 0.0159,
+          "p95": 0.0133
+        },
+        "/v1/health": {
+          "first_call": 0.1508,
+          "p95": 0.0074
+        },
+        "/v1/method": {
+          "first_call": 0.0251,
+          "p95": 0.0361
+        },
+        "/v1/missions/kalba": {
+          "first_call": 0.121,
+          "p95": 0.0916
+        },
+        "/v1/plant/profile": {
+          "first_call": 0.0064,
+          "p95": 0.0067
+        },
+        "/v1/plant/sensitivity": {
+          "first_call": 1.6177,
+          "p95": 0.0065
+        },
+        "/v1/policies/results": {
+          "first_call": 0.0411,
+          "p95": 0.024
+        },
+        "/v1/provenance": {
+          "first_call": 0.0116,
+          "p95": 0.0101
+        },
+        "/v1/replay/kalba": {
+          "first_call": 0.009,
+          "p95": 0.0098
+        },
+        "/v1/sites": {
+          "first_call": 0.0301,
+          "p95": 0.0076
+        },
+        "/v1/timeline/kalba": {
+          "first_call": 10.2506,
+          "p95": 0.0083
+        },
+        "/v1/track-record": {
+          "first_call": 0.0119,
+          "p95": 0.0124
+        }
+      },
+      "repeats": 30
+    },
+    "belief": {
+      "days": 2137,
+      "draws": 400,
+      "max": 1.682020400010515,
+      "seconds": [
+        1.682020400010515,
+        1.5246839000028558,
+        1.502208799996879
+      ],
+      "site": "kalba"
+    },
+    "web": {
+      "budget_s": 3,
+      "max": 0.355,
+      "measure": "Seconds from navigation to the banner and the first site tile being visible, static build served by vite preview on the same machine, fresh browser context per run.",
+      "runs": 5,
+      "seconds": [
+        0.347,
+        0.293,
+        0.273,
+        0.355,
+        0.343
+      ]
+    }
+  },
+  "measured_on": "2026-10-13",
+  "note": "Wall clock timings on one machine; they vary between runs. The experiment suite time is the recorded seconds_total of the run that wrote results/e*.json (results/run.json). The web first load comes from results/performance_web.json, written by the Playwright performance test.",
+  "platform": {
+    "cpu_count": 16,
+    "machine": "AMD64",
+    "python": "3.13.0",
+    "system": "Windows"
+  }
+}
