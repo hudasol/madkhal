@@ -12,7 +12,12 @@ What works today, in plain words.
   2003 to 2014). It builds the daily coverage calendar (clear, nodata, alert) and the
   detector track record (5 dated events, 3 observable, 1 detected), and fails loudly on any
   altered or unexpected file.
-- No estimator, plant model, decision engine, API or screen exists yet.
+- The estimator runs a Bayesian filter over the real daily evidence for each OLCI site with
+  400 parameter draws. It reports, per day, P(bloom at the intake within 1, 3 and 7 days) and
+  P(any bloom) as medians with 90 percent intervals, and the days since the last clear view.
+  Days without a satellite view carry no information. `madkhal belief` and `madkhal replay`
+  print these from the command line.
+- No plant model, decision engine, API or screen exists yet.
 
 Evidence: real satellite history from the Nadhir hindcast. Plant, drone and consequences:
 hypothetical, synthetic parameters.
