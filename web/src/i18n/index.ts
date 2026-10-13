@@ -1,7 +1,9 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import ar from "./ar";
+import arScreens from "./arScreens";
 import en from "./en";
+import enScreens from "./enScreens";
 
 export type Lang = "en" | "ar";
 
@@ -16,11 +18,15 @@ export function initialLang(): Lang {
 }
 
 void i18n.use(initReactI18next).init({
-  resources: { en: { translation: en }, ar: { translation: ar } },
+  resources: {
+    en: { translation: { ...en, ...enScreens } },
+    ar: { translation: { ...ar, ...arScreens } },
+  },
   lng: initialLang(),
   fallbackLng: "en",
   interpolation: { escapeValue: false },
   returnNull: false,
+  showSupportNotice: false,
 });
 
 export function applyDocumentLanguage(lang: Lang): void {

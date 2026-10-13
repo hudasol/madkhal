@@ -1,6 +1,9 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSeries, useSites } from "../api/hooks";
+import { MODE } from "../api/client";
+import { useAdvisory, useSeries, useSites } from "../api/hooks";
+import { AdvisoryPanel } from "../components/Advisory";
+import { ActionLegend } from "../components/Ribbon";
 import type { BeliefSeries, Site } from "../api/types";
 import { BandChart } from "../components/BandChart";
 import { IntervalBar } from "../components/IntervalBar";
@@ -10,9 +13,22 @@ import { useSettings } from "../settings";
 
 const WINDOW = 60;
 
-function SiteTile({ site, series, index }: { site: Site; series: BeliefSeries; index: number }) {
+function SiteTile({
+  site,
+  series,
+  index,
+  latest,
+}: {
+  site: Site;
+  series: BeliefSeries;
+  index: number;
+  latest: boolean;
+}) {
   const { t } = useTranslation();
   const s = useSettings();
+  const day = series.dates[index]!;
+  const adv = useAdvisory(site.id, day);
+  const staticOld = MODE === "static" && !latest;
   const name = s.lang === "ar" ? site.name_ar : site.name;
   const stale = series.staleness_days[index];
   const staleText =
@@ -38,7 +54,18 @@ function SiteTile({ site, series, index }: { site: Site; series: BeliefSeries; i
         <h2 id={`tile-${site.id}`}>{name}</h2>
         <span className="badge warn">{t("common.estimated")}</span>
       </div>
-      <p className="muted">{t("console.pending")}</p>
+      <p className="muted">{t("advisory.replay")}</p>
+      {staticOld ? (
+        <p className="state" role="status">
+          {t("advisory.staticOnlyLatest")}
+        </p>
+      ) : adv.isLoading ? (
+        <Loading />
+      ) : adv.isError || !adv.data ? (
+        <ErrorView error={adv.error} onRetry={() => void adv.refetch()} />
+      ) : (
+        <AdvisoryPanel adv={adv.data} compact />
+      )}
       <p>
         {alert ? (
           <strong>{t("console.alertToday")}</strong>
@@ -104,6 +131,7 @@ export function ConsoleScreen() {
     <div className="stack">
       <h1>{t("console.title")}</h1>
       <p>{t("console.intro")}</p>
+      <ActionLegend />
       <div className="row">
         <label className="row" style={{ gap: "0.4rem" }}>
           <span>{t("common.asOf")}</span>
@@ -127,7 +155,15 @@ export function ConsoleScreen() {
             return <ErrorView key={site.id} error={q.error} onRetry={() => void q.refetch()} />;
           const idx = q.data.dates.indexOf(day);
           if (idx < 0) return <Empty key={site.id} />;
-          return <SiteTile key={site.id} site={site} series={q.data} index={idx} />;
+          return (
+            <SiteTile
+              key={site.id}
+              site={site}
+              series={q.data}
+              index={idx}
+              latest={day === lastDate}
+            />
+          );
         })}
       </div>
       <section className="card stack" aria-labelledby="chart-h">

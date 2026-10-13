@@ -54,6 +54,8 @@ const en = {
     estimated: "Coordinates ESTIMATED",
     interval: "90 percent interval",
     median: "median",
+    mean: "mean",
+    interval95: "95 percent interval",
     showTable: "Show table",
     hideTable: "Hide table",
     date: "Date",

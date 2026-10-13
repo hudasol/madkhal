@@ -55,6 +55,8 @@ const ar: Messages = {
     estimated: "الإحداثيات مقدّرة",
     interval: "فترة 90 بالمئة",
     median: "الوسيط",
+    mean: "المتوسط",
+    interval95: "فترة 95 بالمئة",
     showTable: "عرض الجدول",
     hideTable: "إخفاء الجدول",
     date: "التاريخ",

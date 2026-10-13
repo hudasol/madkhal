@@ -72,7 +72,7 @@ function CoverageCalendar({ ev }: { ev: EvidenceResponse }) {
           <Swatch state="alert" id={`${id}-l3`} /> {t("evidence.alert")}
         </span>
       </div>
-      <div className="table-wrap">
+      <div className="table-wrap" tabIndex={0}>
         <svg
           viewBox={`0 0 ${width} ${height}`}
           role="img"
@@ -120,7 +120,7 @@ function CoverageCalendar({ ev }: { ev: EvidenceResponse }) {
           ))}
         </svg>
       </div>
-      <div className="table-wrap">
+      <div className="table-wrap" tabIndex={0}>
         <table>
           <caption className="muted">{t("evidence.calendar")}</caption>
           <thead>
@@ -170,7 +170,7 @@ function TrackRecord({ tr }: { tr: TrackRecordResponse }) {
         </span>
       </p>
       <p>{t("evidence.whyMatters")}</p>
-      <div className="table-wrap">
+      <div className="table-wrap" tabIndex={0}>
         <table>
           <thead>
             <tr>
@@ -206,7 +206,7 @@ function TrackRecord({ tr }: { tr: TrackRecordResponse }) {
       </div>
       <h3>{t("evidence.falseAlarms")}</h3>
       <p className="muted">{t("evidence.falseIntro")}</p>
-      <div className="table-wrap">
+      <div className="table-wrap" tabIndex={0}>
         <table>
           <thead>
             <tr>
@@ -273,7 +273,7 @@ export function EvidenceScreen() {
       {ev.data && ev.data.events.length > 0 ? (
         <section className="card stack" aria-labelledby="ev-h">
           <h2 id="ev-h">{t("evidence.events")}</h2>
-          <div className="table-wrap">
+          <div className="table-wrap" tabIndex={0}>
             <table>
               <thead>
                 <tr>
