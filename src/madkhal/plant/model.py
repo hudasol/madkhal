@@ -198,6 +198,14 @@ class PlantState:
             first_unserved_hour=np.full(n, np.inf),
         )
 
+    def take(self, idx: np.ndarray) -> PlantState:
+        """A new state holding the lanes ``idx`` (may repeat lanes)."""
+        out = copy.copy(self)
+        for k, v in self.__dict__.items():
+            if isinstance(v, np.ndarray):
+                setattr(out, k, v[idx].copy())
+        return out
+
     def copy(self) -> PlantState:
         return copy.deepcopy(self)
 
