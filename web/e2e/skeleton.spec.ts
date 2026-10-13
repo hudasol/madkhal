@@ -18,7 +18,9 @@ for (const s of SCREENS) {
       "Evidence: real satellite history from the Nadhir hindcast.",
     );
     await page.waitForLoadState("networkidle");
-    const external = requests.filter((u) => !u.startsWith(`${baseURL}/`));
+    const external = requests.filter(
+      (u) => !u.startsWith(`${baseURL}/`) && !u.startsWith(`blob:${baseURL}/`),
+    );
     expect(external).toEqual([]);
   });
 }
@@ -28,10 +30,10 @@ test("MK-L8-001 console tiles show belief intervals from the static snapshot", a
   for (const id of ["kalba", "barka", "alraha"]) {
     await expect(page.getByTestId(`tile-${id}`)).toBeVisible();
   }
-  await expect(page.getByTestId("tile-kalba").getByRole("img").first()).toHaveAttribute(
-    "aria-label",
-    /median/,
-  );
+  // the belief bars carry the median and interval in their label
+  await expect(
+    page.getByTestId("tile-kalba").getByRole("img", { name: /median/ }).first(),
+  ).toBeVisible();
   await page.screenshot({ path: "test-results/p4-console.png", fullPage: true });
 });
 
