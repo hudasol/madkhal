@@ -28,7 +28,7 @@ from madkhal.estimator import (
 )
 from madkhal.plant import default_profile
 
-from .advise import _series, replay_advice
+from .advise import TableCache, _series, replay_advice
 from .generators import DETECTOR_KEYS, SITE, g1, truth_detector, world
 from .inputs import prior_spec, snapshot
 from .policies import POLICIES, POLICY_NAMES
@@ -72,6 +72,9 @@ def chunks(seq: Sequence[int], k: int) -> list[list[int]]:
 
 
 # ---------------------------------------------------------------- workers (top level for spawn)
+_PROCESS_CACHE = TableCache()  # a pure memo shared by the tasks a worker process runs
+
+
 def _policy_task(args: tuple[str, str, list[int], dict[str, Any]]) -> dict[str, Any]:
     generator, policy, seeds, opts = args
     worlds = []
@@ -85,7 +88,7 @@ def _policy_task(args: tuple[str, str, list[int], dict[str, Any]]) -> dict[str, 
     survey = SurveyConfig(
         availability=opts.get("availability", 0.8), cost_cu=opts.get("cost", 1000.0)
     )
-    r = run_policy(policy, worlds, survey=survey)
+    r = run_policy(policy, worlds, survey=survey, cache=_PROCESS_CACHE)
     years = worlds[0].days / 365.0
     parts = {
         "forced_shutdowns": r.metrics["forced_shutdowns"],
@@ -150,6 +153,9 @@ def _e1_task(seeds: list[int]) -> dict[str, Any]:
 def _parallel(fn: Callable[[Any], Any], tasks: list[Any], workers: int) -> list[Any]:
     if workers <= 1:
         return [fn(t) for t in tasks]
+    # one BLAS thread per worker: many processes each starting a full thread pool exhaust memory
+    for var in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
+        os.environ[var] = "1"
     with ProcessPoolExecutor(max_workers=workers) as ex:
         return list(ex.map(fn, tasks))
 
@@ -474,78 +480,83 @@ def e6(g1_runs: dict[str, dict[str, Any]]) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------- E7
-def e7(draws: int = 400, seed: int = 7) -> dict[str, Any]:
+def _e7_site(args: tuple[str, int, int]) -> dict[str, Any]:
+    site, draws, seed = args
     snap = snapshot()
-    sites = {}
-    for site in REPLAY_SITES:
-        adv = replay_advice(site, draws, seed)
-        bs = _series(site, draws, seed)
-        quiet = snap.quiet_dates(site)
-        windows = snap.event_window_dates(site)
-        excluded_years = snap.excluded_years(site)
-        by_year: dict[str, dict[str, int]] = {}
-        for a in adv:
-            y = str(a.date.year)
-            row = by_year.setdefault(
-                y,
-                {
-                    "days": 0,
-                    "non_go": 0,
-                    "quiet_days": 0,
-                    "quiet_non_go": 0,
-                    "outside_windows": 0,
-                    "outside_non_go": 0,
-                },
-            )
-            non_go = a.action != ActionKind.GO
-            row["days"] += 1
-            row["non_go"] += non_go
-            if a.date in quiet:
-                row["quiet_days"] += 1
-                row["quiet_non_go"] += non_go
-            if a.date not in windows and a.date.year not in excluded_years:
-                row["outside_windows"] += 1
-                row["outside_non_go"] += non_go
-        q_days = sum(r["quiet_days"] for r in by_year.values())
-        q_non = sum(r["quiet_non_go"] for r in by_year.values())
-        o_days = sum(r["outside_windows"] for r in by_year.values())
-        o_non = sum(r["outside_non_go"] for r in by_year.values())
-        points = []
-        index = {a.date: a for a in adv}
-        for pt in event_points(site):
-            row2: dict[str, Any] = {
-                "event_id": pt.event_id,
-                "label": pt.label,
-                "status_badge": pt.status_badge,
-                "anchor": pt.anchor,
-                "anchor_date": pt.anchor_date.isoformat(),
-                "days_before": pt.days_before,
-                "date": pt.date.isoformat(),
-            }
-            if pt.in_range:
-                a = index[pt.date]
-                i = bs.index_of(pt.date)
-                row2.update(
-                    {
-                        "action": a.action.value,
-                        "scale": a.scale,
-                        "p_any_bloom": [float(x) for x in bs.quantiles["any_bloom"][i]],
-                        "within_3": [float(x) for x in bs.quantiles["within_3"][i]],
-                    }
-                )
-            else:
-                row2["note"] = "before the start of the satellite record"
-            points.append(row2)
-        sites[site] = {
-            "by_year": by_year,
-            "quiet_non_go_per_year": 365.0 * q_non / q_days if q_days else None,
-            "quiet_days": q_days,
-            "quiet_non_go_days": q_non,
-            "outside_windows_non_go_per_year": 365.0 * o_non / o_days if o_days else None,
-            "outside_windows_days": o_days,
-            "outside_windows_non_go_days": o_non,
-            "points": points,
+    adv = replay_advice(site, draws, seed)
+    bs = _series(site, draws, seed)
+    quiet = snap.quiet_dates(site)
+    windows = snap.event_window_dates(site)
+    excluded_years = snap.excluded_years(site)
+    by_year: dict[str, dict[str, int]] = {}
+    for a in adv:
+        y = str(a.date.year)
+        row = by_year.setdefault(
+            y,
+            {
+                "days": 0,
+                "non_go": 0,
+                "quiet_days": 0,
+                "quiet_non_go": 0,
+                "outside_windows": 0,
+                "outside_non_go": 0,
+            },
+        )
+        non_go = a.action != ActionKind.GO
+        row["days"] += 1
+        row["non_go"] += non_go
+        if a.date in quiet:
+            row["quiet_days"] += 1
+            row["quiet_non_go"] += non_go
+        if a.date not in windows and a.date.year not in excluded_years:
+            row["outside_windows"] += 1
+            row["outside_non_go"] += non_go
+    q_days = sum(r["quiet_days"] for r in by_year.values())
+    q_non = sum(r["quiet_non_go"] for r in by_year.values())
+    o_days = sum(r["outside_windows"] for r in by_year.values())
+    o_non = sum(r["outside_non_go"] for r in by_year.values())
+    points = []
+    index = {a.date: a for a in adv}
+    for pt in event_points(site):
+        row2: dict[str, Any] = {
+            "event_id": pt.event_id,
+            "label": pt.label,
+            "status_badge": pt.status_badge,
+            "anchor": pt.anchor,
+            "anchor_date": pt.anchor_date.isoformat(),
+            "days_before": pt.days_before,
+            "date": pt.date.isoformat(),
         }
+        if pt.in_range:
+            a = index[pt.date]
+            i = bs.index_of(pt.date)
+            row2.update(
+                {
+                    "action": a.action.value,
+                    "scale": a.scale,
+                    "p_any_bloom": [float(x) for x in bs.quantiles["any_bloom"][i]],
+                    "within_3": [float(x) for x in bs.quantiles["within_3"][i]],
+                }
+            )
+        else:
+            row2["note"] = "before the start of the satellite record"
+        points.append(row2)
+    return {
+        "by_year": by_year,
+        "quiet_non_go_per_year": 365.0 * q_non / q_days if q_days else None,
+        "quiet_days": q_days,
+        "quiet_non_go_days": q_non,
+        "outside_windows_non_go_per_year": 365.0 * o_non / o_days if o_days else None,
+        "outside_windows_days": o_days,
+        "outside_windows_non_go_days": o_non,
+        "points": points,
+    }
+
+
+def e7(draws: int = 400, seed: int = 7, workers: int = 1) -> dict[str, Any]:
+    tasks = [(s, draws, seed) for s in REPLAY_SITES]
+    blocks = _parallel(_e7_site, tasks, min(workers, len(tasks)))
+    sites = dict(zip(REPLAY_SITES, blocks, strict=True))
     return {"experiment": "E7", "label": REPLAY_LABEL, "draws": draws, "seed": seed, "sites": sites}
 
 
@@ -598,7 +609,7 @@ def run_all(
         stamp("E5", t)
     out["e6"] = e6(g1_runs)
     t = time.perf_counter()
-    out["e7"] = e7()
+    out["e7"] = e7(workers=w)
     stamp("E7", t)
     out["run"] = {
         "seeds": list(seeds),

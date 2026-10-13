@@ -9,6 +9,7 @@ of any real plant is reported or implied.
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
 from dataclasses import dataclass
 from functools import lru_cache
 from typing import Any
@@ -96,13 +97,29 @@ class DayAdvice:
 
 
 class TableCache:
-    """Risk tables keyed by the inputs that change them (day of year and parked flag)."""
+    """A memo of ``risk_table``: tables keyed by every input that changes them.
+
+    The belief is not part of the key because the table does not depend on it; the decision
+    weights the table by the belief afterwards (ADR 0007). Safe to share across runs.
+    """
 
     def __init__(self) -> None:
-        self._t: dict[tuple[int, bool, float, float], RiskTable] = {}
+        self._t: dict[tuple[object, ...], RiskTable] = {}
+
+    @staticmethod
+    def _context(inp: DecisionInputs) -> str:
+        """Content hash of everything except the day and the plant state (no object ids)."""
+        h = hashlib.sha256()
+        for a in (inp.p_da, inp.p_dc, inp.p_ac):
+            h.update(np.ascontiguousarray(a, dtype=np.float64).tobytes())
+        h.update(inp.profile.model_dump_json().encode())
+        h.update(inp.limits.model_dump_json().encode())
+        h.update(f"{inp.site}|{inp.seed}|{inp.n_draws}".encode())
+        return h.hexdigest()
 
     def get(self, inp: DecisionInputs, doy: int) -> RiskTable:
         key = (
+            self._context(inp),
             doy,
             inp.state.current_action == ActionKind.PARK,
             round(inp.state.fouling_index, 6),
