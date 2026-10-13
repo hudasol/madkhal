@@ -64,6 +64,7 @@ A documented bloom related event, with its Nadhir evidence status kept verbatim.
 | `evaluation` | `string` |  | How Nadhir scored the event. | كيف قيّم نذير الحدث. |
 | `evidence_status` | `string` |  | Evidence status copied verbatim from Nadhir. | حالة الأدلة منقولة حرفيًا من نذير. |
 | `status_class` | `StatusClass` |  | Coarse class of the evidence status. | الفئة العامة لحالة الأدلة. |
+| `status_badge` | `string` |  | Short status label shown with the event; it says UNVERIFIED whenever any part is unverified. | وصف مختصر للحالة يُعرض مع الحدث، ويذكر غير موثّق كلما كان أي جزء غير موثّق. |
 | `species` | `string \| null` |  | Species as stated by Nadhir, if any. | النوع كما ذكره نذير، إن وُجد. |
 | `source_file` | `string` |  | Snapshot file the event came from. | ملف اللقطة الذي جاء منه الحدث. |
 | `source_index` | `number` |  | Position of the event in the source file (1 based). | ترتيب الحدث في الملف المصدر (يبدأ من 1). |

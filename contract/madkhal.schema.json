@@ -654,6 +654,12 @@
           "title": "Species",
           "x-ar": "النوع كما ذكره نذير، إن وُجد."
         },
+        "status_badge": {
+          "description": "Short status label shown with the event; it says UNVERIFIED whenever any part is unverified.",
+          "title": "Status Badge",
+          "type": "string",
+          "x-ar": "وصف مختصر للحالة يُعرض مع الحدث، ويذكر غير موثّق كلما كان أي جزء غير موثّق."
+        },
         "status_class": {
           "$ref": "#/$defs/StatusClass",
           "description": "Coarse class of the evidence status.",
@@ -702,6 +708,7 @@
         "evaluation",
         "evidence_status",
         "status_class",
+        "status_badge",
         "source_file",
         "source_index"
       ],

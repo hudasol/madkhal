@@ -194,6 +194,8 @@ export interface Event {
   evidence_status: string;
   /** Coarse class of the evidence status. */
   status_class: StatusClass;
+  /** Short status label shown with the event; it says UNVERIFIED whenever any part is unverified. */
+  status_badge: string;
   /** Species as stated by Nadhir, if any. */
   species?: string | null;
   /** Snapshot file the event came from. */

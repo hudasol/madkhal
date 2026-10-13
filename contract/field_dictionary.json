@@ -501,6 +501,13 @@
         "type": "string | null",
         "unit": null
       },
+      "status_badge": {
+        "ar": "وصف مختصر للحالة يُعرض مع الحدث، ويذكر غير موثّق كلما كان أي جزء غير موثّق.",
+        "en": "Short status label shown with the event; it says UNVERIFIED whenever any part is unverified.",
+        "required": true,
+        "type": "string",
+        "unit": null
+      },
       "status_class": {
         "ar": "الفئة العامة لحالة الأدلة.",
         "en": "Coarse class of the evidence status.",

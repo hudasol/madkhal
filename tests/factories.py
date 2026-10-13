@@ -161,6 +161,7 @@ def all_instances() -> list[Any]:
             evaluation="EVALUATED",
             evidence_status="UNVERIFIED",
             status_class=c.StatusClass.UNVERIFIED,
+            status_badge="UNVERIFIED",
             source_file="events.yaml",
             source_index=6,
         ),

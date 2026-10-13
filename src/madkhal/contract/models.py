@@ -237,6 +237,10 @@ class Event(Model):
     status_class: StatusClass = fd(
         "Coarse class of the evidence status.", "الفئة العامة لحالة الأدلة."
     )
+    status_badge: str = fd(
+        "Short status label shown with the event; it says UNVERIFIED whenever any part is unverified.",
+        "وصف مختصر للحالة يُعرض مع الحدث، ويذكر غير موثّق كلما كان أي جزء غير موثّق.",
+    )
     species: str | None = fd(
         "Species as stated by Nadhir, if any.", "النوع كما ذكره نذير، إن وُجد.", default=None
     )
@@ -246,6 +250,12 @@ class Event(Model):
         "ترتيب الحدث في الملف المصدر (يبدأ من 1).",
         ge=1,
     )
+
+    @model_validator(mode="after")
+    def _unverified_is_labelled(self) -> Event:
+        if "UNVERIFIED" in self.evidence_status and "UNVERIFIED" not in self.status_badge:
+            raise ValueError("an event with an UNVERIFIED status must say so in its badge")
+        return self
 
 
 class RateWithCounts(Model):
