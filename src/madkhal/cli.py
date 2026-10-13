@@ -43,6 +43,32 @@ def _parameter_keys() -> set[str]:
     return parameter_keys()
 
 
+RESULT_FILES = ("e1", "e2", "e3", "e4", "e5", "e6", "e7", "run")
+
+
+def load_results(root: Path) -> dict[str, dict[str, object]]:
+    """Every results/*.json written by madkhal eval, keyed by name (empty if none exist)."""
+    import json
+
+    out: dict[str, dict[str, object]] = {}
+    for name in RESULT_FILES:
+        p = root / "results" / f"{name}.json"
+        if p.is_file():
+            out[name] = json.loads(p.read_text(encoding="utf-8"))
+    return out
+
+
+def evaluation_notes(root: Path) -> dict[str, str]:
+    """Hand written notes on predictions (docs/evaluation_notes.yaml); no numbers allowed."""
+    import yaml
+
+    p = root / "docs" / "evaluation_notes.yaml"
+    if not p.is_file():
+        return {}
+    data = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+    return {str(k): " ".join(str(v).split()) for k, v in (data.get("notes") or {}).items()}
+
+
 def render_docs(root: Path) -> dict[Path, str]:
     """Return every generated document as {path: text}. Pure apart from reading inputs."""
     docs = root / "docs"
@@ -56,6 +82,11 @@ def render_docs(root: Path) -> dict[Path, str]:
     from madkhal.lab.reports import parameters_markdown
 
     out[docs / "PARAMETERS.md"] = parameters_markdown()
+    results = load_results(root)
+    if results:
+        from madkhal.lab.evaluation_report import render as render_evaluation
+
+        out[docs / "EVALUATION.md"] = render_evaluation(results, evaluation_notes(root))
     return out
 
 
