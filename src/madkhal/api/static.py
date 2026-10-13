@@ -14,6 +14,7 @@ from typing import Any
 from fastapi.testclient import TestClient
 
 from madkhal.core.jsonio import dumps
+from madkhal.lab.presets import SCENARIO_PRESETS
 
 from .app import create_app
 from .service import OLCI_SITES
@@ -27,6 +28,10 @@ def static_routes() -> list[str]:
         "/v1/track-record",
         "/v1/plant/profile",
         "/v1/plant/sensitivity",
+        "/v1/policies/results",
+        "/v1/method",
+        "/v1/claims",
+        "/v1/provenance",
     ]
     for s in OLCI_SITES:
         routes += [
@@ -35,6 +40,8 @@ def static_routes() -> list[str]:
             f"/v1/belief/{s}/series",
             f"/v1/advisory/{s}",
             f"/v1/timeline/{s}",
+            f"/v1/replay/{s}",
+            f"/v1/missions/{s}",
         ]
     return routes
 
@@ -56,6 +63,19 @@ def build_static(out_dir: Path, log: Callable[[str], None] = lambda _: None) -> 
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(dumps(res.json(), indent=None).encode("utf-8"))
         index["routes"][route] = rel
+        written.append(path)
+        log(f"wrote {rel}")
+    # The Scenario Lab cannot POST in static mode: precompute the presets through the same API.
+    index["presets"] = {}
+    for name, sc in SCENARIO_PRESETS.items():
+        res = client.post("/v1/scenario/advise", json=sc.model_dump(mode="json"))
+        if res.status_code != 200:
+            raise RuntimeError(f"preset {name} returned {res.status_code}: {res.text[:200]}")
+        rel = f"v1/scenario/presets/{name}.json"
+        path = out_dir / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(dumps({**res.json(), "preset": name}, indent=None).encode("utf-8"))
+        index["presets"][name] = rel
         written.append(path)
         log(f"wrote {rel}")
     idx = out_dir / "v1" / "index.json"

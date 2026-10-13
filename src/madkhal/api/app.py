@@ -75,6 +75,10 @@ def create_app() -> FastAPI:
     async def _input(_: Request, exc: InputError) -> JSONResponse:
         return problem(422, "Invalid input", str(exc))
 
+    @app.exception_handler(service.NotAvailable)
+    async def _not_available(_: Request, exc: service.NotAvailable) -> JSONResponse:
+        return problem(503, "Not available", str(exc))
+
     @app.exception_handler(MadkhalError)
     async def _madkhal(_: Request, exc: MadkhalError) -> JSONResponse:
         log.error("madkhal error: %s", exc)
@@ -178,6 +182,41 @@ def create_app() -> FastAPI:
     @app.get("/v1/plant/sensitivity", tags=["plant"])
     def plant_sensitivity() -> dict[str, Any]:
         return service.plant_sensitivity()
+
+    @app.get("/v1/policies/results", tags=["lab"])
+    def policies_results() -> dict[str, Any]:
+        return service.policies_results()
+
+    @app.get("/v1/replay/{site}", tags=["lab"])
+    def replay(site: str) -> dict[str, Any]:
+        return service.replay(site)
+
+    @app.get("/v1/method", tags=["meta"])
+    def method() -> dict[str, Any]:
+        return service.method()
+
+    @app.get("/v1/claims", tags=["meta"])
+    def claims() -> dict[str, Any]:
+        return service.claims()
+
+    @app.get("/v1/provenance", tags=["meta"])
+    def provenance() -> dict[str, Any]:
+        return service.provenance()
+
+    @app.get("/v1/missions/{site}", tags=["tasking"])
+    def missions(
+        site: str,
+        date: str | None = Query(None, max_length=10),
+        radius_m: float = Query(3000.0, gt=0, le=20000),
+        width_m: float = Query(1600.0, ge=100, le=20000),
+        spacing_m: float = Query(800.0, ge=100, le=5000),
+        altitude_m: float = Query(90.0, ge=60, le=120),
+        endurance_min: float = Query(25.0, gt=0, le=180),
+        sortie_cost: float = Query(1000.0, ge=0, le=1e7),
+    ) -> dict[str, Any]:
+        return service.missions(
+            site, date, radius_m, width_m, spacing_m, altitude_m, endurance_min, sortie_cost
+        )
 
     return app
 

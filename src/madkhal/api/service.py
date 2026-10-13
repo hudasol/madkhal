@@ -19,7 +19,9 @@ from madkhal.contract import (
     Site,
     TrackRecord,
 )
-from madkhal.core.errors import InputError, UnknownSiteError
+from madkhal.core import paths
+from madkhal.core.errors import InputError, MadkhalError, UnknownSiteError
+from madkhal.core.jsonio import read_json
 from madkhal.estimator import BeliefSeries
 from madkhal.evidence import PINNED_COMMIT, RADII, monthly_clear_share, yearly_counts
 from madkhal.lab import advise
@@ -239,3 +241,121 @@ def plant_sensitivity() -> dict[str, Any]:
         "rows": rows,
         "measure_first": measure_first,
     }
+
+
+# ---------------------------------------------------------------- P7 and P8: results, method, missions
+class NotAvailable(MadkhalError):
+    """A generated artefact (results/*.json) does not exist yet."""
+
+
+def _results(name: str) -> dict[str, Any]:
+    p = paths.results_dir() / f"{name}.json"
+    if not p.is_file():
+        raise NotAvailable(f"results for {name.upper()} have not been generated; run madkhal eval")
+    data: dict[str, Any] = read_json(p)
+    return data
+
+
+def policies_results() -> dict[str, Any]:
+    from madkhal.lab.evaluation_report import predictions
+
+    names = ("e1", "e2", "e3", "e4", "e5", "e6", "e7", "run")
+    loaded = {n: _results(n) for n in names}
+    out: dict[str, Any] = {n: loaded[n] for n in ("e1", "e2", "e3", "e4", "e5", "e6")}
+    out["predictions"] = predictions(loaded)
+    out["run"] = loaded["run"]
+    return out
+
+
+def replay(site: str) -> dict[str, Any]:
+    check_site(site)
+    e7 = _results("e7")
+    return {"label": e7["label"], "draws": e7["draws"], "site": site, **e7["sites"][site]}
+
+
+def _doc(name: str) -> str:
+    p = paths.docs_dir() / name
+    return p.read_text(encoding="utf-8") if p.is_file() else ""
+
+
+def method() -> dict[str, Any]:
+    from madkhal.lab.evaluation_report import predictions
+
+    try:
+        preds = predictions({n: _results(n) for n in ("e1", "e2", "e3", "e4", "e5", "e6", "e7")})
+    except NotAvailable:
+        preds = []
+    return {
+        "scope": ADVISORY_SCOPE,
+        "banner": {"evidence": BANNER_EVIDENCE, "hypothetical": BANNER_HYPOTHETICAL},
+        "method_markdown": _doc("METHOD.md"),
+        "limitations_markdown": _doc("LIMITATIONS.md"),
+        "pilot_markdown": _doc("PILOT.md"),
+        "parameters": plant_profile()["parameters"],
+        "predictions": preds,
+        "arabic_note": "The Arabic copy is machine drafted and should be reviewed by a native speaker.",
+    }
+
+
+def claims() -> dict[str, Any]:
+    from madkhal.core.claims import load_claims
+
+    rows = load_claims(paths.docs_dir() / "claims.yaml")
+    return {
+        "types": ["SOURCED", "SUPPORTED_BY_RESULT", "ASSUMPTION", "UNVERIFIED"],
+        "claims": [
+            {
+                "id": c.id,
+                "text": c.text,
+                "type": c.type,
+                "where": list(c.where),
+                "pointer": {"kind": c.kind, "ref": c.ref},
+            }
+            for c in rows
+        ],
+    }
+
+
+def provenance() -> dict[str, Any]:
+    snap = snapshot()
+    return {
+        "app_version": __version__,
+        "evidence": {
+            "source_repository": snap.manifest["source_repository"],
+            "source_commit": snap.manifest["source_commit"],
+            "total_bytes": snap.manifest["total_bytes"],
+            "files": [
+                {"path": f["path"], "sha256": f["sha256"], "bytes": f["bytes"]}
+                for f in snap.manifest["files"]
+            ],
+            "detectors": {d.value: snap.provenance(d) for d in (Dataset.olci_v1, Dataset.modis_v1)},
+        },
+        "ported_ideas": {
+            "source_repository": "https://github.com/hudasol/dhill",
+            "source_commit": "b751f002a6c61a599940c7ee932e533fbcfec627",
+            "record": "docs/adr/0001-licence-and-scope.md",
+        },
+    }
+
+
+def missions(
+    site: str,
+    date: str | None,
+    radius_m: float,
+    width_m: float,
+    spacing_m: float,
+    altitude_m: float,
+    endurance_min: float,
+    sortie_cost: float,
+) -> dict[str, Any]:
+    from madkhal.contract import DroneProfile
+    from madkhal.tasking import MissionSpec, inspection_view
+
+    check_site(site)
+    day = parse_date(site, date)
+    try:
+        spec = MissionSpec(radius_m=radius_m, width_m=width_m, line_spacing_m=spacing_m)
+    except ValueError as exc:
+        raise InputError(str(exc)) from None
+    drone = DroneProfile(altitude_m=altitude_m, endurance_min=endurance_min)
+    return inspection_view(snapshot().site(site), day, spec, drone, sortie_cost)
