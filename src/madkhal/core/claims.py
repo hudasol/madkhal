@@ -7,14 +7,13 @@ Pointer kinds:
 * ``result``: ``results/<file>.json#/json/pointer`` into a generated results file.
 * ``parameter``: a model parameter key; resolved by a callback supplied by the caller
   (the core layer cannot import the plant or estimator layers).
-* ``snapshot``: ``<path inside data/nadhir_snapshot>#row=<n>`` (1 based data row) or a
-  bare path for a whole file.
+* ``snapshot``: ``<snapshot file>#row=<n>`` (1 based data row) or a bare file name; resolved
+  by a callback from the evidence layer, the only reader of the snapshot.
 * ``file``: a repository file that holds the support (for example an ADR).
 """
 
 from __future__ import annotations
 
-import csv
 import json
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -93,6 +92,7 @@ def resolve(
     root: Path,
     opened: dict[str, dict[str, Any]],
     parameter_exists: Callable[[str], bool] | None = None,
+    snapshot_ref_exists: Callable[[str], bool] | None = None,
 ) -> str | None:
     """Return None when the pointer resolves, otherwise a reason."""
     ref = claim.ref
@@ -111,17 +111,9 @@ def resolve(
             return f"pointer {ptr} not found in {path}"
         return None
     if claim.kind == "snapshot":
-        path, _, frag = ref.partition("#")
-        p = root / "data" / "nadhir_snapshot" / path
-        if not p.is_file():
-            return f"missing snapshot file {path}"
-        if frag.startswith("row="):
-            n = int(frag[4:])
-            with p.open(encoding="utf-8", newline="") as fh:
-                rows = list(csv.reader(fh))
-            if not 1 <= n < len(rows):
-                return f"row {n} not in {path}"
-        return None
+        if snapshot_ref_exists is None:
+            return "no snapshot resolver supplied"
+        return None if snapshot_ref_exists(ref) else f"snapshot reference does not resolve: {ref}"
     if claim.kind == "parameter":
         if parameter_exists is None:
             return "no parameter resolver supplied"
