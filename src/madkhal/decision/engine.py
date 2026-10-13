@@ -9,9 +9,15 @@ parameters), P(fouling breach) <= the fouling budget and P(unserved water above 
 * hysteresis: a candidate less restrictive than the action in force must meet the budgets with
   a margin (``RELAX_MARGIN`` times the budget).
 
-Both rules depend only on the action in force, never on the belief, so a higher bloom
-probability, wider plant spreads, a tighter budget or lower storage can never make the advice
-more permissive (property tests in tests/test_decision.py).
+Both rules give way when they would leave no candidate although one is within budget: that
+happens only when the action in force and every more restrictive option breach a budget (for
+example a park that runs storage dry). The advice then moves to the smallest relaxation within
+budget, and NO_SAFE_OPTION_ESCALATE is reserved for the case where every option breaches.
+
+While the rules hold they depend only on the action in force, never on the belief, so a higher
+bloom probability, wider plant spreads, a tighter budget or lower storage can never make the
+advice more permissive (property tests in tests/test_decision.py; ADR 0008 states the one
+exception, when the rules give way).
 """
 
 from __future__ import annotations
@@ -48,6 +54,7 @@ class Evaluation:
     allowed: np.ndarray  # dwell restriction
     choice: int | None  # index into CANDIDATES, None means no safe option
     unconstrained: int | None
+    yielded: bool = False  # dwell and hysteresis gave way (see the module docstring)
 
 
 def evaluate(inp: DecisionInputs, table: RiskTable | None = None) -> Evaluation:
@@ -69,6 +76,14 @@ def evaluate(inp: DecisionInputs, table: RiskTable | None = None) -> Evaluation:
     allowed = ~relaxing if in_dwell else np.ones(len(CANDIDATES), dtype=bool)
     ok = np.flatnonzero(feasible & allowed)
     unc = np.flatnonzero(plain)
+    choice = int(ok[0]) if ok.size else None
+    yielded = False
+    if choice is None and unc.size:
+        # every option at least as restrictive as the action in force breaches a budget, yet a
+        # relaxation is within budget: the rules give way to the smallest such relaxation
+        # (candidates are ordered from most to least permissive)
+        choice, yielded = int(unc[-1]), True
+        feasible, allowed = plain, np.ones(len(CANDIDATES), dtype=bool)
     return Evaluation(
         table=tb,
         p_foul=p_foul,
@@ -76,8 +91,9 @@ def evaluate(inp: DecisionInputs, table: RiskTable | None = None) -> Evaluation:
         unserved=unserved,
         feasible=feasible,
         allowed=allowed,
-        choice=int(ok[0]) if ok.size else None,
+        choice=choice,
         unconstrained=int(unc[0]) if unc.size else None,
+        yielded=yielded,
     )
 
 
@@ -113,7 +129,15 @@ def decide(inp: DecisionInputs, inspect: InspectAssessment | None = None) -> Adv
     # binding constraint: why not the next more permissive candidate
     binding: str | None
     if k is None:
-        names = sorted({v for j in range(len(CANDIDATES)) for v in _violations(ev, j, inp)})
+        # every option breaches a budget, so the rules of alarm discipline are not the cause
+        names = sorted(
+            {
+                v
+                for j in range(len(CANDIDATES))
+                for v in _violations(ev, j, inp)
+                if v in ("fouling", "water_security")
+            }
+        )
         binding = " and ".join(names) if names else None
     elif k == 0:
         binding = (
@@ -124,6 +148,8 @@ def decide(inp: DecisionInputs, inspect: InspectAssessment | None = None) -> Adv
         )
     else:
         v = _violations(ev, k - 1, inp)
+        if not v and ev.yielded:
+            v = ["dwell" if inp.state.hours_in_action < lim.dwell_hours else "hysteresis"]
         binding = " and ".join(v) if v else None
     ref = k if k is not None else len(CANDIDATES) - 1
     constraints = [
@@ -245,6 +271,12 @@ def _reasons(ev: Evaluation, k: int | None, inp: DecisionInputs, binding: str | 
         )
         return out
     a, q = CANDIDATES[k]
+    if ev.yielded:
+        out.append(
+            "The action in force and every more restrictive option breach a budget, so the dwell "
+            "and hysteresis rules give way: the advice moves to the smallest relaxation within "
+            "budget."
+        )
     out.append(
         f"P(fouling breach) {_pct(float(ev.p_foul[k]))} against a budget of {_pct(lim.fouling_risk_budget)}; "
         f"P(water shortfall) {_pct(float(ev.p_water[k]))} against {_pct(lim.water_risk_budget)}."
