@@ -84,7 +84,6 @@ const en = {
     title: "Console",
     intro:
       "One tile per site. Each tile shows what the evidence says about a bloom at the intake, with intervals.",
-    pending: "Advisory engine: not part of this build yet. Belief and evidence only.",
     anyBloom: "Bloom anywhere in the watch zone",
     within: "Bloom at the intake within {{count}} days",
     within_one: "Bloom at the intake within {{count}} day",

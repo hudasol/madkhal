@@ -87,6 +87,7 @@ const enScreens = {
     storage: "Storage (hours of demand)",
     totals:
       "Totals: {{unserved}} m3 unserved, {{shutdowns}} forced shutdowns, {{cleanings}} cleanings",
+    unservedCol: "Unserved (m3)",
     explanation: "Explanation object (last day)",
     states: { clear: "clear", developing: "developing", at_intake: "at the intake" },
   },

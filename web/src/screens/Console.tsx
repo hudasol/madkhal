@@ -104,7 +104,8 @@ export function ConsoleScreen() {
   const day = asOf ?? lastDate;
   const [focus, setFocus] = useState<string>("kalba");
 
-  const focusSeries = all[ids.indexOf(focus)]?.data;
+  const focusQuery = all[ids.indexOf(focus)];
+  const focusSeries = focusQuery?.data;
   const windowed = useMemo(() => {
     if (!focusSeries) return null;
     const end = focusSeries.dates.indexOf(day);
@@ -189,8 +190,12 @@ export function ConsoleScreen() {
             clear={windowed.clear}
             alert={windowed.alert}
           />
-        ) : (
+        ) : !focusQuery || focusQuery.isLoading ? (
           <Loading />
+        ) : focusQuery.isError || !focusSeries ? (
+          <ErrorView error={focusQuery.error} onRetry={() => void focusQuery.refetch()} />
+        ) : (
+          <Empty />
         )}
       </section>
     </div>

@@ -90,6 +90,7 @@ const arScreens: ScreenMessages = {
     storage: "الخزان (ساعات من الطلب)",
     totals:
       "المجاميع: {{unserved}} م³ غير مزوّدة، {{shutdowns}} إيقافات قسرية، {{cleanings}} عمليات تنظيف",
+    unservedCol: "غير مزوّدة (م³)",
     explanation: "كائن الشرح (اليوم الأخير)",
     states: { clear: "صافٍ", developing: "متطوّر", at_intake: "عند المأخذ" },
   },

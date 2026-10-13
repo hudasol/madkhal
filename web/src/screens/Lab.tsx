@@ -151,7 +151,7 @@ function Result({ data }: { data: ScenarioResponse }) {
                 <th scope="col">{t("lab.advice")}</th>
                 <th scope="col">{t("lab.fouling")}</th>
                 <th scope="col">{t("lab.storage")}</th>
-                <th scope="col">m3</th>
+                <th scope="col">{t("lab.unservedCol")}</th>
               </tr>
             </thead>
             <tbody>
