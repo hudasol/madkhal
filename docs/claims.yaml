@@ -27,3 +27,18 @@ claims:
     type: SUPPORTED_BY_RESULT
     where: [UI, docs/METHOD.md]
     pointer: {kind: snapshot, ref: "olci_v1/period_activity.csv#row=1"}
+  - id: CL-006
+    text: "The plant is hypothetical: a stylised SWRO unit of illustrative size that resembles no real asset; every plant parameter is an assumption at evidence level L0."
+    type: ASSUMPTION
+    where: [README, UI, docs/PARAMETERS.md]
+    pointer: {kind: parameter, ref: "plant.pretreat_capacity"}
+  - id: CL-007
+    text: "An advisory never becomes more permissive when the bloom probability rises, plant spreads widen, the risk budget tightens or storage falls; property tests check each case."
+    type: SUPPORTED_BY_RESULT
+    where: [README, docs/METHOD.md]
+    pointer: {kind: file, ref: tests/test_decision.py}
+  - id: CL-008
+    text: "The hit rate posterior is Beta(1.5, 2.5): one detection among three observable events keeps it wide."
+    type: SUPPORTED_BY_RESULT
+    where: [UI, docs/METHOD.md]
+    pointer: {kind: parameter, ref: "estimator.hit_rate"}
