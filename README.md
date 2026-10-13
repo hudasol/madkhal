@@ -38,7 +38,10 @@ Static demo (no backend; the output in `web/dist` can go on any free static host
 
 Everything else: `madkhal check` (fast check: lint, strict types, layer contracts,
 traceability, claims, unit tests), `madkhal eval` (the preregistered experiments; the measured
-run time is in `results/run.json`), `madkhal docs build`, and `madkhal all`.
+run time is in `results/run.json`), `madkhal docs build`, `madkhal lab` (a synthetic Scenario
+Lab preset), `madkhal plan` (survey mission exports, simulation only), `madkhal perf` (the
+performance budget, `results/performance.json`), `madkhal audit` (dependency audits), and
+`madkhal all`, which runs all of these, the slow tests and the static build, and writes an SBOM.
 
 ## How it fits together
 

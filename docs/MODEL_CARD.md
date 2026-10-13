@@ -46,5 +46,7 @@ react to them; the plant is hypothetical; event dates are mostly upper bounds.
 
 ## Ethics and safety
 
-No personal data. No operator is named outside `docs/CONTEXT.md`. Uncertainty is shown
+The model and the product process no personal data; the only personal details in the
+repository are the author's own contact lines in the README. No operator is named outside
+`docs/CONTEXT.md`. Uncertainty is shown
 everywhere; the advice is more conservative when evidence or calibration is weaker.

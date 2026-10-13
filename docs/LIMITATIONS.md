@@ -35,6 +35,11 @@ Read this before drawing any conclusion from Madkhal.
 * **Two monotonicity properties hold only in their stated form.** A nodata day never moves the
   belief away from the seasonal prior, but it can narrow the interval; an extra alert raises
   P(any bloom) on its own day but, followed by quiet days, can lower it later (D-008, D-009).
+* **Alarm discipline gives way to water security.** When the action in force and every more
+  restrictive option breach a budget, the dwell and hysteresis rules give way and the advice
+  relaxes to the smallest option within budget. In that one case a worse belief can give a
+  less restrictive action than before (ADR 0008, amendment). The independent review found the
+  earlier rule reporting NO SAFE OPTION when a safe option existed.
 
 ## About the evaluation
 
@@ -48,13 +53,24 @@ Read this before drawing any conclusion from Madkhal.
   on real evidence, against a plant in a neutral state.
 * **Nothing is validated against a real plant or operator logs.**
 
+## About the software
+
+* **Performance margin is thin for the experiment suite.** The full suite ran in 833 s against
+  a 900 s budget on one machine, and in 871 s on an earlier run (`results/performance.json`,
+  `results/run.json`); a slower machine will exceed it. The other four measures have wide
+  margins. One attempted run on a loaded machine lost a worker process and wrote nothing.
+* **Accessibility is checked automatically only.** axe passes on every screen in both languages
+  and themes, but no manual screen reader pass was done (K-006).
+* **Arabic is machine drafted and partial.** The interface is translated, but the advisory
+  sentences and the method documents are shown in English (K-001, K-002, K-008).
+
 ## Engineering lens: self score
 
 Scored hard, one line each, with the evidence.
 
 | Criterion | Score | Evidence |
 |---|---|---|
-| Reliability and safety first | Partly met | Advice never becomes more permissive when the bloom probability rises, spreads widen, budgets tighten or storage falls (hypothesis property tests, `tests/test_decision.py`); but the advice cannot react to blooms the satellite cannot see, which caused most forced shutdowns in G1 (PR-E2-1 missed). |
+| Reliability and safety first | Partly met | Advice never becomes more permissive when the bloom probability rises, spreads widen, budgets tighten or storage falls (hypothesis property tests, `tests/test_decision.py`); but the advice cannot react to blooms the satellite cannot see, which are most blooms in G1, and Madkhal cut forced shutdowns by less than half against always going (PR-E2-1 missed). |
 | Operator in the loop | Met | No control actions, no writes to any system, read only API; the scope statement is on every screen footer and in every export. |
 | Alarm discipline | Partly met | Dwell, hysteresis and a measured change rate (E6); at the daily cadence of the lab the dwell rule is not exercised, so its value is shown only in hourly use. |
 | Water security | Met in the model | Unserved water risk is a constraint beside fouling risk and NO SAFE OPTION, ESCALATE is shown when every option breaches (tests MK-L4-004, MK-L4-009); untested against real storage practice. |

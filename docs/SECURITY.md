@@ -25,5 +25,13 @@ be read only and offline first (`docs/PILOT.md`).
 
 ## Dependency audit
 
-The audit result is recorded in `results/pip_audit.txt` when `madkhal all` or the audit command
-in `docs/PROGRESS.md` is run; see that file for the date and findings.
+`madkhal audit` runs `pip-audit` on `requirements.lock.txt` and `npm audit` on
+`web/package-lock.json` and records both outputs, with the date, in `results/pip_audit.txt`
+and `results/npm_audit.txt`; `madkhal all` runs it too.
+
+During P10 the first web audit reported advisories in three packages: `maplibre-gl` (a
+sanitiser bypass, rated critical; the map does not use popups or HTML from data), `react-router`
+(open redirect, moderate) and `vitest` (development only). All three were upgraded to fixed
+versions (`maplibre-gl` 6, `react-router-dom` 7, `vitest` 5), the web tests were run again,
+and both audits then reported no known vulnerabilities. A later audit can differ, because
+advisories are published continually; rerun `madkhal audit` before any use.
