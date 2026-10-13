@@ -480,6 +480,37 @@ class NadhirSnapshot:
             "olci_v1/event_lead_times.csv", "no detected event at the primary radius"
         )
 
+    def detected_episode_alerts(self) -> tuple[RateWithCounts, str]:
+        """Alert days of clear days from first exceedance to last exceedance of the one
+        detected event (n = 1 event). Returns the counts and a citation."""
+        anchor_row = next(
+            r
+            for r in self.lead_time_rows(Dataset.olci_v1)
+            if r.text("outcome") == "DETECTED" and r.integer("radius_km") == PRIMARY_RADIUS
+        )
+        site = anchor_row.text("intake")
+        lo, hi = anchor_row.date("first_exceed"), anchor_row.date("last_exceed")
+        days = [
+            d
+            for d in self.evidence_days(site)
+            if lo <= d.date <= hi and d.coverage == CoverageState.clear
+        ]
+        k = sum(1 for d in days if d.alert)
+        cite = (
+            f"{anchor_row.file} row {anchor_row.index} ({anchor_row.text('event')}, "
+            f"{lo.isoformat()} to {hi.isoformat()}); daily states from "
+            f"{days[0].source_file} rows {days[0].source_row} to {days[-1].source_row}"
+        )
+        return (
+            RateWithCounts(
+                k=k,
+                n=len(days),
+                rate=k / len(days),
+                note="alert days of clear days in the detected episode",
+            ),
+            cite,
+        )
+
     def episodes(
         self, site: str, dataset: Dataset = Dataset.olci_v1, radius: int = PRIMARY_RADIUS
     ) -> list[Episode]:
