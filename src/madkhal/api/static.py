@@ -21,9 +21,21 @@ from .service import OLCI_SITES
 
 def static_routes() -> list[str]:
     """Every GET path (with default query values) that the static demo serves."""
-    routes = ["/v1/health", "/v1/sites", "/v1/track-record"]
+    routes = [
+        "/v1/health",
+        "/v1/sites",
+        "/v1/track-record",
+        "/v1/plant/profile",
+        "/v1/plant/sensitivity",
+    ]
     for s in OLCI_SITES:
-        routes += [f"/v1/evidence/{s}", f"/v1/belief/{s}", f"/v1/belief/{s}/series"]
+        routes += [
+            f"/v1/evidence/{s}",
+            f"/v1/belief/{s}",
+            f"/v1/belief/{s}/series",
+            f"/v1/advisory/{s}",
+            f"/v1/timeline/{s}",
+        ]
     return routes
 
 

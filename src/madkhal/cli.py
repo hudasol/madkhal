@@ -38,8 +38,9 @@ def parameter_exists(key: str) -> bool:
 
 
 def _parameter_keys() -> set[str]:
-    keys: set[str] = set()
-    return keys
+    from madkhal.lab.reports import parameter_keys
+
+    return parameter_keys()
 
 
 def render_docs(root: Path) -> dict[Path, str]:
@@ -52,6 +53,9 @@ def render_docs(root: Path) -> dict[Path, str]:
     out[docs / "TRACEABILITY.md"] = tr.render_markdown(m)
     cl = claimslib.load_claims(docs / "claims.yaml")
     out[docs / "CLAIMS.md"] = claimslib.render_markdown(cl)
+    from madkhal.lab.reports import parameters_markdown
+
+    out[docs / "PARAMETERS.md"] = parameters_markdown()
     return out
 
 
@@ -230,6 +234,41 @@ def eval_(
         return
     _echo("The full experiment suite is built in phase P6 and P7.")
     raise typer.Exit(code=2)
+
+
+@app.command()
+def advise(
+    site: str = typer.Option("kalba"),
+    date: str = typer.Option("2018-09-11", help="ISO date within the evidence range."),
+    storage_hours: float = typer.Option(24.0, min=0.0, max=72.0),
+    fouling_index: float = typer.Option(0.2, min=0.0, max=1.5),
+) -> None:
+    """REPLAY advisory for one site and day (real evidence, hypothetical plant)."""
+    import datetime as dt
+
+    from madkhal.contract import PlantState
+    from madkhal.lab.advise import advisory_for
+
+    state = PlantState(storage_hours=storage_hours, fouling_index=fouling_index)
+    adv = advisory_for(site, dt.date.fromisoformat(date), state=state)
+    _print_json(adv.model_dump(mode="json"))
+
+
+@app.command()
+def timeline(
+    site: str = typer.Option("kalba"),
+    start: str = typer.Option("2018-09-01"),
+    end: str = typer.Option("2018-09-30"),
+) -> None:
+    """Daily REPLAY advice over a window (at most 400 days)."""
+    import datetime as dt
+
+    from madkhal.lab.advise import timeline as tl
+
+    d0, d1 = dt.date.fromisoformat(start), dt.date.fromisoformat(end)
+    if (d1 - d0).days + 1 > 400:
+        raise typer.BadParameter("the window is limited to 400 days")
+    _print_json(tl(site, d0, d1))
 
 
 @app.command()

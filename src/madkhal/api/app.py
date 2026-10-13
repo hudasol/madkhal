@@ -17,7 +17,7 @@ from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoin
 from starlette.responses import Response
 
 from madkhal import __version__
-from madkhal.contract import BloomBelief, Dataset, Site
+from madkhal.contract import Advisory, BloomBelief, Dataset, Scenario, Site
 from madkhal.core.errors import InputError, MadkhalError, UnknownSiteError
 from madkhal.core.jsonio import inputs_hash
 
@@ -146,6 +146,38 @@ def create_app() -> FastAPI:
         end: str | None = Query(None, max_length=10),
     ) -> dict[str, Any]:
         return service.belief_series(site, start, end)
+
+    @app.get("/v1/advisory/{site}", response_model=Advisory, tags=["decision"])
+    def advisory(
+        site: str,
+        date: str | None = Query(
+            None, max_length=10, description="ISO date; default the last evidence day."
+        ),
+        profile: str = Query(service.PROFILE_ID, max_length=64),
+        fouling_index: float = Query(0.2, ge=0.0, le=1.5),
+        storage_hours: float = Query(24.0, ge=0.0, le=72.0),
+    ) -> Advisory:
+        return service.advisory(site, date, profile, fouling_index, storage_hours)
+
+    @app.get("/v1/timeline/{site}", tags=["decision"])
+    def timeline(
+        site: str,
+        start: str | None = Query(None, max_length=10),
+        end: str | None = Query(None, max_length=10),
+    ) -> dict[str, Any]:
+        return service.timeline(site, start, end)
+
+    @app.post("/v1/scenario/advise", tags=["decision"])
+    def scenario(sc: Scenario) -> dict[str, Any]:
+        return service.scenario(sc)
+
+    @app.get("/v1/plant/profile", tags=["plant"])
+    def plant_profile() -> dict[str, Any]:
+        return service.plant_profile()
+
+    @app.get("/v1/plant/sensitivity", tags=["plant"])
+    def plant_sensitivity() -> dict[str, Any]:
+        return service.plant_sensitivity()
 
     return app
 

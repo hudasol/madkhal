@@ -52,7 +52,7 @@ markers = [
 ]
 filterwarnings = [
   "error::RuntimeWarning",
-  "ignore:Using `httpx` with `starlette.testclient`:DeprecationWarning",
+  "ignore:Using `httpx` with `starlette.testclient`",
 ]
 
 [tool.coverage.run]

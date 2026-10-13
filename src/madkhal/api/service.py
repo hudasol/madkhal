@@ -11,16 +11,21 @@ from madkhal.contract import (
     ADVISORY_SCOPE,
     BANNER_EVIDENCE,
     BANNER_HYPOTHETICAL,
+    Advisory,
     BloomBelief,
     Dataset,
+    PlantState,
+    Scenario,
     Site,
     TrackRecord,
 )
 from madkhal.core.errors import InputError, UnknownSiteError
 from madkhal.estimator import BeliefSeries
 from madkhal.evidence import PINNED_COMMIT, RADII, monthly_clear_share, yearly_counts
+from madkhal.lab import advise
 from madkhal.lab.inputs import snapshot
 from madkhal.lab.replay import belief_replay
+from madkhal.plant import default_profile, tornado
 
 DEFAULT_DRAWS = 400
 DEFAULT_SEED = 7
@@ -157,3 +162,80 @@ def track_record() -> dict[str, Any]:
     out["detected_episode_alerts"] = {**vis.model_dump(), "source": vis_cite}
     out["events"] = [e.model_dump(mode="json") for e in snap.events()]
     return out
+
+
+# ---------------------------------------------------------------- P5: decision and plant
+MAX_TIMELINE_DAYS = 400
+DEFAULT_TIMELINE_DAYS = 120
+PROFILE_ID = "hypothetical-swro-1"
+
+
+def check_profile(profile_id: str) -> None:
+    if profile_id != PROFILE_ID:
+        raise UnknownSiteError(f"unknown plant profile '{profile_id}'; expected {PROFILE_ID}")
+
+
+def advisory(
+    site: str, date: str | None, profile_id: str, fouling_index: float, storage_hours: float
+) -> Advisory:
+    check_site(site)
+    check_profile(profile_id)
+    day = parse_date(site, date)
+    state = PlantState(fouling_index=fouling_index, storage_hours=storage_hours)
+    return advise.advisory_for(site, day, DEFAULT_DRAWS, DEFAULT_SEED, state=state)
+
+
+def timeline(site: str, start: str | None, end: str | None) -> dict[str, Any]:
+    check_site(site)
+    bs = series(site)
+    d1 = parse_date(site, end) if end else bs.dates[-1]
+    d0 = (
+        parse_date(site, start)
+        if start
+        else max(bs.dates[0], d1 - dt.timedelta(days=DEFAULT_TIMELINE_DAYS - 1))
+    )
+    if d1 < d0:
+        raise InputError("end must not be before start")
+    if (d1 - d0).days + 1 > MAX_TIMELINE_DAYS:
+        raise InputError(f"a timeline window is limited to {MAX_TIMELINE_DAYS} days")
+    return advise.timeline(site, d0, d1, DEFAULT_DRAWS, DEFAULT_SEED)
+
+
+def scenario(sc: Scenario) -> dict[str, Any]:
+    check_site(sc.site)
+    return advise.run_scenario(sc)
+
+
+def plant_profile() -> dict[str, Any]:
+    p = default_profile()
+    out: dict[str, Any] = p.model_dump(mode="json")
+    out["assumption_share"] = p.assumption_share
+    out["evidence_level"] = p.evidence_level.value
+    return out
+
+
+@lru_cache(maxsize=1)
+def plant_sensitivity() -> dict[str, Any]:
+    prof = default_profile()
+    roles = {p.key: p.role for p in prof.parameters}
+    rows = [
+        {
+            "key": r.key,
+            "label": r.label,
+            "role": roles[r.key],
+            "rel_spread": r.rel_spread,
+            "swing_fouling": r.swing_fouling,
+            "swing_water": r.swing_water,
+            "score": r.score,
+            "rank": r.rank,
+        }
+        for r in tornado(prof)
+    ]
+    measure_first = [
+        r["key"] for r in rows if r["role"] == "physics" and float(str(r["score"])) > 0
+    ][:3]
+    return {
+        "method": "One at a time: each parameter moved by plus and minus one spread, others nominal.",
+        "rows": rows,
+        "measure_first": measure_first,
+    }
